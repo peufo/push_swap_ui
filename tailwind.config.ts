@@ -1,12 +1,14 @@
-import forms from '@tailwindcss/forms';
-import type { Config } from 'tailwindcss';
+import forms from '@tailwindcss/forms'
+import daisyui from 'daisyui'
+import type { Config } from 'tailwindcss'
 
 export default {
   content: ['./src/**/*.{html,js,svelte,ts}'],
-
   theme: {
-    extend: {}
+    extend: {},
   },
-
-  plugins: [forms]
-} satisfies Config;
+  plugins: [forms, daisyui],
+  daisyui: {
+    logs: false,
+  },
+} satisfies Config
