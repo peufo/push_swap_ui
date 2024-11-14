@@ -33,7 +33,7 @@
   })
 </script>
 
-<fieldset class="border rounded px-8 py-4 flex flex-col gap-2">
+<fieldset class="border rounded p-4 flex flex-col gap-2">
   <legend>Arguments</legend>
   <label class="block">
     <span class="label-text">Values</span>
@@ -49,11 +49,11 @@
     {/if}
   </label>
   <div class="flex gap-2 items-end">
-    <label class="block">
+    <label class="block w-full">
       <span class="label-text block">Count</span>
       <input
         type="number"
-        class="input input-bordered"
+        class="input input-bordered w-full"
         bind:value={count}
         min="2"
       />
