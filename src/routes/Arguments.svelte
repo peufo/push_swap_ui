@@ -6,15 +6,19 @@
   let valuesAsString = $state(values.join(' '))
   let count = $state(values.length)
   const isUniqueValues = $derived(
-    !values.find((n, i, self) => self.indexOf(n) !== i)
+    values.find((n, i, self) => self.indexOf(n) !== i) === undefined
   )
 
   function shuffle() {
+    if (count < 1) {
+      valuesAsString = ''
+      return
+    }
     const numbers = Array(count)
       .fill(1)
       .map(() => Math.random())
     const sorted = numbers.toSorted()
-    valuesAsString = numbers.map((n) => sorted.indexOf(n) * 2).join(' ')
+    valuesAsString = numbers.map((n, i) => sorted.indexOf(n)).join(' ')
   }
 
   $effect(() => {
@@ -35,7 +39,7 @@
     <span class="label-text">Values</span>
     <textarea
       contenteditable="true"
-      class="input input-bordered w-full"
+      class="textarea textarea-bordered w-full"
       bind:value={valuesAsString}
     ></textarea>
     {#if !isUniqueValues}
@@ -47,7 +51,12 @@
   <div class="flex gap-2 items-end">
     <label class="block">
       <span class="label-text block">Count</span>
-      <input type="number" class="input input-bordered" bind:value={count} />
+      <input
+        type="number"
+        class="input input-bordered"
+        bind:value={count}
+        min="2"
+      />
     </label>
     <button
       class="btn"
