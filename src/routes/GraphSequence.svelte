@@ -54,6 +54,15 @@
           y: {
             beginAtZero: true,
           },
+          x: {
+            ticks: {
+              callback(v, i) {
+                if (i < state.sequence.length)
+                  return `${i}.${state.sequence[i].m}`
+                return `+${i - state.sequence.length + 1}`
+              },
+            },
+          },
         },
         plugins: {
           legend: {

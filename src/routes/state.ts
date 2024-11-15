@@ -61,9 +61,9 @@ export function updateState({
     steps,
     scores,
     score: sumOf([
-      1000 * scores.entropy,
-      100 * scores.balance,
-      10 * scores.proximity,
+      100 * scores.entropy,
+      10 * scores.balance,
+      scores.proximity,
       scores.entropy ? 0 : 5 * scores.alignement,
       scores.entropy ? 0 : cursor,
     ]),
