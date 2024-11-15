@@ -68,6 +68,18 @@
           legend: {
             display: false,
           },
+          tooltip: {
+            callbacks: {
+              title(items) {
+                return items
+                  .filter(({ datasetIndex }) => !datasetIndex)
+                  .map(
+                    ({ dataIndex }) =>
+                      `${dataIndex}.${state.sequence[dataIndex]?.m}`
+                  )
+              },
+            },
+          },
         },
       },
     })
