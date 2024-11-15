@@ -28,8 +28,14 @@
 
   function updateChart(s: State) {
     if (!chart) return
-    chart.data.labels = s.values.map((v, i) => (i == s.cursor ? `👆${v}` : v))
+    chart.data.labels = s.values
     chart.data.datasets[0].data = s.values
+    chart.data.datasets[0].backgroundColor = s.values.map((v, i) =>
+      i < s.cursor ? 'rgba(54, 162, 235, 0.2)' : 'rgba(153, 102, 255, 0.2)'
+    )
+    chart.data.datasets[0].borderColor = s.values.map((v, i) =>
+      i < s.cursor ? 'rgba(54, 162, 235)' : 'rgba(153, 102, 255)'
+    )
     chart.options.plugins!.title!.text = `Score: ${s.score}`
     chart.options.plugins!.subtitle!.text = JSON.stringify(s.scores)
       .replaceAll(/["\}\{]/g, '')
@@ -45,7 +51,6 @@
         labels: [],
         datasets: [
           {
-            label: 'State',
             data: [],
             borderWidth: 1,
           },
