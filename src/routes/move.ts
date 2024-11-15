@@ -1,5 +1,5 @@
 import zod from 'zod'
-import { type State } from './state'
+import { updateState, type State } from './state'
 
 export type Move =
   | 'sa'
@@ -14,7 +14,7 @@ export type Move =
   | 'rrb'
   | 'rrr'
 
-export const moveShema = zod.enum([
+export const moveList = [
   'sa',
   'sb',
   'ss',
@@ -26,11 +26,13 @@ export const moveShema = zod.enum([
   'rra',
   'rrb',
   'rrr',
-])
+] as const satisfies Move[]
+
+export const moveShema = zod.enum(moveList)
 export type Sequence = Move[]
 export const sequenceShema = zod.array(moveShema)
 
-export const moves = {
+const moves = {
   sa(s) {
     if (s.cursor > s.values.length - 2) return s
     const value = s.values[s.cursor]
@@ -87,3 +89,31 @@ export const moves = {
     return this.rra(this.rrb(s))
   },
 } satisfies Record<Move, (state: State) => State>
+
+export function move(state: State, m: Move): State {
+  let s: State = JSON.parse(JSON.stringify(state))
+  s = updateState(moves[m](s))
+  s.sequence.push({ m, score: s.score })
+  return s
+}
+
+const reverse: Record<Move, Move> = {
+  sa: 'sa',
+  sb: 'sb',
+  ss: 'ss',
+  pa: 'pb',
+  pb: 'pa',
+  ra: 'rra',
+  rb: 'rrb',
+  rr: 'rrr',
+  rra: 'ra',
+  rrb: 'rb',
+  rrr: 'rr',
+}
+
+export function moveReverse(state: State, m: Move): State {
+  let s: State = JSON.parse(JSON.stringify(state))
+  s = updateState(moves[reverse[m]](s))
+  s.sequence.pop()
+  return s
+}

@@ -1,7 +1,13 @@
 <script lang="ts">
   import { slide } from 'svelte/transition'
 
-  let { values = $bindable() }: { values: number[] } = $props()
+  let {
+    values,
+    onchange,
+  }: {
+    values: number[]
+    onchange: (values: number[]) => void
+  } = $props()
 
   let valuesAsString = $state(values.join(' '))
   let count = $state(values.length)
@@ -27,6 +33,7 @@
       .filter(Boolean)
       .map((n) => +n)
       .filter((n) => !isNaN(n))
+    onchange(values)
   })
   $effect(() => {
     count = values.length

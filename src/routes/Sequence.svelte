@@ -4,8 +4,8 @@
   let exe = $state('~/42/push_swap/push_swap')
   let {
     values,
-    sequence = $bindable(),
-  }: { values: number[]; sequence: Sequence } = $props()
+    sequence = $bindable([]),
+  }: { values: number[]; sequence?: Sequence } = $props()
 
   let output = $state('')
   let isValidOutput = $state(true)
