@@ -13,17 +13,12 @@
   })
 
   function logState(s: State) {
-    console.table({ values: [...s.values], deltas: s.deltas, steps: s.steps })
-    const [neg] = s.candidates.filter((c) => c.score < 0)
-    if (neg) {
-      console.log('WTF')
-      console.log(neg.scores)
-      console.table({
-        values: [...neg.values],
-        deltas: neg.deltas,
-        steps: neg.steps,
-      })
-    }
+    console.table({
+      values: [...s.values],
+      deltas: s.deltas,
+      deltaRaw: s.deltasRaw,
+      steps: s.steps,
+    })
   }
 
   function updateChart(s: State) {
@@ -68,11 +63,9 @@
           },
           title: {
             display: true,
-            text: '',
           },
           subtitle: {
             display: true,
-            text: '',
             padding: {
               bottom: 8,
             },

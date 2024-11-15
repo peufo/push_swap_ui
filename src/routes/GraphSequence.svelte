@@ -57,9 +57,10 @@
           x: {
             ticks: {
               callback(v, i) {
-                if (i < state.sequence.length)
-                  return `${i}.${state.sequence[i].m}`
-                return `+${i - state.sequence.length + 1}`
+                if (typeof v === 'string') return undefined
+                if (v < state.sequence.length)
+                  return `${v}.${state.sequence[v]?.m}`
+                return `+${v - state.sequence.length + 1}`
               },
             },
           },

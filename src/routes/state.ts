@@ -4,6 +4,7 @@ export type State = {
   cursor: number
   values: number[]
   deltas: number[]
+  deltasRaw: number[]
   steps: number[]
   score: number
   scores: {
@@ -22,12 +23,13 @@ export function updateState({
   sequence,
 }: Pick<State, 'values' | 'cursor' | 'sequence'>): State {
   const len = values.length
-  const deltas = values.map((v, i) => {
-    const delta = v - (i - cursor)
-    return [delta - len, delta, delta + len].sort(
-      (a, b) => Math.abs(a) - Math.abs(b)
-    )[0]
-  })
+  const deltasRaw = values.map((v, i) => v - (i - cursor))
+  const deltas = deltasRaw.map(
+    (delta) =>
+      [delta - len, delta, delta + len].sort(
+        (a, b) => Math.abs(a) - Math.abs(b)
+      )[0]
+  )
   const getStep = (a: number, b: number): number => {
     if (a == b) return 0
     if (a > b) return Math.min(a - b, b - a + len)
@@ -51,12 +53,14 @@ export function updateState({
     entropy: sumOf(steps),
     balance: Math.abs(entropyA - entropyB),
     proximity,
-    alignement: values.reduce((acc, cur, i) => acc + cur - (i - cursor)),
+    alignement: sumOf(deltas.map((d) => Math.abs(d))),
   }
+
   return {
     cursor,
     values,
     sequence,
+    deltasRaw,
     deltas,
     steps,
     scores,
@@ -64,7 +68,7 @@ export function updateState({
       100 * scores.entropy,
       10 * scores.balance,
       scores.proximity,
-      scores.entropy ? 0 : 5 * scores.alignement,
+      scores.entropy ? 0 : scores.alignement,
       scores.entropy ? 0 : cursor,
     ]),
     candidates: [],
