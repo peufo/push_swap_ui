@@ -40,6 +40,11 @@
     <button class="btn" onclick={exec}>exec</button>
   </div>
   <ul class="flex gap-1 flex-wrap">
+    {#if sequence.length}
+      <li class="border px-2 rounded bg-primary text-primary-content">
+        {sequence.length}
+      </li>
+    {/if}
     {#each sequence as move}
       <li class="border px-2 rounded">{move.toUpperCase()}</li>
     {/each}

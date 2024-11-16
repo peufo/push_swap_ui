@@ -97,7 +97,7 @@ export function move(state: State, m: Move): State {
   return s
 }
 
-const reverse: Record<Move, Move> = {
+export const moveReverseMap: Record<Move, Move> = {
   sa: 'sa',
   sb: 'sb',
   ss: 'ss',
@@ -113,7 +113,7 @@ const reverse: Record<Move, Move> = {
 
 export function moveReverse(state: State, m: Move): State {
   let s: State = JSON.parse(JSON.stringify(state))
-  s = updateState(moves[reverse[m]](s))
+  s = updateState(moves[moveReverseMap[m]](s))
   s.sequence.pop()
   return s
 }

@@ -1,4 +1,4 @@
-import { move, moveList, type Move } from './move'
+import { move, moveList, moveReverseMap, type Move } from './move'
 
 export type State = {
   cursor: number
@@ -53,7 +53,7 @@ export function updateState({
     entropy: sumOf(steps),
     balance: Math.abs(entropyA - entropyB),
     proximity,
-    alignement: sumOf(deltas.map((d) => Math.abs(d))),
+    alignement: sumOf(deltasRaw.map((d) => Math.abs(d))),
   }
 
   return {
@@ -65,10 +65,10 @@ export function updateState({
     steps,
     scores,
     score: sumOf([
-      100 * scores.entropy,
-      10 * scores.balance,
-      scores.proximity,
-      scores.entropy ? 0 : scores.alignement,
+      1000 * scores.entropy,
+      100 * scores.balance,
+      10 * scores.proximity,
+      scores.alignement,
       scores.entropy ? 0 : cursor,
     ]),
     candidates: [],
@@ -85,7 +85,9 @@ export function getNextCandidates(
   parent: State,
   candidateDeep: number
 ): State[] {
+  const lastMove = parent.sequence.at(-1)!.m
   const candidates = moveList
+    .filter((m) => lastMove === 'init' || m !== moveReverseMap[lastMove])
     .map((m) => move(parent, m))
     .sort(sortState)
     .slice(0, MAX_CANDIDATES)
@@ -107,7 +109,7 @@ export function createState(values: number[]): State {
     sequence: [],
   })
   state.sequence = [{ m: 'init', score: state.score }]
-  state.candidates = getNextCandidates({ ...state, sequence: [] }, 5)
+  state.candidates = getNextCandidates(state, 5)
   return state
 }
 

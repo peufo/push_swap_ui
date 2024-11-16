@@ -7,8 +7,8 @@
   import GraphSequence from './GraphSequence.svelte'
   import Controle from './Controle.svelte'
 
-  let initalValues = [2, 1, 3, 6, 5, 8]
-  //let initalValues = [2, 1, 6, 3]
+  //let initalValues = [2, 1, 3, 6, 5, 8]
+  let initalValues = [3, 4, 2, 0, 1, 5]
   let values = [...initalValues]
   let current = createState(values)
 

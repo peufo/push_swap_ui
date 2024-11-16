@@ -1,15 +1,16 @@
 <script lang="ts">
+  import { mdiPageLast, mdiPageFirst } from '@mdi/js'
   import { getNextCandidates, type State } from './state'
-  import { move, moveReverse } from './move'
+  import { move, moveList, moveReverse, type Move } from './move'
+  import { Icon } from '$lib'
 
   let { state = $bindable() }: { state: State } = $props()
 
   function getNextBetterMove() {
-    const m = state.candidates[0].sequence[0].m
+    const m = state.candidates[0].sequence[state.sequence.length].m
     if (m === 'init') return
     const next = move(state, m)
-    if (next.score > 0)
-      next.candidates = getNextCandidates({ ...next, sequence: [] }, 5)
+    if (next.score > 0) next.candidates = getNextCandidates(next, 5)
     state = next
   }
 
@@ -17,8 +18,14 @@
     const m = state.sequence.at(-1)?.m
     if (!m || m === 'init') return
     const prev = moveReverse(state, m)
-    prev.candidates = getNextCandidates({ ...prev, sequence: [] }, 5)
+    prev.candidates = getNextCandidates(prev, 5)
     state = prev
+  }
+
+  function getNext(m: Move) {
+    const next = move(state, m)
+    if (next.score > 0) next.candidates = getNextCandidates(next, 5)
+    state = next
   }
 </script>
 
@@ -26,18 +33,31 @@
   <legend>Controle</legend>
   <div class="flex gap-2">
     <button
-      class="btn"
+      class="btn grow"
       onclick={getPrevious}
       disabled={state.sequence.length < 2}
     >
+      <Icon path={mdiPageFirst} />
       prev
     </button>
     <button
-      class="btn"
+      class="btn grow"
       onclick={getNextBetterMove}
       disabled={state.score === 0}
     >
       next
+      <Icon path={mdiPageLast} />
     </button>
+  </div>
+  <div class="flex flex-wrap gap-2">
+    {#each moveList as m}
+      <button
+        class="btn btn-sm"
+        onclick={() => getNext(m)}
+        disabled={state.score === 0}
+      >
+        {m}
+      </button>
+    {/each}
   </div>
 </fieldset>
