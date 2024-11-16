@@ -14,12 +14,16 @@
     candidates: State[]
   ): ChartDataset<'scatter'>[] {
     const currents = candidates.filter((c) => !c.candidates.length)
-    const dataset: ChartDataset<'scatter'>[] = currents.map((c, n) => ({
-      label: `Candidate [${n}] ${c.sequence.map(({ m }) => m).join('->')}`,
-      data: c.sequence
-        .slice(sequenceIndex)
-        .map(({ score }, i) => ({ x: sequenceIndex + i, y: score })),
-    }))
+    const dataset: ChartDataset<'scatter'>[] = currents.map((c, n) => {
+      const sequence = c.sequence.slice(sequenceIndex)
+      return {
+        label: `Candidate [${n}] ${sequence.map(({ m }) => m).join('->')}`,
+        data: sequence.map(({ score }, i) => ({
+          x: sequenceIndex + i,
+          y: score,
+        })),
+      }
+    })
     const children = candidates.filter((c) => c.candidates.length)
     return [
       ...dataset,

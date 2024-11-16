@@ -8,7 +8,8 @@
   import Controle from './Controle.svelte'
 
   //let initalValues = [2, 1, 3, 6, 5, 8]
-  let initalValues = [3, 4, 2, 0, 1, 5]
+  //let initalValues = [3, 4, 2, 0, 1, 5]
+  let initalValues = [1, 5, 10, 3, 4, 6, 15, 12, 7, 0, 8, 9, 2, 14, 11, 13]
   let values = [...initalValues]
   let current = createState(values)
 
