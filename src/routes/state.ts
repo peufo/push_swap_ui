@@ -23,7 +23,7 @@ export function updateState({
   sequence,
 }: Pick<State, 'values' | 'cursor' | 'sequence'>): State {
   const len = values.length
-  const deltasRaw = values.map((v, i) => v - (i - cursor))
+  const deltasRaw = values.map((v, i) => v - i)
   const deltas = deltasRaw.map(
     (delta) =>
       [delta - len, delta, delta + len].sort(
@@ -53,7 +53,13 @@ export function updateState({
     entropy: sumOf(steps),
     balance: Math.abs(entropyA - entropyB),
     proximity,
-    alignement: sumOf(deltasRaw.map((d) => Math.abs(d))),
+    alignement: sumOf(
+      deltas.map((d, i) => {
+        const distance =
+          i < cursor ? Math.min(i, cursor - i) : Math.min(i - cursor, len - i)
+        return Math.abs((distance + 1) * d)
+      })
+    ),
   }
 
   return {
@@ -66,10 +72,10 @@ export function updateState({
     scores,
     score: sumOf([
       100 * scores.entropy,
-      10 * scores.balance,
-      10 * values.length * scores.proximity,
-      5 * scores.alignement,
-      scores.entropy ? 0 : cursor,
+      100 * scores.balance,
+      //10 * len * scores.proximity,
+      scores.entropy ? 5 * scores.alignement : len * cursor,
+      !scores.entropy && !cursor ? scores.alignement / (len * 10) : 0,
     ]),
     candidates: [],
   }
@@ -85,9 +91,25 @@ export function getNextCandidates(
   parent: State,
   candidateDeep: number
 ): State[] {
+  const len = parent.values.length
   const lastMove = parent.sequence.at(-1)!.m
   const candidates = moveList
-    .filter((m) => lastMove === 'init' || m !== moveReverseMap[lastMove])
+    .filter((m) => {
+      if (lastMove !== 'init' && m === moveReverseMap[lastMove]) return false
+      if (
+        parent.cursor < 2 &&
+        ['sb', 'ss', 'rb', 'rrb', 'rr', 'rrr'].includes(m)
+      )
+        return false
+      if (
+        parent.cursor > len - 2 &&
+        ['sa', 'ss', 'ra', 'rrb', 'rr', 'rrr'].includes(m)
+      )
+        return false
+      if (lastMove === 'ss' && ['sa', 'sb'].includes(m)) return false
+      if (lastMove === 'rr' && ['ra', 'rb'].includes(m)) return false
+      return true
+    })
     .map((m) => move(parent, m))
     .sort(sortState)
     .slice(0, MAX_CANDIDATES)

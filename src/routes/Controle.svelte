@@ -10,7 +10,7 @@
     const m = state.candidates[0].sequence[state.sequence.length].m
     if (m === 'init') return
     const next = move(state, m)
-    if (next.score > 0) next.candidates = getNextCandidates(next, 5)
+    if (next.score > 0) next.candidates = getNextCandidates(next, 4)
     state = next
   }
 
@@ -18,13 +18,13 @@
     const m = state.sequence.at(-1)?.m
     if (!m || m === 'init') return
     const prev = moveReverse(state, m)
-    prev.candidates = getNextCandidates(prev, 5)
+    prev.candidates = getNextCandidates(prev, 4)
     state = prev
   }
 
   function getNext(m: Move) {
     const next = move(state, m)
-    if (next.score > 0) next.candidates = getNextCandidates(next, 5)
+    if (next.score > 0) next.candidates = getNextCandidates(next, 4)
     state = next
   }
 </script>
