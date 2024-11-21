@@ -4,52 +4,59 @@
   import type { State } from './state'
 
   let { state }: { state: State } = $props()
-  let canvasElement: HTMLCanvasElement
+  let canvasElementState: HTMLCanvasElement
+  let canvasElementScore: HTMLCanvasElement
 
-  let chart: Chart<'bar', number[], string | number>
+  let chartState: Chart<'bar', number[], string | number>
+  let chartScore: Chart<'bar', number[], string | number>
   $effect(() => {
-    updateChart(state)
+    updateCharts(state)
     logState(state)
   })
 
   function logState(s: State) {
-    console.table({
-      values: [...s.values],
-      deltas: s.deltas,
-      deltaRaw: s.deltasRaw,
-      steps: s.steps,
-    })
+    console.log('pivot', s.pivot)
+    console.log('cursor', s.cursor)
   }
 
-  function updateChart(s: State) {
-    if (!chart) return
-    chart.data.labels = s.values
-    chart.data.datasets[0].data = s.values
-    chart.data.datasets[0].backgroundColor = s.values.map((v, i) =>
+  function updateChartState(s: State) {
+    if (!chartState) return
+    chartState.data.labels = s.values.map((v, i) => i)
+    chartState.data.datasets[0].data = [...s.values]
+    chartState.data.datasets[0].backgroundColor = s.values.map((v, i) =>
       i < s.cursor ? 'rgba(54, 162, 235, 0.2)' : 'rgba(153, 102, 255, 0.2)'
     )
-    chart.data.datasets[0].borderColor = s.values.map((v, i) =>
+    chartState.data.datasets[0].borderColor = s.values.map((v, i) =>
       i < s.cursor ? 'rgba(54, 162, 235)' : 'rgba(153, 102, 255)'
     )
-    chart.options.plugins!.title!.text = `Score: ${s.score}`
-    chart.options.plugins!.subtitle!.text = JSON.stringify(s.scores)
+    chartState.update('none')
+  }
+
+  function updateChartScore(s: State) {
+    if (!chartScore) return
+    chartScore.data.labels = s.deltas
+    chartScore.data.datasets[0].data = [...s.deltas]
+    chartScore.data.datasets[1].data = [...s.steps]
+    chartScore.data.datasets[2].data = [...s.entropies]
+    chartScore.options.plugins!.title!.text = `Score: ${s.score}`
+    chartScore.options.plugins!.subtitle!.text = JSON.stringify(s.scores)
       .replaceAll(/["\}\{]/g, '')
       .replaceAll(':', ' ')
       .replaceAll(',', ', ')
-    chart.update('none')
+    chartScore.update('none')
+  }
+
+  function updateCharts(s: State) {
+    updateChartState(s)
+    updateChartScore(s)
   }
 
   onMount(() => {
-    chart = new Chart(canvasElement, {
+    chartState = new Chart(canvasElementState, {
       type: 'bar',
       data: {
         labels: [],
-        datasets: [
-          {
-            data: [],
-            borderWidth: 1,
-          },
-        ],
+        datasets: [{ data: [], borderWidth: 1 }],
       },
       options: {
         scales: {
@@ -61,6 +68,26 @@
           legend: {
             display: false,
           },
+        },
+      },
+    })
+    chartScore = new Chart(canvasElementScore, {
+      type: 'bar',
+      data: {
+        labels: [],
+        datasets: [
+          { label: 'deltas', data: [], borderWidth: 1 },
+          { label: 'steps', data: [], borderWidth: 1 },
+          { label: 'entropies', data: [], borderWidth: 1 },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+        plugins: {
           title: {
             display: true,
           },
@@ -73,11 +100,14 @@
         },
       },
     })
-    updateChart(state)
-    return () => chart.destroy()
+    updateCharts(state)
+    return () => chartState.destroy()
   })
 </script>
 
 <div class="max-w-xl">
-  <canvas bind:this={canvasElement}></canvas>
+  <canvas bind:this={canvasElementState}></canvas>
+</div>
+<div class="max-w-xl">
+  <canvas bind:this={canvasElementScore}></canvas>
 </div>

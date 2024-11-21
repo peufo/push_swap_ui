@@ -1,3 +1,4 @@
+import { get } from 'svelte/store'
 import { move, moveList, moveReverseMap, type Move } from './move'
 
 export type State = {
@@ -5,7 +6,10 @@ export type State = {
   values: number[]
   deltas: number[]
   deltasRaw: number[]
+  distances: number[]
   steps: number[]
+  entropies: number[]
+  pivot: number | null
   score: number
   scores: {
     entropy: number
@@ -35,13 +39,27 @@ export function updateState({
     if (a > b) return Math.min(a - b, b - a + len)
     return Math.min(b - a, a - b + len)
   }
+
+  function getEntropie(value: number, index: number): number {
+    const indexA = index - 1
+    const valueA = value === 0 ? len - 1 : value - 1
+    const indexB = index === len - 1 ? 0 : index + 1
+    const valueB = value === len - 1 ? 0 : value + 1
+    let entropy = 0
+    if (index > 0) entropy += Math.abs(valueA - values[indexA])
+    if (index < len - 1) entropy += Math.abs(valueB - values[indexB])
+    return entropy
+  }
+
+  const entropies = values.map(getEntropie)
+
   const steps = deltas.map((v, i) => {
     if (i == 0) return getStep(deltas[0], deltas.at(-1)!)
     return getStep(deltas[i], deltas[i - 1])
   })
 
-  const entropyA = sumOf(steps.slice(cursor))
-  const entropyB = sumOf(steps.slice(0, cursor))
+  const entropyA = sumOf(entropies.slice(cursor))
+  const entropyB = sumOf(entropies.slice(0, cursor))
   const proximityA = entropyA && getStackProximity(steps.slice(cursor))
   const proximityB = entropyB && getStackProximity(steps.slice(0, cursor))
   let proximity = 0
@@ -49,17 +67,29 @@ export function updateState({
   else if (proximityA) proximity = proximityA
   else proximity = proximityB
 
+  const distances = values.map((v, i) =>
+    i < cursor ? Math.min(i, cursor - i) : Math.min(i - cursor, len - i)
+  )
+
+  let pivot = getPivot(values)
+  function getPivot(arr: number[]): number | null {
+    if (arr.length <= 2) return null
+    const base = Math.min(...arr)
+    const p = Math.floor(arr.length / 2)
+    const dirty = !!arr
+      .map((v) => v - base)
+      .find((v, i) => (i <= p && v >= p) || (i > p && v < p))
+    if (dirty) return p
+    const pivotA = getPivot(arr.slice(p))
+    if (pivotA) return p + pivotA
+    return getPivot(arr.slice(0, p))
+  }
+
   const scores: State['scores'] = {
-    entropy: sumOf(steps),
+    entropy: sumOf(entropies),
     balance: Math.abs(entropyA - entropyB),
     proximity,
-    alignement: sumOf(
-      deltas.map((d, i) => {
-        const distance =
-          i < cursor ? Math.min(i, cursor - i) : Math.min(i - cursor, len - i)
-        return Math.abs((distance + 1) * d)
-      })
-    ),
+    alignement: sumOf(deltas),
   }
 
   return {
@@ -67,14 +97,16 @@ export function updateState({
     values,
     sequence,
     deltasRaw,
+    distances,
+    entropies,
+    pivot,
     deltas,
     steps,
     scores,
     score: sumOf([
-      100 * scores.entropy,
-      100 * scores.balance,
+      scores.entropy,
       //10 * len * scores.proximity,
-      scores.entropy ? 5 * scores.alignement : len * cursor,
+      //scores.entropy ? scores.alignement : len * cursor,
       !scores.entropy && !cursor ? scores.alignement / (len * 10) : 0,
     ]),
     candidates: [],
@@ -91,11 +123,14 @@ export function getNextCandidates(
   parent: State,
   candidateDeep: number
 ): State[] {
+  return []
   const len = parent.values.length
   const lastMove = parent.sequence.at(-1)!.m
   const candidates = moveList
     .filter((m) => {
       if (lastMove !== 'init' && m === moveReverseMap[lastMove]) return false
+      if (parent.cursor === 0 && m === 'pa') return false
+      if (parent.cursor === len - 1 && m === 'pb') return false
       if (
         parent.cursor < 2 &&
         ['sb', 'ss', 'rb', 'rrb', 'rr', 'rrr'].includes(m)
