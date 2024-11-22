@@ -180,7 +180,7 @@ export function getNextCandidates(
 }
 
 export function createState(stack: Stack): State {
-    const sorted = stack.values.toSorted()
+    const sorted = stack.values.toSorted((a, b) => a - b)
     const state = updateState({
         cursor: stack.cursor,
         values: stack.values.map((v) => sorted.indexOf(v)),
