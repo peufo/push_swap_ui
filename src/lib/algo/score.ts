@@ -8,9 +8,12 @@ export const algoScore: Algo = {
   async resolve(values) {
     let limit = values.length * 10
     let state = createState(values)
+    let candidates: State[]
     while (state.score > 0 && limit--) {
-      state = state.candidates[0]
-      if (state.score > 0) state.candidates = getNextCandidates(state, 4)
+      const candidates = getNextCandidates(state, 4)
+      const m = candidates[0].sequence[state.sequence.length].m as Move
+      state = updateState(move(state, m))
+      state.sequence.push({ m, score: state.score })
     }
     return state.sequence.slice(1).map(s => s.m as Move)
   },
@@ -156,8 +159,8 @@ export function getNextCandidates(
       return true
     })
     .map((m) => {
-      const s = updateState(move(parent, m)) 
-      s.sequence.push({m, score: s.score})
+      const s = updateState(move(parent, m))
+      s.sequence.push({ m, score: s.score })
       return s
     })
     .sort(sortState)
@@ -180,7 +183,6 @@ export function createState(values: number[]): State {
     sequence: [],
   })
   state.sequence = [{ m: 'init', score: state.score }]
-  state.candidates = getNextCandidates(state, 4)
   return state
 }
 

@@ -1,22 +1,27 @@
 <script lang="ts">
     import {
         mdiFastForward,
-        mdiPause,
         mdiPlay,
-        mdiPlayPause,
-        mdiSkipForward,
         mdiSkipNext,
         mdiSkipPrevious,
-        mdiSmoke,
         mdiStop,
     } from '@mdi/js'
-    import { getNextCandidates, type State } from '../lib/algo/score'
-    import { move, moveList, moveReverse, type Move } from '../lib/move'
     import { Icon, type Sequence } from '$lib'
     import { onDestroy } from 'svelte'
+    import { moveReverseMap, type Move } from '$lib/move'
 
-    let { sequence }: { sequence: Sequence } = $props()
-    let currentMove = $state(4)
+    let {
+        sequence,
+        currentMove = $bindable(),
+        onMove,
+        onReset,
+    }: {
+        sequence: Sequence
+        currentMove: number
+        onMove(m: Move): void
+        onReset(): void
+    } = $props()
+
     let player = $state<'run' | 'run-faster' | 'pause'>('pause')
 
     let interval: NodeJS.Timeout | null = null
@@ -35,6 +40,7 @@
         player = 'pause'
         currentMove = 0
         updateSequenceScroll()
+        onReset()
     }
 
     function pause() {
@@ -46,24 +52,28 @@
         if (player === 'run') return pause()
         cleanInterval()
         player = 'run'
-        interval = setInterval(getNext, Math.round(12000 / sequence.length))
+        const ms = Math.min(Math.round(12000 / sequence.length), 300)
+        interval = setInterval(getNext, ms)
     }
 
     function playFaster() {
         if (player === 'run-faster') return pause()
         cleanInterval()
         player = 'run-faster'
-        interval = setInterval(getNext, Math.round(4000 / sequence.length))
+        const ms = Math.min(Math.round(12000 / sequence.length), 50)
+        interval = setInterval(getNext, ms)
     }
 
     function getPrevious() {
         if (currentMove === 0) return
         currentMove--
         updateSequenceScroll()
+        onMove(moveReverseMap[sequence[currentMove]])
     }
 
     function getNext() {
-        if (currentMove === sequence.length - 1) return cleanInterval()
+        if (currentMove === sequence.length) return pause()
+        onMove(sequence[currentMove])
         currentMove++
         updateSequenceScroll()
     }
@@ -128,7 +138,7 @@
         <button
             class="btn btn-square"
             onclick={getNext}
-            disabled={player !== 'pause' || currentMove === sequence.length - 1}
+            disabled={player !== 'pause' || currentMove === sequence.length}
         >
             <Icon path={mdiSkipNext} />
         </button>
