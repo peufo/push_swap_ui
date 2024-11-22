@@ -10,7 +10,7 @@
     let chart: Chart<'scatter'>
     let state = $derived.by(() => {
         const s = createState(stack)
-        s.candidates = getNextCandidates(s, 5)
+        if (s.score > 0) s.candidates = getNextCandidates(s, 5)
         return s
     })
     $effect(() => updateChart(state))

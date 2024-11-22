@@ -17,8 +17,8 @@
         if (!chart) return
         chart.data.labels = s.deltas
         chart.data.datasets[0].data = [...s.deltas]
-        chart.data.datasets[1].data = [...s.steps]
-        chart.data.datasets[2].data = [...s.entropies]
+        chart.data.datasets[1].data = [...s.entropies]
+        //chart.data.datasets[2].data = [...s.steps]
         chart.options.plugins!.title!.text = `Score: ${s.score}`
         chart.options.plugins!.subtitle!.text = JSON.stringify(s.scores)
             .replaceAll(/["\}\{]/g, '')
@@ -34,8 +34,8 @@
                 labels: [],
                 datasets: [
                     { label: 'deltas', data: [], borderWidth: 1 },
-                    { label: 'steps', data: [], borderWidth: 1 },
                     { label: 'entropies', data: [], borderWidth: 1 },
+                    //{ label: 'steps', data: [], borderWidth: 1 },
                 ],
             },
             options: {

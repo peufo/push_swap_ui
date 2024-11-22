@@ -11,7 +11,7 @@ export const algoScore: Algo = {
         let limit = values.length * 10
         let state = createState({ values, cursor: 0 })
         while (state.score > 0 && limit--) {
-            const candidates = getNextCandidates(state, 4)
+            const candidates = getNextCandidates(state, 5)
             const m = candidates[0].sequence[state.sequence.length].m as Move
             state = updateState(move(state, m))
             state.sequence.push({ m, score: state.score })
@@ -107,7 +107,7 @@ export function updateState({
         entropy: sumOf(entropies),
         balance: Math.abs(entropyA - entropyB),
         proximity,
-        alignement: sumOf(deltas),
+        alignement: sumOf(deltas.map(Math.abs)),
     }
 
     return {
@@ -123,6 +123,8 @@ export function updateState({
         scores,
         score: sumOf([
             scores.entropy,
+            scores.balance,
+            !scores.entropy ? cursor : 0,
             !scores.entropy && !cursor ? scores.alignement / (len * 10) : 0,
         ]),
         candidates: [],
