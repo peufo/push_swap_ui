@@ -1,124 +1,136 @@
 <script lang="ts">
-  import {
-    mdiSkipForward,
-    mdiSkipNext,
-    mdiSkipPrevious,
-    mdiSmoke,
-  } from '@mdi/js'
-  import { getNextCandidates, type State } from '../lib/algo/score'
-  import { move, moveList, moveReverse, type Move } from '../lib/move'
-  import { Icon } from '$lib'
+    import {
+        mdiFastForward,
+        mdiPause,
+        mdiPlay,
+        mdiPlayPause,
+        mdiSkipForward,
+        mdiSkipNext,
+        mdiSkipPrevious,
+        mdiSmoke,
+        mdiStop,
+    } from '@mdi/js'
+    import { getNextCandidates, type State } from '../lib/algo/score'
+    import { move, moveList, moveReverse, type Move } from '../lib/move'
+    import { Icon, type Sequence } from '$lib'
+    import { onDestroy } from 'svelte'
 
-  let { state = $bindable() }: { state: State } = $props()
+    let { sequence }: { sequence: Sequence } = $props()
+    let currentMove = $state(4)
+    let player = $state<'run' | 'run-faster' | 'pause'>('pause')
 
-  function getNextBetterMove() {
-    const m = state.candidates[0].sequence[state.sequence.length].m
-    if (m === 'init') return
-    state = move(state, m)
-    if (state.score > 0) state.candidates = getNextCandidates(state, 4)
-  }
-
-  function getNextBetterSequence() {
-    state.candidates[0].sequence
-      .slice(state.sequence.length)
-      .forEach(({ m }) => {
-        if (m === 'init') return
-        state = move(state, m)
-      })
-    if (state.score > 0) state.candidates = getNextCandidates(state, 4)
-  }
-
-  function getPrevious() {
-    const m = state.sequence.at(-1)?.m
-    if (!m || m === 'init') return
-    const prev = moveReverse(state, m)
-    prev.candidates = getNextCandidates(prev, 4)
-    state = prev
-  }
-
-  function getNext(m: Move) {
-    const next = move(state, m)
-    if (next.score > 0) next.candidates = getNextCandidates(next, 4)
-    state = next
-  }
-
-  function getNextSplit() {
-    const m = findNextMoveSplit()
-    getNext(m)
-  }
-
-  function findNextMoveSplit(): Move {
-    if (!state.pivot) throw Error('Pivot is null')
-    if (state.cursor <= state.pivot) {
-      const value = state.values[state.cursor]
-      if (value < state.pivot) {
-        //TODO place value on right or on left of pivotB
-        return 'pb'
-      }
-      // TODO: choose 'ra' or 'rra'
-      return 'ra'
+    let interval: NodeJS.Timeout | null = null
+    function cleanInterval() {
+        if (!interval) return
+        clearInterval(interval)
+        interval = null
     }
 
-    const value = state.values[state.cursor - 1]
-    if (value <= state.pivot) return 'pa'
-    return 'rb'
-  }
+    onDestroy(() => {
+        cleanInterval()
+    })
+
+    function reset() {
+        cleanInterval()
+        player = 'pause'
+        currentMove = 0
+        updateSequenceScroll()
+    }
+
+    function pause() {
+        cleanInterval()
+        player = 'pause'
+    }
+
+    function play() {
+        if (player === 'run') return pause()
+        cleanInterval()
+        player = 'run'
+        interval = setInterval(getNext, Math.round(12000 / sequence.length))
+    }
+
+    function playFaster() {
+        if (player === 'run-faster') return pause()
+        cleanInterval()
+        player = 'run-faster'
+        interval = setInterval(getNext, Math.round(4000 / sequence.length))
+    }
+
+    function getPrevious() {
+        if (currentMove === 0) return
+        currentMove--
+        updateSequenceScroll()
+    }
+
+    function getNext() {
+        if (currentMove === sequence.length - 1) return cleanInterval()
+        currentMove++
+        updateSequenceScroll()
+    }
+
+    function updateSequenceScroll() {
+        const el = document.querySelector(
+            `.move:nth-child(${currentMove + 1})`
+        ) as HTMLDivElement
+        if (!el) return
+        el.parentElement?.scroll({
+            left: el.offsetLeft - 100,
+            behavior: 'smooth',
+        })
+    }
 </script>
 
-<fieldset class="border rounded p-4 flex flex-col gap-2">
-  <legend>Controle</legend>
-  <div class="flex gap-2">
-    <button
-      class="btn grow"
-      onclick={getPrevious}
-      disabled={state.sequence.length < 2}
-    >
-      <Icon path={mdiSkipPrevious} />
-      prev
-    </button>
-    <button
-      class="btn grow"
-      onclick={getNextBetterMove}
-      disabled={state.score === 0}
-    >
-      next
-      <Icon path={mdiSkipNext} />
-    </button>
-    <button
-      class="btn btn-square"
-      onclick={getNextBetterSequence}
-      disabled={state.score === 0}
-    >
-      <Icon path={mdiSkipForward} />
-    </button>
-    <button
-      class="btn btn-square"
-      onclick={getNextSplit}
-      disabled={state.score === 0}
-    >
-      <Icon path={mdiSmoke} />
-    </button>
-  </div>
-  <div class="flex flex-wrap gap-2">
-    {#each moveList as m}
-      <button
-        class="btn btn-sm"
-        onclick={() => getNext(m)}
-        disabled={state.score === 0}
-      >
-        {m}
-      </button>
-    {/each}
-  </div>
+<fieldset class="border rounded pt-4 flex flex-col gap-2">
+    <legend>Sequence ({sequence.length})</legend>
 
-  <ul class="flex gap-1 flex-wrap">
-    {#if sequence.length}
-      <li class="border px-2 rounded bg-primary text-primary-content">
-        {sequence.length}
-      </li>
-    {/if}
-    {#each sequence as move}
-      <li class="border px-2 rounded">{move.toUpperCase()}</li>
-    {/each}
-  </ul>
+    <div class="flex gap-1 overflow-auto max-w-sm px-4 pb-4">
+        {#each sequence as move, i}
+            <div
+                class="border px-2 rounded move"
+                class:border-primary={i === currentMove}
+                class:opacity-50={i < currentMove}
+            >
+                {move.toUpperCase()}
+            </div>
+        {/each}
+    </div>
+</fieldset>
+
+<fieldset class="border rounded p-4 flex flex-col gap-2">
+    <legend>Controle</legend>
+
+    <div class="flex gap-2">
+        <button class="btn btn-square" onclick={reset}>
+            <Icon path={mdiStop} />
+        </button>
+        <button
+            class="btn btn-square outline-2"
+            onclick={play}
+            class:outline={player === 'run'}
+        >
+            <Icon path={mdiPlay} />
+        </button>
+        <button
+            class="btn btn-square"
+            class:outline={player === 'run-faster'}
+            onclick={playFaster}
+        >
+            <Icon path={mdiFastForward} />
+        </button>
+        <div class="grow"></div>
+        <button
+            class="btn btn-square"
+            onclick={getPrevious}
+            disabled={player !== 'pause' || currentMove === 0}
+        >
+            <Icon path={mdiSkipPrevious} />
+        </button>
+        <button
+            class="btn btn-square"
+            onclick={getNext}
+            disabled={player !== 'pause' || currentMove === sequence.length - 1}
+        >
+            <Icon path={mdiSkipNext} />
+        </button>
+    </div>
 </fieldset>

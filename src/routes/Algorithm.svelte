@@ -1,63 +1,43 @@
 <script lang="ts">
-  import { type Sequence, sequenceShema } from '../lib/move'
-  import {algos} from '$lib/algo'
-    import { each } from 'chart.js/helpers';
+  import { type Sequence } from '../lib/move'
+  import {algos, type Algo} from '$lib/algo'
+  import { execPath } from '$lib/algo/exec';
+    import { slide } from 'svelte/transition';
+  
+  let { values, onSequenceChange} : {
+    values: number[];
+    onSequenceChange: (sequence: Sequence) => void
+  } = $props()
 
-
-  let exe = $state('~/42/push_swap/push_swap')
-  let {
-    values,
-    sequence = $bindable([]),
-  }: { values: number[]; sequence?: Sequence } = $props()
-
-  let output = $state('')
-  let isValidOutput = $state(true)
-
-  async function exec() {
-    sequence = []
-    output = await fetch('/', {
-      method: 'POST',
-      body: JSON.stringify({ exe, values }),
-    }).then((r) => r.text())
-    const res = sequenceShema.safeParse(output.split('\n').filter(Boolean))
-    if (res.success) {
-      isValidOutput = true
-      sequence = res.data
-    } else {
-      console.log(res.error)
-      isValidOutput = false
-      sequence = []
-    }
+  let algo = $state(algos[0])
+  async function runAlgo() {
+    const sequence = await algo.resolve(values)
+    onSequenceChange(sequence)
   }
 
-  $inspect(output)
 </script>
 
 <fieldset class="border rounded p-4 flex flex-col gap-2">
   <legend>Algorithm</legend>
-  <div class="flex gap-2 items-end">
-    <label class="block w-full">
-      <span class="label-text">Executable</span>
-      <input type="text" bind:value={exe} class="input input-bordered w-full" />
-    </label>
-    <button class="btn" onclick={exec}>exec</button>
+
+  <div class="flex gap-2">
+    {#each algos as a}
+      <button class="btn" class:btn-active={algo.name === a.name} onclick={() => algo = a}>
+        {a.name}
+      </button>
+    {/each}
   </div>
-
-
   
-  {#each algos as a}
-    <div class="form-control">
-      <label class="label cursor-pointer">
-        <span class="label-text">{a.name}</span>
-        <input type="radio" name="radio-algo" class="radio" onselect={() => console.log(a.name)} />
+  {#if algo.name === 'Executable'}
+    <div class="flex gap-2 items-end" transition:slide>
+      <label class="block w-full">
+        <span class="label-text">Executable path</span>
+        <input type="text" bind:value={$execPath} class="input input-bordered w-full" />
       </label>
     </div>
-  {/each}
-
-
-  {#if !isValidOutput}
-    <span class="label-text">Output invalid</span>
-    <pre
-      class="border rounded p-2 text-sm max-h-80 overflow-scroll">{output}</pre>
   {/if}
+
+  <hr>
+
+  <button class="btn" onclick={runAlgo}>run</button>
 </fieldset>
