@@ -14,6 +14,9 @@ importers:
       chart.js:
         specifier: ^4.4.6
         version: 4.4.6
+      debounce:
+        specifier: ^2.2.0
+        version: 2.2.0
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -512,6 +515,10 @@ packages:
   daisyui@4.12.14:
     resolution: {integrity: sha512-hA27cdBasdwd4/iEjn+aidoCrRroDuo3G5W9NDKaVCJI437Mm/3eSL/2u7MkZ0pt8a+TrYF3aT2pFVemTS3how==}
     engines: {node: '>=16.9.0'}
+
+  debounce@2.2.0:
+    resolution: {integrity: sha512-Xks6RUDLZFdz8LIdR6q0MTH44k7FikOmnh5xkSjMig6ch45afc8sjTjRQf3P6ax8dMgcQrYO/AR2RGWURrruqw==}
+    engines: {node: '>=18'}
 
   debug@4.3.7:
     resolution: {integrity: sha512-Er2nc/H7RrMXZBFCEim6TCmMk02Z8vLC2Rbi1KEBggpo0fS6l0S1nnapwmIi3yW/+GOJap1Krg4w0Hg80oCqgQ==}
@@ -1390,6 +1397,8 @@ snapshots:
       postcss-js: 4.0.1(postcss@8.4.49)
     transitivePeerDependencies:
       - postcss
+
+  debounce@2.2.0: {}
 
   debug@4.3.7:
     dependencies:

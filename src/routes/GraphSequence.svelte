@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { Chart, type ChartDataset } from 'chart.js/auto'
-  import type { State } from './state'
+  import type { State } from '../lib/algo/score'
 
   let { state }: { state: State } = $props()
   let canvasElement: HTMLCanvasElement

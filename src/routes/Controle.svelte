@@ -5,8 +5,8 @@
     mdiSkipPrevious,
     mdiSmoke,
   } from '@mdi/js'
-  import { getNextCandidates, type State } from './state'
-  import { move, moveList, moveReverse, type Move } from './move'
+  import { getNextCandidates, type State } from '../lib/algo/score'
+  import { move, moveList, moveReverse, type Move } from '../lib/move'
   import { Icon } from '$lib'
 
   let { state = $bindable() }: { state: State } = $props()
@@ -110,4 +110,15 @@
       </button>
     {/each}
   </div>
+
+  <ul class="flex gap-1 flex-wrap">
+    {#if sequence.length}
+      <li class="border px-2 rounded bg-primary text-primary-content">
+        {sequence.length}
+      </li>
+    {/if}
+    {#each sequence as move}
+      <li class="border px-2 rounded">{move.toUpperCase()}</li>
+    {/each}
+  </ul>
 </fieldset>

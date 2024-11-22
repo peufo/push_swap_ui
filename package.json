@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "vite dev --host",
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -25,6 +25,7 @@
 	"dependencies": {
 		"@mdi/js": "^7.4.47",
 		"chart.js": "^4.4.6",
+		"debounce": "^2.2.0",
 		"zod": "^3.23.8"
 	},
 	"packageManager": "pnpm@9.14.2+sha512.6e2baf77d06b9362294152c851c4f278ede37ab1eba3a55fda317a4a17b209f4dbb973fb250a77abc463a341fcb1f17f17cfa24091c4eb319cda0d9b84278387"

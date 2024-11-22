@@ -1,9 +1,22 @@
-import { get } from 'svelte/store'
-import { move, moveList, moveReverseMap, type Move } from './move'
+import { move, moveList, moveReverseMap, type Move, type Stack } from '$lib/move'
+import type { Algo } from '$lib/algo'
 
-export type State = {
-  cursor: number
-  values: number[]
+
+export const algoScore: Algo = {
+  name: 'Score',
+  resolve(values) {
+    let limit = values.length * 10
+    let state = createState(values)
+    while (state.score > 0 && limit--) {
+      const m = state.candidates[0].sequence[state.sequence.length].m as Move
+      state = updateState(move(state, m))
+      if (state.score > 0) state.candidates = getNextCandidates(state, 4)
+    }
+    return state.sequence.slice(1).map(s => s.m as Move)
+  },
+}
+
+export type State = Stack & {
   deltas: number[]
   deltasRaw: number[]
   distances: number[]
@@ -105,8 +118,6 @@ export function updateState({
     scores,
     score: sumOf([
       scores.entropy,
-      //10 * len * scores.proximity,
-      //scores.entropy ? scores.alignement : len * cursor,
       !scores.entropy && !cursor ? scores.alignement / (len * 10) : 0,
     ]),
     candidates: [],
@@ -123,7 +134,6 @@ export function getNextCandidates(
   parent: State,
   candidateDeep: number
 ): State[] {
-  return []
   const len = parent.values.length
   const lastMove = parent.sequence.at(-1)!.m
   const candidates = moveList

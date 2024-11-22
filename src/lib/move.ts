@@ -1,5 +1,9 @@
 import zod from 'zod'
-import { updateState, type State } from './state'
+
+export type Stack = {
+  cursor: number
+  values: number[]
+}
 
 export type Move =
   | 'sa'
@@ -32,7 +36,9 @@ export const moveShema = zod.enum(moveList)
 export type Sequence = Move[]
 export const sequenceShema = zod.array(moveShema)
 
-const moves = {
+type MoveFunc<S = Stack> = ((stack: S) => S)
+
+const moves: Record<Move, MoveFunc> = {
   sa(s) {
     if (s.cursor > s.values.length - 2) return s
     const value = s.values[s.cursor]
@@ -88,13 +94,11 @@ const moves = {
   rrr(s) {
     return this.rra(this.rrb(s))
   },
-} satisfies Record<Move, (state: State) => State>
+}
 
-export function move(state: State, m: Move): State {
-  let s: State = JSON.parse(JSON.stringify(state))
-  s = updateState(moves[m](s))
-  s.sequence.push({ m, score: s.score })
-  return s
+export function move<S extends Stack>(stack: S, m: Move): S {
+  let s: S = JSON.parse(JSON.stringify(stack))
+  return moves[m](s) as S
 }
 
 export const moveReverseMap: Record<Move, Move> = {
@@ -111,9 +115,7 @@ export const moveReverseMap: Record<Move, Move> = {
   rrr: 'rr',
 }
 
-export function moveReverse(state: State, m: Move): State {
-  let s: State = JSON.parse(JSON.stringify(state))
-  s = updateState(moves[moveReverseMap[m]](s))
-  s.sequence.pop()
-  return s
+export function moveReverse<S extends Stack>(stack: S, m: Move): S {
+  let s: Stack = JSON.parse(JSON.stringify(stack))
+  return moves[moveReverseMap[m]](s) as S
 }

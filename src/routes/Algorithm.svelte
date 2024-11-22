@@ -1,5 +1,8 @@
 <script lang="ts">
-  import { type Sequence, sequenceShema } from './move'
+  import { type Sequence, sequenceShema } from '../lib/move'
+  import {algos} from '$lib/algo'
+    import { each } from 'chart.js/helpers';
+
 
   let exe = $state('~/42/push_swap/push_swap')
   let {
@@ -31,7 +34,7 @@
 </script>
 
 <fieldset class="border rounded p-4 flex flex-col gap-2">
-  <legend>Sequence</legend>
+  <legend>Algorithm</legend>
   <div class="flex gap-2 items-end">
     <label class="block w-full">
       <span class="label-text">Executable</span>
@@ -39,16 +42,19 @@
     </label>
     <button class="btn" onclick={exec}>exec</button>
   </div>
-  <ul class="flex gap-1 flex-wrap">
-    {#if sequence.length}
-      <li class="border px-2 rounded bg-primary text-primary-content">
-        {sequence.length}
-      </li>
-    {/if}
-    {#each sequence as move}
-      <li class="border px-2 rounded">{move.toUpperCase()}</li>
-    {/each}
-  </ul>
+
+
+  
+  {#each algos as a}
+    <div class="form-control">
+      <label class="label cursor-pointer">
+        <span class="label-text">{a.name}</span>
+        <input type="radio" name="radio-algo" class="radio" onselect={() => console.log(a.name)} />
+      </label>
+    </div>
+  {/each}
+
+
   {#if !isValidOutput}
     <span class="label-text">Output invalid</span>
     <pre
