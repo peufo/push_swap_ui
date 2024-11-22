@@ -8,12 +8,13 @@
     let {
         values,
         onSequenceChange,
+        algo = $bindable(),
     }: {
         values: number[]
         onSequenceChange: (sequence: Sequence) => void
+        algo: Algo
     } = $props()
 
-    let algo = $state(algos[0])
     let isLoading = $state(false)
 
     function selectAlgo(a: Algo) {

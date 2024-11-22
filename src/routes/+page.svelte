@@ -4,8 +4,8 @@
     import Algorithm from './Algorithm.svelte'
     import Control from './Control.svelte'
     import GraphStack from './GraphStack.svelte'
-    import GraphSequence from './GraphSequence.svelte'
     import { move, type Move, type Sequence, type Stack } from '$lib/move'
+    import { algos } from '$lib'
 
     let algorithm: Algorithm
     let initalValues = [2, 1, 3, 6, 5, 8]
@@ -19,6 +19,7 @@
     let sequence: Sequence = []
     let currentMove: number
     let stack: Stack = { values: [...values], cursor: 0 }
+    let algo = algos[0]
 
     const handleChangeValues = debounce((newValues: number[]) => {
         values = newValues
@@ -45,10 +46,20 @@
 <div class="flex gap-4 p-4">
     <aside class="max-w-sm min-w-80 flex flex-col gap-4 grow">
         <Arguments values={initalValues} onchange={handleChangeValues} />
-        <Algorithm bind:this={algorithm} {values} {onSequenceChange} />
+        <Algorithm
+            bind:this={algorithm}
+            bind:algo
+            {values}
+            {onSequenceChange}
+        />
         <Control {sequence} bind:currentMove {onMove} {onReset} />
     </aside>
     <main class="grow">
         <GraphStack {stack} />
+        {#if algo.charts}
+            {#each algo.charts as Chart}
+                <svelte:component this={Chart} {stack} />
+            {/each}
+        {/if}
     </main>
 </div>
