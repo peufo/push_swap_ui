@@ -1,5 +1,5 @@
 import {
-    move,
+    toMove,
     moveList,
     moveReverseMap,
     type Move,
@@ -13,7 +13,7 @@ export function resolve(values: number[]): Move[] {
     while (state.score > 0 && limit--) {
         const candidates = getNextCandidates(state, 5)
         const m = candidates[0].sequence[state.sequence.length].m as Move
-        state = updateState(move(state, m))
+        state = updateState(toMove(state, m))
         state.sequence.push({ m, score: state.score })
     }
     return state.sequence.slice(1).map((s) => s.m as Move)
@@ -159,7 +159,7 @@ export function getNextCandidates(
             return true
         })
         .map((m) => {
-            const s = updateState(move(parent, m))
+            const s = updateState(toMove(parent, m))
             s.sequence.push({ m, score: s.score })
             return s
         })

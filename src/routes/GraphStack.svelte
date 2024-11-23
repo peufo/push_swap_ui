@@ -15,15 +15,23 @@
     function updateChart(s: Stack) {
         if (!chart) return
         chart.data.labels = s.values.map((v, i) => i)
-        chart.data.datasets[0].data = [...s.values]
-        chart.data.datasets[0].backgroundColor = s.values.map((v, i) =>
-            i < s.cursor
-                ? 'rgba(54, 162, 235, 0.2)'
-                : 'rgba(153, 102, 255, 0.2)'
-        )
-        chart.data.datasets[0].borderColor = s.values.map((v, i) =>
-            i < s.cursor ? 'rgba(54, 162, 235)' : 'rgba(153, 102, 255)'
-        )
+        const len = s.values.length
+        const { backgroundColor, borderColor } = chart.data.datasets[0]
+        for (let index = 0; index < len; index++) {
+            if (chart.data.datasets[0].data[index] !== s.values[index])
+                chart.data.datasets[0].data[index] = s.values[index]
+            if (index < s.cursor) {
+                // @ts-ignore
+                backgroundColor[index] = 'rgba(54, 162, 235, 0.2)'
+                // @ts-ignore
+                borderColor[index] = 'rgba(54, 162, 235)'
+            } else {
+                // @ts-ignore
+                backgroundColor[index] = 'rgba(153, 102, 255, 0.2)'
+                // @ts-ignore
+                borderColor[index] = 'rgba(153, 102, 255)'
+            }
+        }
         chart.update('none')
     }
 
@@ -32,7 +40,18 @@
             type: 'bar',
             data: {
                 labels: [],
-                datasets: [{ data: [], borderWidth: 1 }],
+                datasets: [
+                    {
+                        data: [...stack.values],
+                        backgroundColor: stack.values.map(
+                            () => 'rgba(54, 162, 235, 0.2)'
+                        ),
+                        borderColor: stack.values.map(
+                            () => 'rgba(54, 162, 235)'
+                        ),
+                        borderWidth: 1,
+                    },
+                ],
             },
             options: {
                 scales: {

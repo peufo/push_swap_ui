@@ -96,7 +96,11 @@ const moves: Record<Move, MoveFunc> = {
   },
 }
 
-export function move<S extends Stack>(stack: S, m: Move): S {
+export function move<S extends Stack>(stack: S, m: Move): void {
+  moves[m](stack)
+}
+
+export function toMove<S extends Stack>(stack: S, m: Move): S {
   let s: S = JSON.parse(JSON.stringify(stack))
   return moves[m](s) as S
 }

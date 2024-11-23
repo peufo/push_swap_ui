@@ -1,15 +1,15 @@
 import type { Algo } from '$lib/algo'
-import ResolveWorker from './resolve?worker'
+import Worker from './worker?worker'
 
 export const algoSplit: Algo = {
     name: 'Split',
     resolve(values) {
         return new Promise((resolve) => {
-            const worker = new ResolveWorker()
+            const worker = new Worker({ name: 'split resolver' })
             worker.postMessage(values)
-            worker.onmessage = (event) => {
-                console.log(event)
-                resolve(['pa'])
+            worker.onmessage = ({ data }) => {
+                worker.terminate()
+                resolve(data)
             }
         })
     },

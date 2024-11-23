@@ -8,7 +8,7 @@ export const algoScore: Algo = {
     name: 'Score',
     resolve(values) {
         return new Promise((resolve) => {
-            const worker = new Worker()
+            const worker = new Worker({ name: 'score resolver' })
             worker.postMessage(values)
             worker.onmessage = ({ data }) => {
                 worker.terminate()
