@@ -1,4 +1,5 @@
 import type { Move, Stack } from '$lib/move'
+import { algoSplit } from './split'
 import { algoScore } from './score'
 import { algoExec } from './exec'
 import type { Component } from 'svelte'
@@ -11,7 +12,4 @@ export type Algo = {
     charts?: Component<{ stack: Stack }>[]
 }
 
-export const algos = [
-    algoScore,
-    algoExec
-] satisfies Algo[]
+export const algos = [algoSplit, algoScore, algoExec] satisfies Algo[]
