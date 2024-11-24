@@ -5,7 +5,7 @@
     import Control from './Control.svelte'
     import { toMove, type Move, type Sequence, type Stack } from '$lib/move'
     import { algos } from '$lib'
-    import { StackHorizontal } from '$lib/svg'
+    import { StackHorizontal } from '$lib/visual'
 
     let algorithm: Algorithm
     //let initalValues = [2, 1, 3, 6, 5, 8]
@@ -55,10 +55,8 @@
         <Control {sequence} bind:currentMove {onMove} {onReset} />
     </aside>
     <main class="grow pt-3">
-        <!--
-            <GraphStack {stack} />
-        -->
         <StackHorizontal {stack} />
+
         {#if algo.charts}
             {#each algo.charts as Chart}
                 <svelte:component this={Chart} {stack} />
