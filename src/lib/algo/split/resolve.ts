@@ -15,6 +15,8 @@ function splitA(s: Stack, len: number): Move[] {
     const add = createAdd(s, moves)
     const isBeforePivot = createIsOk(cursor, pivot)
 
+    console.log('A', { len, cursor, pivot })
+
     if (len <= 1) return []
     if (len == 2) {
         if (s.values[s.cursor] < s.values[s.cursor + 1]) return []
@@ -24,7 +26,7 @@ function splitA(s: Stack, len: number): Move[] {
 
     pushBeforePivot()
     ensureAfterOk()
-    moves.push(...splitA(s, subLen))
+    moves.push(...splitA(s, len - subLen))
     moves.push(...splitB(s, subLen))
     return moves
 
@@ -37,15 +39,19 @@ function splitA(s: Stack, len: number): Move[] {
         }
     }
     function ensureAfterOk() {
+        let limit = 100
         const isAfterOk = createIsAllOk(pivot, cursor + len)
-        while (!isAfterOk(s.values)) {
+        while (!isAfterOk(s.values) && limit--) {
             add('rra')
+        }
+        if (!limit) {
+            console.log('FUCK')
         }
     }
 }
 
 function splitB(s: Stack, len: number): Move[] {
-    const subLen = Math.floor(len / 2)
+    const subLen = Math.ceil(len / 2)
     const cursor = s.cursor
     const pivot = cursor - subLen
     const moves: Move[] = []
@@ -62,7 +68,7 @@ function splitB(s: Stack, len: number): Move[] {
     pushBeforePivot()
     ensureAfterOk()
     moves.push(...splitA(s, subLen))
-    moves.push(...splitB(s, subLen))
+    moves.push(...splitB(s, len - subLen))
     return moves
 
     function pushBeforePivot() {
@@ -75,9 +81,13 @@ function splitB(s: Stack, len: number): Move[] {
     }
 
     function ensureAfterOk() {
+        let limit = 100
         const isAfterOk = createIsAllOk(cursor - len, pivot)
-        while (!isAfterOk(s.values)) {
+        while (!isAfterOk(s.values) && limit--) {
             add('rrb')
+        }
+        if (!limit) {
+            console.log('FUCK')
         }
     }
 }

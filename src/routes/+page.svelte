@@ -3,7 +3,7 @@
     import Arguments from './Arguments.svelte'
     import Algorithm from './Algorithm.svelte'
     import Control from './Control.svelte'
-    import { toMove, type Move, type Sequence, type Stack } from '$lib/move'
+    import { move, type Move, type Sequence, type Stack } from '$lib/move'
     import { algos } from '$lib'
     import { StackHorizontal } from '$lib/visual'
 
@@ -13,7 +13,8 @@
     //let initalValues = [0, 8, 1, 5, 6, 4, 2, 3, 7]
     //let initalValues = [8, 9, 6, 4, 7, 11, 10, 3, 1, 2, 0, 5]
     //let initalValues = [1, 5, 2, 4, 8, 6, 3, 7, 0]
-    let initalValues = [1, 5, 10, 3, 4, 6, 15, 12, 7, 0, 8, 9, 2, 14, 11, 13]
+    //let initalValues = [1, 5, 10, 3, 4, 6, 15, 12, 7, 0, 8, 9, 2, 14, 11, 13]
+    let initalValues = [1, 5, 10, 3, 4, 6, 15, 12, 7, 0, 8, 9, 2, 14]
 
     let values = [...initalValues]
     let sequence: Sequence = []
@@ -34,7 +35,8 @@
     }
 
     function onMove(m: Move) {
-        stack = toMove(stack, m)
+        move(stack, m)
+        stack = stack
     }
 
     function onReset() {
