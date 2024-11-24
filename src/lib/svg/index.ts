@@ -1,0 +1,1 @@
+export { default as StackHorizontal } from './StackHorizontal.svelte'
