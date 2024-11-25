@@ -5,7 +5,7 @@
     let { stack }: { stack: Stack } = $props()
 
     let width = $state<number>(0)
-    const height = 300
+    const height = 500
     type StackName = 'A' | 'B'
     const colors: Record<StackName, { fill: string }> = {
         A: { fill: 'rgba(54, 162, 235)' },

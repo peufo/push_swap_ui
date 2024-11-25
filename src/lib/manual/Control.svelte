@@ -76,7 +76,7 @@
 </script>
 
 <fieldset class="border rounded p-4 flex flex-col gap-2">
-    <legend>Controle</legend>
+    <legend>Control</legend>
 
     <div class="flex gap-2">
         <button class="btn btn-square" onclick={reset}>
