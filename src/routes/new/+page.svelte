@@ -1,11 +1,11 @@
 <script lang="ts">
     import debounce from 'debounce'
     import Arguments from './Arguments.svelte'
-
     import Control from './Control.svelte'
     import { move, type Move, type Sequence, type Stack } from '$lib/move'
     import { StackHorizontal } from '$lib/visual'
     import { algoSplit as algo } from '$lib/algo/split'
+    import SequenceView from './SequenceView.svelte'
 
     //let initalValues = [2, 1, 3, 6, 5, 8]
     //let initalValues = [3, 4, 2, 0, 1, 5]
@@ -57,20 +57,21 @@
 </script>
 
 <div class="flex gap-4 p-4">
-    <aside class="max-w-sm min-w-80 flex flex-col gap-4 grow">
+    <aside class="flex flex-col gap-4 max-w-sm min-w-80 shrink-0">
         <Arguments values={initalValues} onchange={handleChangeValues} />
 
-        <Control
+        <Control {sequence} {onMove} {onReset} bind:currentMove />
+    </aside>
+    <main class="flex flex-col gap-4 grow min-w-0">
+        <SequenceView
             {sequence}
+            stack={{ values: [...values], cursor: 0 }}
             {algoIsRunning}
             {algoTime}
             onRefreshAlgo={() => runAlgo()}
             bind:currentMove
-            {onMove}
-            {onReset}
         />
-    </aside>
-    <main class="grow pt-3">
+
         <StackHorizontal {stack} />
 
         {#if algo.charts}

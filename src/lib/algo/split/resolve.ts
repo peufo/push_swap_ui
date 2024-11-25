@@ -39,13 +39,9 @@ function splitA(s: Stack, len: number): Move[] {
         }
     }
     function ensureAfterOk() {
-        let limit = 100
         const isAfterOk = createIsAllOk(pivot, cursor + len)
-        while (!isAfterOk(s.values) && limit--) {
+        while (!isAfterOk(s.values)) {
             add('rra')
-        }
-        if (!limit) {
-            console.log('FUCK')
         }
     }
 }
@@ -85,13 +81,9 @@ function splitB(s: Stack, len: number): Move[] {
     }
 
     function ensureAfterOk() {
-        let limit = 100
         const isAfterOk = createIsAllOk(cursor - len, pivot)
-        while (!isAfterOk(s.values) && limit--) {
+        while (!isAfterOk(s.values)) {
             add('rrb')
-        }
-        if (!limit) {
-            console.log('FUCK')
         }
     }
 }
