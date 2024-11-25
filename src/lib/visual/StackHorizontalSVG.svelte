@@ -18,7 +18,12 @@
     let padding = $derived(w * 0.1)
 </script>
 
-<div class="border rounded p-4 w-min">
+<fieldset class="border rounded p-4">
+    <legend>Visual</legend>
+
+    <pre class="text-sm">Stack A = [{stack.values.length - stack.cursor}]</pre>
+    <pre class="text-sm">Stack B = [{stack.cursor}]</pre>
+
     <svg {width} {height} xmlns="http://www.w3.org/2000/svg">
         {#each stack.values as value, index (value)}
             {@const h = Math.max(height * (value / max) - padding, 1)}
@@ -33,4 +38,4 @@
             />
         {/each}
     </svg>
-</div>
+</fieldset>
