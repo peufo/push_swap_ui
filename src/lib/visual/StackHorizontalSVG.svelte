@@ -21,12 +21,12 @@
 <div class="border rounded p-4 w-min">
     <svg {width} {height} xmlns="http://www.w3.org/2000/svg">
         {#each stack.values as value, index (value)}
-            {@const h = height * (value / max)}
+            {@const h = Math.max(height * (value / max) - padding, 1)}
             <rect
                 width={w - padding}
-                height={h - padding}
+                height={h}
                 x={index * w + padding / 2}
-                y={height - h + padding / 2}
+                y={height - h - padding / 2}
                 rx="2"
                 ry="2"
                 {...colors[index < stack.cursor ? 'B' : 'A']}

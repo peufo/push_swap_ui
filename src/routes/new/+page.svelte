@@ -1,0 +1,82 @@
+<script lang="ts">
+    import debounce from 'debounce'
+    import Arguments from './Arguments.svelte'
+
+    import Control from './Control.svelte'
+    import { move, type Move, type Sequence, type Stack } from '$lib/move'
+    import { StackHorizontal } from '$lib/visual'
+    import { algoSplit as algo } from '$lib/algo/split'
+
+    //let initalValues = [2, 1, 3, 6, 5, 8]
+    //let initalValues = [3, 4, 2, 0, 1, 5]
+    //let initalValues = [0, 8, 1, 5, 6, 4, 2, 3, 7]
+    //let initalValues = [8, 9, 6, 4, 7, 11, 10, 3, 1, 2, 0, 5]
+    //let initalValues = [1, 5, 2, 4, 8, 6, 3, 7, 0]
+    //let initalValues = [1, 5, 10, 3, 4, 6, 15, 12, 7, 0, 8, 9, 2, 14, 11, 13]
+    //let initalValues = [1, 5, 10, 3, 4, 6, 15, 12, 7, 0, 8, 9, 2, 14]
+    let initalValues = [11, 10, 6, 8, 3, 0, 7, 4, 1, 5, 2, 9]
+
+    let values = [...initalValues]
+    let sequence: Sequence = []
+    let currentMove: number
+    let stack: Stack = { values: [...values], cursor: 0 }
+    let algoIsRunning = false
+    let algoTime = 0
+
+    const handleChangeValues = debounce((newValues: number[]) => {
+        values = newValues
+        stack = { values: [...values], cursor: 0 }
+        runAlgo()
+    }, 400)
+
+    function onSequenceChange(newSequence: Sequence) {
+        sequence = newSequence
+        currentMove = 0
+        stack = { values: [...values], cursor: 0 }
+    }
+
+    function onMove(m: Move) {
+        move(stack, m)
+        stack = stack
+    }
+
+    function onReset() {
+        stack = { values: [...values], cursor: 0 }
+    }
+
+    async function runAlgo() {
+        algoIsRunning = true
+        const start = performance.now()
+        sequence = await algo.resolve(values)
+        algoTime = performance.now() - start
+        algoIsRunning = false
+        currentMove = 0
+        stack = { values: [...values], cursor: 0 }
+        onSequenceChange(sequence)
+    }
+</script>
+
+<div class="flex gap-4 p-4">
+    <aside class="max-w-sm min-w-80 flex flex-col gap-4 grow">
+        <Arguments values={initalValues} onchange={handleChangeValues} />
+
+        <Control
+            {sequence}
+            {algoIsRunning}
+            {algoTime}
+            onRefreshAlgo={() => runAlgo()}
+            bind:currentMove
+            {onMove}
+            {onReset}
+        />
+    </aside>
+    <main class="grow pt-3">
+        <StackHorizontal {stack} />
+
+        {#if algo.charts}
+            {#each algo.charts as Chart}
+                <svelte:component this={Chart} {stack} />
+            {/each}
+        {/if}
+    </main>
+</div>
