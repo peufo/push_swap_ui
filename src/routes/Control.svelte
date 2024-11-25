@@ -23,7 +23,7 @@
     } = $props()
 
     let player = $state<'run' | 'run-faster' | 'pause'>('pause')
-
+    let cursorElement: HTMLDivElement
     let interval: NodeJS.Timeout | null = null
     function cleanInterval() {
         if (!interval) return
@@ -44,6 +44,7 @@
     }
 
     function pause() {
+        console.timeEnd('prout')
         cleanInterval()
         player = 'pause'
     }
@@ -57,6 +58,7 @@
     }
 
     function playFaster() {
+        console.time('prout')
         if (player === 'run-faster') return pause()
         cleanInterval()
         player = 'run-faster'
@@ -86,19 +88,19 @@
         el.parentElement?.scroll({
             left: el.offsetLeft - 100,
         })
+        const delta = el.offsetLeft - (el.parentElement?.scrollLeft || 0) - 20
+        cursorElement.style.translate = `${delta}px`
     }
 </script>
 
 <fieldset class="border rounded pt-4 flex flex-col gap-2">
     <legend>Sequence ({sequence.length})</legend>
-
+    <div class="relative h-5 w-0 px-4">
+        <div class="absolute" bind:this={cursorElement}>👇</div>
+    </div>
     <div class="flex gap-1 overflow-auto max-w-sm px-4 pb-4">
         {#each sequence as move, i}
-            <div
-                class="border px-2 rounded move"
-                class:border-primary={i === currentMove}
-                class:opacity-50={i < currentMove}
-            >
+            <div class="border px-2 rounded move">
                 {move.toUpperCase()}
             </div>
         {/each}
