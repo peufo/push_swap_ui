@@ -7,6 +7,7 @@ export function resolve(values: number[]): Move[] {
     return moves
 }
 
+
 function splitA(s: Stack, len: number): Move[] {
     const subLen = Math.floor(len / 2)
     const cursor = s.cursor
@@ -14,8 +15,6 @@ function splitA(s: Stack, len: number): Move[] {
     const moves: Move[] = []
     const add = createAdd(s, moves)
     const isBeforePivot = createIsOk(cursor, pivot)
-
-    console.log('A', { len, cursor, pivot })
 
     if (len <= 1) return []
     if (len == 2) {
@@ -26,6 +25,7 @@ function splitA(s: Stack, len: number): Move[] {
 
     pushBeforePivot()
     ensureAfterOk()
+
     moves.push(...splitA(s, len - subLen))
     moves.push(...splitB(s, subLen))
     return moves
@@ -58,7 +58,10 @@ function splitB(s: Stack, len: number): Move[] {
     const add = createAdd(s, moves)
     const isBeforeOk = createIsOk(pivot, cursor)
 
-    if (len <= 1) return []
+    if (len <= 1) {
+        add('pa')
+        return moves
+    }
     if (len == 2) {
         if (s.values[cursor - 2] > s.values[cursor - 1]) add('sb')
         add('pa', 'pa')
@@ -67,6 +70,7 @@ function splitB(s: Stack, len: number): Move[] {
 
     pushBeforePivot()
     ensureAfterOk()
+
     moves.push(...splitA(s, subLen))
     moves.push(...splitB(s, len - subLen))
     return moves

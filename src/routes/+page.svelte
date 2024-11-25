@@ -14,7 +14,8 @@
     //let initalValues = [8, 9, 6, 4, 7, 11, 10, 3, 1, 2, 0, 5]
     //let initalValues = [1, 5, 2, 4, 8, 6, 3, 7, 0]
     //let initalValues = [1, 5, 10, 3, 4, 6, 15, 12, 7, 0, 8, 9, 2, 14, 11, 13]
-    let initalValues = [1, 5, 10, 3, 4, 6, 15, 12, 7, 0, 8, 9, 2, 14]
+    //let initalValues = [1, 5, 10, 3, 4, 6, 15, 12, 7, 0, 8, 9, 2, 14]
+    let initalValues = [11, 10, 6, 8, 3, 0, 7, 4, 1, 5, 2, 9]
 
     let values = [...initalValues]
     let sequence: Sequence = []

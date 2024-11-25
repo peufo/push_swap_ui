@@ -1,1 +1,1 @@
-export { default as StackHorizontal } from './StackHorizontalChartJS.svelte'
+export { default as StackHorizontal } from './StackHorizontalCanvas.svelte'
