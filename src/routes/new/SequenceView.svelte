@@ -24,7 +24,6 @@
 
     $effect(() => {
         if (currentMove === undefined) return
-        console.log({ currentMove })
         const el = document.querySelector(
             `.move:nth-child(${currentMove + 1})`
         ) as HTMLDivElement

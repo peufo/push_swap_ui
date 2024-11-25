@@ -4,7 +4,7 @@
 
     let { stack }: { stack: Stack } = $props()
 
-    const width = 600
+    let width = $state<number>(0)
     const height = 300
     type StackName = 'A' | 'B'
     const colors: Record<StackName, { fill: string }> = {
@@ -19,12 +19,17 @@
 </script>
 
 <fieldset class="border rounded p-4">
-    <legend>Visual</legend>
+    <legend>Stacks horizontal</legend>
 
     <pre class="text-sm">Stack A = [{stack.values.length - stack.cursor}]</pre>
     <pre class="text-sm">Stack B = [{stack.cursor}]</pre>
 
-    <svg {width} {height} xmlns="http://www.w3.org/2000/svg">
+    <svg
+        class="w-full"
+        bind:clientWidth={width}
+        {height}
+        xmlns="http://www.w3.org/2000/svg"
+    >
         {#each stack.values as value, index (value)}
             {@const h = Math.max(height * (value / max) - padding, 1)}
             <rect
