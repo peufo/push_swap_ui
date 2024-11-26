@@ -2,17 +2,22 @@
     import { onMount } from 'svelte'
     import { init, WASI } from '@wasmer/wasi'
     import { Buffer } from 'buffer'
-    import { resolve } from 'chart.js/helpers'
     import type { Move } from '$lib/move'
+    import { createResolver, type Algo, type Resolver } from '$lib'
+
+    export const algo: Algo = {
+        name: 'New programe',
+        resolve: (values) => compileProgram().then((progam) => progam(values)),
+    }
 
     onMount(() => {
         window.Buffer = window.Buffer || Buffer
     })
 
-    let file: File | null = null
+    let fileHandle = $state<FileSystemFileHandle | null>(null)
 
     async function selectProgram() {
-        const [fileHandle] = await window.showOpenFilePicker({
+        ;[fileHandle] = await window.showOpenFilePicker({
             types: [
                 {
                     description: 'Web Assembly',
@@ -21,58 +26,57 @@
             ],
             multiple: false,
         })
-        file = await fileHandle.getFile()
-        console.log(file)
     }
 
-    async function runProgram(values: number[]): Promise<Move[]> {
-        if (!file) return []
+    async function compileProgram(): Promise<Resolver> {
+        if (!fileHandle)
+            return () =>
+                new Promise((resolve) =>
+                    resolve({
+                        time: 0,
+                        sequence: [] as Move[],
+                        error: new Error('No fileHandle'),
+                    })
+                )
+        const file = await fileHandle.getFile()
         const buffer = await file.arrayBuffer()
         const module = await WebAssembly.compile(buffer)
         await init()
+        return createResolver((values) => {
+            const wasi = new WASI({
+                env: {},
+                args: ['hey', ...values.map((v) => v.toString())],
+            })
+            wasi.instantiate(module, {})
+            const exitCode = wasi.start()
+            if (exitCode == 1) throw Error('Program exit with exit code [1]')
+            let stdout = wasi.getStdoutString()
 
-        let wasi = new WASI({
-            env: {},
-            args: ['hey', ...values.map((v) => v.toString())],
+            // TODO: valid the output with zod
+            return stdout.split('\n').filter(Boolean) as Move[]
         })
-        wasi.instantiate(module, {})
-        const exitCode = wasi.start()
-        if (exitCode == 1) throw Error('Program exit with exit code [1]')
-        let stdout = wasi.getStdoutString()
-        console.log(stdout)
-
-        // TODO: valid the output with zod
-        return stdout.split('\n') as Move[]
     }
 </script>
 
-<fieldset class="p-4 border rounded border-primary">
-    <legend>New Program</legend>
+<fieldset class="p-4 border rounded">
+    <legend>Program</legend>
 
     <div class="flex gap-2">
-        {#if file}
-            <label class="block w-full">
-                <input
-                    readonly
-                    disabled
-                    class="input input-bordered w-full"
-                    value={file.name}
-                    min="2"
-                />
-            </label>
+        {#if fileHandle}
+            <span
+                class="inline-flex px-4 items-center rounded-lg border border-primary text-primary w-full"
+            >
+                {fileHandle.name}
+            </span>
         {/if}
 
         <button
             class="btn"
-            class:w-full={!file}
-            class:btn-primary={!file}
+            class:w-full={!fileHandle}
+            class:btn-primary={!fileHandle}
             onclick={selectProgram}
         >
-            Select
+            {fileHandle ? 'Change' : 'Select file'}
         </button>
     </div>
-
-    <button class="btn" onclick={() => runProgram([2, 3, 5, 9, 6])}>
-        test
-    </button>
 </fieldset>

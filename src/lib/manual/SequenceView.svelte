@@ -1,6 +1,6 @@
 <script lang="ts">
     import { mdiRefresh } from '@mdi/js'
-    import { Icon, type Sequence } from '$lib'
+    import { Icon } from '$lib'
     import { type Move, type Stack } from '$lib/move'
     import SequenceTest from './SequenceTest.svelte'
 
@@ -12,7 +12,7 @@
         algoTime,
         onRefreshAlgo,
     }: {
-        sequence: Sequence
+        sequence: Move[]
         currentMove: number
         stack: Stack
         algoIsRunning: boolean

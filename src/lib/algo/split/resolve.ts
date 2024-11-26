@@ -1,4 +1,4 @@
-import { move, type Move, type Stack } from "$lib/move";
+import { move, type Move, type Stack } from '$lib/move'
 
 export function resolve(values: number[]): Move[] {
     const sorted = values.toSorted((a, b) => a - b)
@@ -6,7 +6,6 @@ export function resolve(values: number[]): Move[] {
     const moves = splitA({ values: indexes, cursor: 0 }, values.length)
     return moves
 }
-
 
 function splitA(s: Stack, len: number): Move[] {
     const subLen = Math.floor(len / 2)
@@ -88,11 +87,10 @@ function splitB(s: Stack, len: number): Move[] {
     }
 }
 
-
 function createAdd(s: Stack, moves: Move[]) {
     return (...ms: Move[]) => {
         for (const m of ms) {
-            moves.push(m);
+            moves.push(m)
             move(s, m)
         }
     }
@@ -102,10 +100,13 @@ function createIsOk(min: number, max: number) {
     return (value: number) => min <= value && value < max
 }
 
-function createIsAllOk(min: number, max: number): (values: number[]) => boolean {
+function createIsAllOk(
+    min: number,
+    max: number
+): (values: number[]) => boolean {
     const isOk = createIsOk(min, max)
     return (values) => {
-        for (let index = min;index < max;index++) {
+        for (let index = min; index < max; index++) {
             if (!isOk(values[index])) return false
         }
         return true

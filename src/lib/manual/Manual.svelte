@@ -2,10 +2,12 @@
     import debounce from 'debounce'
     import { move, type Move, type Sequence, type Stack } from '$lib/move'
     import { StackHorizontal } from '$lib/visual'
-    import { algoSplit as algo } from '$lib/algo/split'
     import SequenceView from './SequenceView.svelte'
     import Arguments from './Arguments.svelte'
     import Control from './Control.svelte'
+    import type { Algo } from '$lib/algo'
+
+    export let algo: Algo | undefined
 
     let initalValues = [2, 1, 3, 6, 5, 8]
     let values = [...initalValues]
@@ -37,10 +39,10 @@
     }
 
     async function runAlgo() {
+        if (!algo) return
         algoIsRunning = true
-        const start = performance.now()
-        sequence = await algo.resolve(values)
-        algoTime = performance.now() - start
+        const { sequence, time } = await algo.resolve(values)
+        algoTime = time
         algoIsRunning = false
         currentMove = 0
         stack = { values: [...values], cursor: 0 }
@@ -66,7 +68,7 @@
 
         <StackHorizontal {stack} />
 
-        {#if algo.charts}
+        {#if algo?.charts}
             {#each algo.charts as Chart}
                 <svelte:component this={Chart} {stack} />
             {/each}

@@ -6,7 +6,7 @@
         mdiSkipPrevious,
         mdiStop,
     } from '@mdi/js'
-    import { Icon, type Sequence } from '$lib'
+    import { Icon } from '$lib'
     import { onDestroy } from 'svelte'
     import { moveReverseMap, type Move } from '$lib/move'
 
@@ -16,7 +16,7 @@
         onMove,
         onReset,
     }: {
-        sequence: Sequence
+        sequence: Move[]
         currentMove: number
         onMove(m: Move): void
         onReset(): void

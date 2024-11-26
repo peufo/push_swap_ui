@@ -1,20 +1,11 @@
-import type { Algo } from '$lib/algo'
+import { createResolver, type Algo } from '$lib/algo'
 import GraphCandidates from './GraphCandidates.svelte'
 import GraphScore from './GraphScore.svelte'
-import Worker from './worker?worker'
-export * from './resolve'
+import { resolve } from './resolve'
 
+export * from './resolve'
 export const algoScore: Algo = {
     name: 'Score',
-    resolve(values) {
-        return new Promise((resolve) => {
-            const worker = new Worker({ name: 'score resolver' })
-            worker.postMessage(values)
-            worker.onmessage = ({ data }) => {
-                worker.terminate()
-                resolve(data)
-            }
-        })
-    },
+    resolve: createResolver(resolve),
     charts: [GraphScore, GraphCandidates],
 }
