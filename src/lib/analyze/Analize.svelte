@@ -3,9 +3,10 @@
     import { move, type Move, type Sequence, type Stack } from '$lib/move'
     import { StackHorizontal } from '$lib/visual'
     import SequenceView from './SequenceView.svelte'
-    import Arguments from './Arguments.svelte'
+    import Parameters from './Parameters.svelte'
     import Control from './Control.svelte'
     import type { Algo } from '$lib/algo'
+    import Auto from './Auto.svelte'
 
     export let algo: Algo | undefined
 
@@ -16,6 +17,7 @@
     let stack: Stack = { values: [...values], cursor: 0 }
     let algoIsRunning = false
     let algoTime = 0
+    let mode: 'manual' | 'auto' = 'manual'
 
     const handleChangeValues = debounce((newValues: number[]) => {
         values = newValues
@@ -54,25 +56,40 @@
 <div class="flex gap-4 p-4">
     <aside class="flex flex-col gap-4 max-w-sm min-w-80 shrink-0">
         <slot />
-        <Arguments values={initalValues} onchange={handleChangeValues} />
-        <Control {sequence} {onMove} {onReset} bind:currentMove />
+        <Parameters
+            bind:mode
+            values={initalValues}
+            onchange={handleChangeValues}
+        />
+        {#if mode === 'manual'}
+            <Control {sequence} {onMove} {onReset} bind:currentMove />
+        {/if}
     </aside>
     <main class="flex flex-col gap-4 grow min-w-0">
-        <SequenceView
-            {sequence}
-            stack={{ values: [...values], cursor: 0 }}
-            {algoIsRunning}
-            {algoTime}
-            onRefreshAlgo={() => runAlgo()}
-            bind:currentMove
-        />
+        {#if !algo}
+            <div
+                class="grid place-content-center grow border border-dashed rounded-lg"
+            >
+                <span>No program selected !</span>
+            </div>
+        {:else if mode === 'manual'}
+            <SequenceView
+                {sequence}
+                stack={{ values: [...values], cursor: 0 }}
+                {algoIsRunning}
+                {algoTime}
+                onRefreshAlgo={() => runAlgo()}
+                bind:currentMove
+            />
+            <StackHorizontal {stack} />
 
-        <StackHorizontal {stack} />
-
-        {#if algo?.charts}
-            {#each algo.charts as Chart}
-                <svelte:component this={Chart} {stack} />
-            {/each}
+            {#if algo?.charts}
+                {#each algo.charts as Chart}
+                    <svelte:component this={Chart} {stack} />
+                {/each}
+            {/if}
+        {:else}
+            <Auto {algo} />
         {/if}
     </main>
 </div>
