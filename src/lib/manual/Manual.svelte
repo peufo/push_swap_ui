@@ -38,6 +38,7 @@
         stack = { values: [...values], cursor: 0 }
     }
 
+    $: if (algo) runAlgo()
     async function runAlgo() {
         if (!algo) return
         algoIsRunning = true

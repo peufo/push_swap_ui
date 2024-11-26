@@ -5,7 +5,15 @@
     import type { Move } from '$lib/move'
     import { createResolver, type Algo, type Resolver } from '$lib'
 
-    export const algo: Algo = {
+    let {
+        onAlgoChange,
+        algoIsSelected,
+    }: {
+        onAlgoChange: (a: Algo) => unknown
+        algoIsSelected: boolean
+    } = $props()
+
+    const algo: Algo = {
         name: 'New programe',
         resolve: (values) => compileProgram().then((progam) => progam(values)),
     }
@@ -26,6 +34,7 @@
             ],
             multiple: false,
         })
+        onAlgoChange(algo)
     }
 
     async function compileProgram(): Promise<Resolver> {
@@ -58,25 +67,23 @@
     }
 </script>
 
-<fieldset class="p-4 border rounded">
-    <legend>Program</legend>
-
-    <div class="flex gap-2">
-        {#if fileHandle}
-            <span
-                class="inline-flex px-4 items-center rounded-lg border border-primary text-primary w-full"
-            >
-                {fileHandle.name}
-            </span>
-        {/if}
-
+<div class="flex gap-2">
+    {#if fileHandle}
         <button
-            class="btn"
-            class:w-full={!fileHandle}
-            class:btn-primary={!fileHandle}
-            onclick={selectProgram}
+            class="btn grow outline-primary"
+            class:outline={algoIsSelected}
+            onclick={() => onAlgoChange(algo)}
         >
-            {fileHandle ? 'Change' : 'Select file'}
+            {fileHandle.name}
         </button>
-    </div>
-</fieldset>
+    {/if}
+
+    <button
+        class="btn"
+        class:w-full={!fileHandle}
+        class:btn-primary={!fileHandle}
+        onclick={selectProgram}
+    >
+        {fileHandle ? 'Change' : 'Select wasm'}
+    </button>
+</div>
