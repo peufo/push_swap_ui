@@ -1,10 +1,11 @@
 import { move, type Move, type Stack } from '$lib/move'
-import { logSplitA } from './logger'
+//import { cleanSequence } from './cleanSequence'
 
 export function resolve(values: number[]): Move[] {
     const sorted = values.toSorted((a, b) => a - b)
     const indexes = values.map((v) => sorted.indexOf(v))
     const moves = splitA({ values: indexes, cursor: 0 }, values.length)
+    cleanSequence(moves)
     return moves
 }
 
@@ -117,17 +118,4 @@ function createAdd(s: Stack, moves: Move[]) {
 
 function createIsOk(min: number, max: number) {
     return (value: number) => min <= value && value < max
-}
-
-function createIsAllOk(
-    min: number,
-    max: number
-): (values: number[]) => boolean {
-    const isOk = createIsOk(min, max)
-    return (values) => {
-        for (let index = min; index < max; index++) {
-            if (!isOk(values[index])) return false
-        }
-        return true
-    }
 }

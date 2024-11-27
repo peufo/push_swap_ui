@@ -11,6 +11,7 @@
     export let algo: Algo | undefined
 
     let initalValues = [2, 1, 3, 6, 5, 8]
+    //let initalValues = [5, 3, 9, 8, 0, 6, 2, 1, 4, 7]
     let values = [...initalValues]
     let sequence: Sequence = []
     let currentMove: number
