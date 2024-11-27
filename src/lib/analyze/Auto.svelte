@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { linearRegression } from 'simple-statistics'
     import type { Algo } from '$lib/algo'
     import { AnalyzeAutoResults } from '$lib/visual'
     import { isSequenceOk } from './isSequenceOk'
@@ -6,7 +7,9 @@
     let { algo }: { algo: Algo } = $props()
 
     let results = $state<TestResult[]>([])
-
+    let regression = $derived(
+        linearRegression(results.map((r) => [r.nbValues, r.nbMoves]))
+    )
     export type TestResult = {
         nbValues: number
         nbMoves: number
@@ -47,11 +50,17 @@
 </script>
 
 <div>
-    <div class="flex gap-2">
+    <div class="flex gap-2 items-center">
         <button class="btn" onclick={() => runTests(1)}>Run (10)</button>
         <button class="btn" onclick={() => runTests(10)}>Run (100)</button>
         <button class="btn" onclick={() => runTests(100)}>Run (1000)</button>
         <button class="btn" onclick={() => runTests(1000)}>Run (10000)</button>
+
+        <div class="ml-auto">
+            Score: <b>
+                {regression.m.toFixed(2)}
+            </b>
+        </div>
     </div>
     <AnalyzeAutoResults {results} />
 </div>
