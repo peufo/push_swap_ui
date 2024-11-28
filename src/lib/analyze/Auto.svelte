@@ -50,17 +50,16 @@
 </script>
 
 <div>
-    <div class="flex gap-2 items-center">
+    <div class="flex gap-2 items-center px-10 pt-3 pb-4">
         <button class="btn" onclick={() => runTests(1)}>Run (10)</button>
         <button class="btn" onclick={() => runTests(10)}>Run (100)</button>
         <button class="btn" onclick={() => runTests(100)}>Run (1000)</button>
         <button class="btn" onclick={() => runTests(1000)}>Run (10000)</button>
-
-        <div class="ml-auto">
-            Score: <b>
-                {regression.m.toFixed(2)}
-            </b>
-        </div>
+        {#if !isNaN(regression.m)}
+            <div class="ml-auto badge-lg badge badge-primary badge-outline">
+                Regression: <b class="ml-2">{regression.m.toFixed(2)}</b>
+            </div>
+        {/if}
     </div>
     <AnalyzeAutoResults {results} />
 </div>
