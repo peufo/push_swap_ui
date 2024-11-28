@@ -15,7 +15,7 @@ function is120(values: number[]) {
 }
 
 function splitA(s: Stack, len: number): Move[] {
-    const subLen = Math.ceil(len / 2)
+    const subLen = Math.round(len / 2)
     const cursor = s.cursor
     const pivot = cursor + subLen
     const moves: Move[] = []
@@ -63,7 +63,7 @@ function splitA(s: Stack, len: number): Move[] {
 }
 
 function splitB(s: Stack, len: number): Move[] {
-    const subLen = Math.ceil(len / 2)
+    const subLen = Math.round(len / 2)
     const cursor = s.cursor
     const pivot = cursor - subLen
     const moves: Move[] = []
