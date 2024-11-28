@@ -20,5 +20,7 @@
         />
         <Icon path={mdiRabbit} size={30} class="opacity-70" />
     </div>
-    <pre class="text-sm text-center">{mps} moves per second</pre>
+    <pre class="text-sm text-center">{mps} move{mps > 1
+            ? 's'
+            : ''} per second</pre>
 </div>
