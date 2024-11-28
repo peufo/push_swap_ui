@@ -8,9 +8,9 @@
         mdiStop,
     } from '@mdi/js'
     import { Icon } from '$lib'
-    import { onDestroy } from 'svelte'
     import { moveReverseMap, type Move } from '$lib/move'
     import ControlSpeed from './ControlSpeed.svelte'
+    import { onDestroy } from 'svelte'
 
     let {
         sequence,
@@ -24,53 +24,53 @@
         onReset(): void
     } = $props()
 
-    let player = $state<'forward' | 'backward' | 'pause'>('pause')
-    let mps = $state<number>(4)
+    type PlayerStatus = 'pause' | 'forward' | 'backward'
+
+    let player = $state<PlayerStatus>('pause')
+    let mps = $state<number>(8)
+    let animationId: number | null = null
+    const moveDuration = $derived(1000 / mps)
     const isToStart = $derived(currentMove === 0)
     const isToEnd = $derived(currentMove === sequence.length)
-    let interval: NodeJS.Timeout | null = null
-    function cleanInterval() {
-        if (!interval) return
-        clearInterval(interval)
-        interval = null
-    }
+
+    $effect(() => {
+        pause()
+        mps = Math.round(sequence.length / 10)
+    })
 
     onDestroy(() => {
-        cleanInterval()
+        pause()
     })
 
     function reset() {
-        cleanInterval()
-        player = 'pause'
+        pause()
         currentMove = 0
         onReset()
     }
 
     function pause() {
-        cleanInterval()
+        if (animationId) cancelAnimationFrame(animationId)
         player = 'pause'
     }
 
     function playForward() {
         if (player === 'forward') return pause()
-        cleanInterval()
-        player = 'forward'
-        const ms = Math.min(Math.round(12000 / sequence.length), 300)
-        interval = setInterval(() => {
-            if (isToEnd) return pause()
-            getNext(1)
-        }, ms)
+        const animation = createAnimation(getNext, 'forward')
+        requestAnimationFrame(animation)
     }
 
     function playBackward() {
         if (player === 'backward') return pause()
-        cleanInterval()
-        player = 'backward'
-        const ms = Math.min(Math.round(12000 / sequence.length), 300)
-        interval = setInterval(() => {
-            if (isToStart) return pause()
-            getPrevious(1)
-        }, ms)
+        const animation = createAnimation(getPrevious, 'backward')
+        requestAnimationFrame(animation)
+    }
+
+    function getNext(nb: number) {
+        if (currentMove === sequence.length) return pause()
+        const end = Math.min(sequence.length, currentMove + nb)
+        const moves = sequence.slice(currentMove, end)
+        currentMove += moves.length
+        onMoves(moves)
     }
 
     function getPrevious(nb: number) {
@@ -84,12 +84,21 @@
         onMoves(moves)
     }
 
-    function getNext(nb: number) {
-        if (currentMove === sequence.length) return pause()
-        const end = Math.min(sequence.length, currentMove + nb)
-        const moves = sequence.slice(currentMove, end)
-        currentMove += moves.length
-        onMoves(moves)
+    function createAnimation(fun: (nb: number) => void, status: PlayerStatus) {
+        let current = performance.now()
+        pause()
+        player = status
+        function animation(time: number) {
+            const elapsedTime = time - current
+            const nbMoves = Math.floor(elapsedTime / moveDuration)
+            if (nbMoves > 0) {
+                fun(nbMoves)
+                current = time
+            }
+            if (player === status)
+                animationId = requestAnimationFrame(animation)
+        }
+        return animation
     }
 </script>
 
@@ -121,7 +130,7 @@
             <Icon path={mdiPlay} />
         </button>
     </div>
-    <ControlSpeed bind:mps />
+    <ControlSpeed bind:mps sequenceLen={sequence.length} />
 
     <div class="divider"></div>
     <div class="flex gap-2 justify-center">
