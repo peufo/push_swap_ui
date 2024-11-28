@@ -32,8 +32,8 @@
         stack = { values: [...values], cursor: 0 }
     }
 
-    function onMove(m: Move) {
-        move(stack, m)
+    function onMoves(moves: Move[]) {
+        for (const m of moves) move(stack, m)
         stack = stack
     }
 
@@ -63,7 +63,7 @@
             onchange={handleChangeValues}
         />
         {#if mode === 'manual'}
-            <Control {sequence} {onMove} {onReset} bind:currentMove />
+            <Control {sequence} {onMoves} {onReset} bind:currentMove />
         {/if}
     </aside>
     <main class="flex flex-col gap-4 grow min-w-0">

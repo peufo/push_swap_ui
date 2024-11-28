@@ -1,28 +1,33 @@
 <script lang="ts">
     import {
-        mdiFastForward,
         mdiPlay,
-        mdiSkipNext,
-        mdiSkipPrevious,
+        mdiStepBackward,
+        mdiStepBackward2,
+        mdiStepForward,
+        mdiStepForward2,
         mdiStop,
     } from '@mdi/js'
     import { Icon } from '$lib'
     import { onDestroy } from 'svelte'
     import { moveReverseMap, type Move } from '$lib/move'
+    import ControlSpeed from './ControlSpeed.svelte'
 
     let {
         sequence,
         currentMove = $bindable(),
-        onMove,
+        onMoves,
         onReset,
     }: {
         sequence: Move[]
         currentMove: number
-        onMove(m: Move): void
+        onMoves(sequence: Move[]): void
         onReset(): void
     } = $props()
 
-    let player = $state<'run' | 'run-faster' | 'pause'>('pause')
+    let player = $state<'forward' | 'backward' | 'pause'>('pause')
+    let mps = $state<number>(4)
+    const isToStart = $derived(currentMove === 0)
+    const isToEnd = $derived(currentMove === sequence.length)
     let interval: NodeJS.Timeout | null = null
     function cleanInterval() {
         if (!interval) return
@@ -46,70 +51,119 @@
         player = 'pause'
     }
 
-    function play() {
-        if (player === 'run') return pause()
+    function playForward() {
+        if (player === 'forward') return pause()
         cleanInterval()
-        player = 'run'
+        player = 'forward'
         const ms = Math.min(Math.round(12000 / sequence.length), 300)
-        interval = setInterval(getNext, ms)
+        interval = setInterval(() => {
+            if (isToEnd) return pause()
+            getNext(1)
+        }, ms)
     }
 
-    function playFaster() {
-        if (player === 'run-faster') return pause()
+    function playBackward() {
+        if (player === 'backward') return pause()
         cleanInterval()
-        player = 'run-faster'
-        const ms = Math.min(Math.round(12000 / sequence.length), 5)
-        interval = setInterval(getNext, ms)
+        player = 'backward'
+        const ms = Math.min(Math.round(12000 / sequence.length), 300)
+        interval = setInterval(() => {
+            if (isToStart) return pause()
+            getPrevious(1)
+        }, ms)
     }
 
-    function getPrevious() {
+    function getPrevious(nb: number) {
         if (currentMove === 0) return
-        currentMove--
-        onMove(moveReverseMap[sequence[currentMove]])
+        const start = Math.max(0, currentMove - nb)
+        const moves = sequence
+            .slice(start, currentMove)
+            .reverse()
+            .map((m) => moveReverseMap[m])
+        currentMove -= moves.length
+        onMoves(moves)
     }
 
-    function getNext() {
+    function getNext(nb: number) {
         if (currentMove === sequence.length) return pause()
-        onMove(sequence[currentMove])
-        currentMove++
+        const end = Math.min(sequence.length, currentMove + nb)
+        const moves = sequence.slice(currentMove, end)
+        currentMove += moves.length
+        onMoves(moves)
     }
 </script>
 
 <fieldset class="border rounded p-4 flex flex-col gap-2">
     <legend>Control</legend>
 
-    <div class="flex gap-2">
-        <button class="btn btn-square" onclick={reset}>
+    <div class="flex gap-2 justify-center">
+        <button
+            class="btn btn-square outline-2 outline-primary"
+            onclick={playBackward}
+            class:outline={player === 'backward'}
+            disabled={isToStart}
+        >
+            <Icon path={mdiPlay} class="rotate-180" />
+        </button>
+        <button
+            class="btn btn-square"
+            onclick={reset}
+            disabled={currentMove === 0}
+        >
             <Icon path={mdiStop} />
         </button>
         <button
-            class="btn btn-square outline-2"
-            onclick={play}
-            class:outline={player === 'run'}
+            class="btn btn-square outline-2 outline-primary"
+            onclick={playForward}
+            class:outline={player === 'forward'}
+            disabled={isToEnd}
         >
             <Icon path={mdiPlay} />
         </button>
+    </div>
+    <ControlSpeed bind:mps />
+
+    <div class="divider"></div>
+    <div class="flex gap-2 justify-center">
         <button
             class="btn btn-square"
-            class:outline={player === 'run-faster'}
-            onclick={playFaster}
+            onclick={() => {
+                pause()
+                getPrevious(5)
+            }}
+            disabled={isToStart}
         >
-            <Icon path={mdiFastForward} />
+            <Icon path={mdiStepBackward2} />
         </button>
-        <div class="grow"></div>
         <button
             class="btn btn-square"
-            onclick={getPrevious}
-            disabled={player !== 'pause' || currentMove === 0}
+            onclick={() => {
+                pause()
+                getPrevious(1)
+            }}
+            disabled={isToStart}
         >
-            <Icon path={mdiSkipPrevious} />
+            <Icon path={mdiStepBackward} />
         </button>
         <button
             class="btn btn-square"
-            onclick={getNext}
-            disabled={player !== 'pause' || currentMove === sequence.length}
+            onclick={() => {
+                pause()
+                getNext(1)
+            }}
+            disabled={isToEnd}
         >
-            <Icon path={mdiSkipNext} />
+            <Icon path={mdiStepForward} />
+        </button>
+        <button
+            class="btn btn-square"
+            onclick={() => {
+                pause()
+                getNext(5)
+            }}
+            disabled={isToEnd}
+        >
+            <Icon path={mdiStepForward2} />
         </button>
     </div>
 </fieldset>
