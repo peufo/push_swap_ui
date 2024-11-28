@@ -1,11 +1,11 @@
 import { move, type Move, type Stack } from '$lib/move'
-//import { cleanSequence } from './cleanSequence'
+import { cleanSequence } from './cleanSequence'
 
 export function resolve(values: number[]): Move[] {
     const sorted = values.toSorted((a, b) => a - b)
     const indexes = values.map((v) => sorted.indexOf(v))
     const moves = splitA({ values: indexes, cursor: 0 }, values.length)
-    //cleanSequence(moves)
+    cleanSequence(moves)
     return moves
 }
 
