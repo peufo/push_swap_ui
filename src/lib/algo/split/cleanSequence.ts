@@ -3,10 +3,20 @@ import type { Move } from '$lib/move'
 const replacer: [Move[], Move[]][] = [
     [['pb', 'pa'], []],
     [['pa', 'pb'], []],
+    [['rra', 'ra'], []],
+    [['rrb', 'rb'], []],
     [['pb', 'pb', 'sb', 'pa', 'pa'], ['sa']],
     [['pa', 'pa', 'sa', 'pb', 'pb'], ['sb']],
     [['sa', 'sb'], ['ss']],
     [['sb', 'sa'], ['ss']],
+    [
+        ['sa', 'pa', 'pa', 'sa'],
+        ['ss', 'pa', 'pa'],
+    ],
+    [
+        ['sb', 'pa', 'pa', 'sb'],
+        ['pa', 'pa', 'ss'],
+    ],
 ]
 
 export function cleanSequence(sequence: Move[]) {

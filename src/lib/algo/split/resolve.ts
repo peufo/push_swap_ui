@@ -10,7 +10,7 @@ export function resolve(values: number[]): Move[] {
 }
 
 function splitA(s: Stack, len: number): Move[] {
-    const subLen = Math.floor(len / 2)
+    const subLen = Math.ceil(len / 2)
     const cursor = s.cursor
     const pivot = cursor + subLen
     const moves: Move[] = []
