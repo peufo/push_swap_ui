@@ -5,12 +5,12 @@ export function resolve(values: number[]): Move[] {
     const sorted = values.toSorted((a, b) => a - b)
     const indexes = values.map((v) => sorted.indexOf(v))
     const moves = splitA({ values: indexes, cursor: 0 }, values.length)
-    cleanSequence(moves)
+    //cleanSequence(moves)
     return moves
 }
 
 function splitA(s: Stack, len: number): Move[] {
-    const subLen = Math.ceil(len / 2)
+    const subLen = Math.floor(len / 2)
     const cursor = s.cursor
     const pivot = cursor + subLen
     const moves: Move[] = []
@@ -19,11 +19,11 @@ function splitA(s: Stack, len: number): Move[] {
     let behindCount = getBehindCount()
 
     if (len <= 1) {
-        while (behindCount--) add('rra')
+        while (behindCount-- > 0) add('rra')
         return moves
     }
     if (len == 2) {
-        while (behindCount--) add('rra')
+        while (behindCount-- > 0) add('rra')
         if (s.values[s.cursor] > s.values[s.cursor + 1]) add('sa')
         return moves
     }
@@ -67,12 +67,12 @@ function splitB(s: Stack, len: number): Move[] {
     let behindCount = getBehindCount()
 
     if (len <= 1) {
-        while (behindCount--) add('rrb')
+        while (behindCount-- > 0) add('rrb')
         add('pa')
         return moves
     }
     if (len == 2) {
-        while (behindCount--) add('rrb')
+        while (behindCount-- > 0) add('rrb')
         if (s.values[cursor - 2] > s.values[cursor - 1]) add('sb')
         add('pa', 'pa')
         return moves
@@ -95,10 +95,10 @@ function splitB(s: Stack, len: number): Move[] {
     }
 
     function getBehindCount(): number {
-        const isInWorkZone = createIsOk(cursor - len - 1, cursor - 1)
+        const isInWorkZone = createIsOk(cursor - len, cursor)
         let count = 0
         let index = 0
-        while (isInWorkZone(s.values[index]) && index > cursor - 1) {
+        while (isInWorkZone(s.values[index]) && index < cursor - 1) {
             count++
             index++
         }

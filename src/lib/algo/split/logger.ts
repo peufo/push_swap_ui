@@ -5,10 +5,11 @@ type SplitInfo = {
     cursor: number
     pivot: number
     subLen: number
+    behindCount: number
 }
 export function logSplitA(
     s: Stack,
-    { cursor, pivot, subLen, behindCount }: SplitInfo & { behindCount: number }
+    { cursor, pivot, subLen, behindCount }: SplitInfo
 ) {
     let msg = ''
     msg += ' '.repeat(cursor * COL)
@@ -18,12 +19,15 @@ export function logSplitA(
     msg += logValues(s)
     console.log(msg)
 }
-export function logSplitB(s: Stack, { cursor, pivot, subLen }: SplitInfo) {
+export function logSplitB(
+    s: Stack,
+    { cursor, pivot, subLen, behindCount }: SplitInfo
+) {
     let msg = ''
     msg += ' '.repeat(pivot * COL)
     msg += '┌'
     msg += '─'.repeat(subLen * COL - 2)
-    msg += `◦ (${cursor} - ${subLen} = ${pivot})\n`
+    msg += `◦ (${cursor} - ${subLen} = ${pivot}) >> ${behindCount}\n`
     msg += logValues(s)
     console.log(msg)
 }
