@@ -17,24 +17,46 @@ const replacer: [Move[], Move[]][] = [
         ['sb', 'pa', 'pa', 'sb'],
         ['pa', 'pa', 'ss'],
     ],
+    [
+        ['pb', 'sb', 'pa', 'pa'],
+        ['pa', 'sa'],
+    ],
+    [
+        ['pb', 'ra', 'pa'],
+        ['sa', 'ra'],
+    ],
+    [
+        ['sa', 'rb', 'pa', 'pa', 'sa'],
+        ['rb', 'ss', 'pa', 'pa'],
+    ],
 ]
 
-export function cleanSequence(sequence: Move[]) {
+export function cleanSequence(sequence: Move[]): Move[] {
     let isClean = false
     let index = 0
+    let len = 0
     let limit = 10
+    let cleaner: Move[] = []
     while (!isClean && limit--) {
         index = 0
         isClean = true
-        while (index < sequence.length) {
+        cleaner = []
+        len = sequence.length
+        while (index < len) {
             const [stupid, better] = find(index)
-            if (stupid) {
-                sequence.splice(index, stupid.length, ...better)
-                isClean = false
+            if (!stupid) {
+                cleaner.push(sequence[index])
+                index++
+                continue
             }
-            index++
+            isClean = false
+            cleaner.push(...better)
+            index += stupid.length
         }
+
+        sequence = cleaner
     }
+    return sequence.filter(Boolean)
 
     function find(index: number): [Move[], Move[]] | [null, null] {
         for (const [stupid, better] of replacer) {
@@ -46,7 +68,13 @@ export function cleanSequence(sequence: Move[]) {
     }
 
     function match(pattern: Move[], index: number): boolean {
-        if (index > sequence.length - pattern.length) return false
-        return !pattern.filter((m, i) => m !== sequence[index + i]).length
+        const len = pattern.length
+        if (index > sequence.length - len) return false
+        let i = 0
+        while (i < len) {
+            if (pattern[i] !== sequence[index + i]) return false
+            i++
+        }
+        return true
     }
 }

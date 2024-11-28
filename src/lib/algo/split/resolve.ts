@@ -4,9 +4,14 @@ import { cleanSequence } from './cleanSequence'
 export function resolve(values: number[]): Move[] {
     const sorted = values.toSorted((a, b) => a - b)
     const indexes = values.map((v) => sorted.indexOf(v))
+    if (is120(indexes)) return ['rra']
     const moves = splitA({ values: indexes, cursor: 0 }, values.length)
-    cleanSequence(moves)
-    return moves
+    return cleanSequence(moves)
+}
+
+function is120(values: number[]) {
+    if (values.length !== 3) return false
+    return JSON.stringify(values) === '[1,2,0]'
 }
 
 function splitA(s: Stack, len: number): Move[] {

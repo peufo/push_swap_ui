@@ -70,7 +70,7 @@
                     <div class="inline-block" bind:this={cursorElement}>👇</div>
                 </div>
 
-                <div class="flex gap-1 py-2 bg-base-200 rounded">
+                <div class="flex gap-1 py-2">
                     {#each sequence as move, i}
                         <div class="border px-2 rounded move">
                             {move.toUpperCase()}
