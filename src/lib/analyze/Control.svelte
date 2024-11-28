@@ -107,6 +107,7 @@
 
     <div class="flex gap-2 justify-center">
         <button
+            title="Play / pause backward"
             class="btn btn-square outline-2 outline-primary"
             onclick={playBackward}
             class:outline={player === 'backward'}
@@ -115,6 +116,7 @@
             <Icon path={mdiPlay} class="rotate-180" />
         </button>
         <button
+            title="Reset"
             class="btn btn-square"
             onclick={reset}
             disabled={currentMove === 0}
@@ -122,6 +124,7 @@
             <Icon path={mdiStop} />
         </button>
         <button
+            title="Play / pause forward"
             class="btn btn-square outline-2 outline-primary"
             onclick={playForward}
             class:outline={player === 'forward'}
@@ -135,6 +138,7 @@
     <div class="divider"></div>
     <div class="flex gap-2 justify-center">
         <button
+            title="5 steps backward"
             class="btn btn-square"
             onclick={() => {
                 pause()
@@ -145,6 +149,7 @@
             <Icon path={mdiStepBackward2} />
         </button>
         <button
+            title="Step backward"
             class="btn btn-square"
             onclick={() => {
                 pause()
@@ -155,6 +160,7 @@
             <Icon path={mdiStepBackward} />
         </button>
         <button
+            title="Step forward"
             class="btn btn-square"
             onclick={() => {
                 pause()
@@ -165,6 +171,7 @@
             <Icon path={mdiStepForward} />
         </button>
         <button
+            title="5 steps forward"
             class="btn btn-square"
             onclick={() => {
                 pause()
