@@ -48,7 +48,7 @@
                 {#if algoIsRunning}
                     Execution...
                 {:else}
-                    <b>{sequence.length}</b>
+                    <b>{currentMove} / {sequence.length}</b>
                     moves founds in
                     <b>{Math.round(algoTime)}</b> ms
                     <SequenceTest {sequence} {stack} />
