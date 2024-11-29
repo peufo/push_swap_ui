@@ -74,7 +74,7 @@
     }
 
     function getPrevious(nb: number) {
-        if (currentMove === 0) return
+        if (currentMove === 0) return pause()
         const start = Math.max(0, currentMove - nb)
         const moves = sequence
             .slice(start, currentMove)
