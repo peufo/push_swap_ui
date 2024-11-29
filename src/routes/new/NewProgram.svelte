@@ -60,7 +60,7 @@
             const exitCode = wasi.start()
             if (exitCode == 1) throw Error('Program exit with exit code [1]')
             let stdout = wasi.getStdoutString()
-
+            wasi.free()
             // TODO: valid the output with zod
             return stdout.split('\n').filter(Boolean) as Move[]
         })

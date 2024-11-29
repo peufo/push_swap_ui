@@ -14,7 +14,7 @@
         <input
             type="range"
             min="1"
-            max={Math.round(sequenceLen / 3)}
+            max={Math.max(2, Math.round(sequenceLen / 3))}
             bind:value={mps}
             class="range"
         />

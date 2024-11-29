@@ -35,7 +35,7 @@
 
     $effect(() => {
         pause()
-        mps = Math.round(sequence.length / 10)
+        mps = Math.max(1, Math.round(sequence.length / 10))
     })
 
     onDestroy(() => {

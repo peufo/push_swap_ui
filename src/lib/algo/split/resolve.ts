@@ -6,7 +6,8 @@ export function resolve(values: number[]): Move[] {
     const indexes = values.map((v) => sorted.indexOf(v))
     if (is120(indexes)) return ['rra']
     const moves = splitA({ values: indexes, cursor: 0 }, values.length)
-    return cleanSequence(moves)
+    //return cleanSequence(moves)
+    return moves
 }
 
 function is120(values: number[]) {
@@ -15,12 +16,10 @@ function is120(values: number[]) {
 }
 
 function splitA(s: Stack, len: number): Move[] {
-    const subLen = Math.round(len / 2)
-    const cursor = s.cursor
-    const pivot = cursor + subLen
+    const subLen = Math.floor(len / 2)
+    const pivot = s.cursor + subLen
     const moves: Move[] = []
     const add = createAdd(s, moves)
-    const isBeforePivot = createIsOk(cursor, pivot)
     let behindCount = getBehindCount()
 
     if (len <= 1) {
@@ -40,6 +39,7 @@ function splitA(s: Stack, len: number): Move[] {
     return moves
 
     function pushBeforePivot() {
+        const isBeforePivot = createIsBetween(s.cursor, pivot)
         while (s.cursor < pivot) {
             while (!isBeforePivot(s.values[s.cursor])) {
                 if (behindCount-- > 0) add('rra')
@@ -50,25 +50,24 @@ function splitA(s: Stack, len: number): Move[] {
     }
 
     function getBehindCount(): number {
-        const isInWorkZone = createIsOk(cursor, cursor + len)
+        const isInWorkZone = createIsBetween(s.cursor, s.cursor + len)
         let count = 0
         let index = s.values.length - 1
-        while (isInWorkZone(s.values[index]) && index > cursor) {
+        while (isInWorkZone(s.values[index]) && index > s.cursor) {
             count++
             index--
         }
-        if (index == cursor) return 0
+        if (index == s.cursor) return 0
         return count
     }
 }
 
 function splitB(s: Stack, len: number): Move[] {
-    const subLen = Math.round(len / 2)
-    const cursor = s.cursor
-    const pivot = cursor - subLen
+    const subLen = Math.floor(len / 2)
+    const pivot = s.cursor - subLen
     const moves: Move[] = []
     const add = createAdd(s, moves)
-    const isBeforeOk = createIsOk(pivot, cursor)
+
     let behindCount = getBehindCount()
 
     if (len <= 1) {
@@ -78,7 +77,7 @@ function splitB(s: Stack, len: number): Move[] {
     }
     if (len == 2) {
         while (behindCount-- > 0) add('rrb')
-        if (s.values[cursor - 2] > s.values[cursor - 1]) add('sb')
+        if (s.values[s.cursor - 2] > s.values[s.cursor - 1]) add('sb')
         add('pa', 'pa')
         return moves
     }
@@ -90,6 +89,7 @@ function splitB(s: Stack, len: number): Move[] {
     return moves
 
     function pushBeforePivot() {
+        const isBeforeOk = createIsBetween(pivot, s.cursor)
         while (s.cursor > pivot) {
             while (!isBeforeOk(s.values[s.cursor - 1])) {
                 if (behindCount-- > 0) add('rrb')
@@ -100,15 +100,13 @@ function splitB(s: Stack, len: number): Move[] {
     }
 
     function getBehindCount(): number {
-        const isInWorkZone = createIsOk(cursor - len, cursor)
-        let count = 0
+        const isInWorkZone = createIsBetween(s.cursor - len, s.cursor)
         let index = 0
-        while (isInWorkZone(s.values[index]) && index < cursor - 1) {
-            count++
+        while (isInWorkZone(s.values[index]) && index < s.cursor - 1) {
             index++
         }
-        if (index == cursor - 1) return 0
-        return count
+        if (index == s.cursor - 1) return 0
+        return index
     }
 }
 
@@ -121,6 +119,6 @@ function createAdd(s: Stack, moves: Move[]) {
     }
 }
 
-function createIsOk(min: number, max: number) {
+function createIsBetween(min: number, max: number) {
     return (value: number) => min <= value && value < max
 }
