@@ -40,7 +40,7 @@
                         label: 'Sequence lenght',
                         yAxisID: 'y',
                         data: [],
-                        showLine: false,
+                        showLine: true,
                     },
                     {
                         label: 'Execution time',
