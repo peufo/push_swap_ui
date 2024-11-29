@@ -1,13 +1,12 @@
 import { move, type Move, type Stack } from '$lib/move'
-import { cleanSequence } from './cleanSequence'
+import { optimize } from '../optimize'
 
 export function resolve(values: number[]): Move[] {
     const sorted = values.toSorted((a, b) => a - b)
     const indexes = values.map((v) => sorted.indexOf(v))
     if (is120(indexes)) return ['rra']
     const moves = splitA({ values: indexes, cursor: 0 }, values.length)
-    //return cleanSequence(moves)
-    return moves
+    return optimize(moves)
 }
 
 function is120(values: number[]) {

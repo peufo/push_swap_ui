@@ -31,12 +31,18 @@ const replacer: [Move[], Move[]][] = [
     ],
 ]
 
-export function cleanSequence(sequence: Move[]): Move[] {
+export function getOptimizationPotential(sequence: Move[]): number {
+    const optimized = optimize(sequence)
+    return sequence.length - optimized.length
+}
+
+export function optimize(sequence: Move[]): Move[] {
     let isClean = false
     let index = 0
     let len = 0
     let limit = 10
     let cleaner: Move[] = []
+
     while (!isClean && limit--) {
         index = 0
         isClean = true
@@ -53,7 +59,6 @@ export function cleanSequence(sequence: Move[]): Move[] {
             cleaner.push(...better)
             index += stupid.length
         }
-
         sequence = cleaner
     }
     return sequence.filter(Boolean)

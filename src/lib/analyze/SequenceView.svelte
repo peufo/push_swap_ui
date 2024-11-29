@@ -1,7 +1,8 @@
 <script lang="ts">
-    import { mdiRefresh } from '@mdi/js'
+    import { mdiArrowDown, mdiRefresh } from '@mdi/js'
     import { Icon } from '$lib'
     import { type Move, type Stack } from '$lib/move'
+    import { getOptimizationPotential } from '$lib/algo/optimize'
     import SequenceTest from './SequenceTest.svelte'
 
     let {
@@ -21,6 +22,7 @@
     } = $props()
 
     let cursorElement = $state<HTMLDivElement>()
+    const optimizationPotiential = $derived(getOptimizationPotential(sequence))
 
     $effect(() => {
         if (currentMove === undefined) return
@@ -41,7 +43,7 @@
     <legend>Sequence</legend>
 
     <div>
-        <div class="flex items-center pb-2">
+        <div class="flex items-center gap-2 pb-2">
             <span class="font-mono text-sm">
                 {#if algoIsRunning}
                     Execution...
@@ -52,6 +54,16 @@
                     <SequenceTest {sequence} {stack} />
                 {/if}
             </span>
+            {#if optimizationPotiential}
+                <span
+                    class="badge badge-warning"
+                    title="Easy optimizations possibles"
+                >
+                    <Icon path={mdiArrowDown} size={16} />
+                    {optimizationPotiential}
+                </span>
+            {/if}
+
             <button
                 disabled={algoIsRunning}
                 class="btn btn-square btn-sm ml-auto"
