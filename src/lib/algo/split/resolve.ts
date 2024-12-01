@@ -4,7 +4,8 @@ import { optimize } from '../optimize'
 export function resolve(values: number[]): Move[] {
     const sorted = values.toSorted((a, b) => a - b)
     const indexes = values.map((v) => sorted.indexOf(v))
-    if (is120(indexes)) return ['rra']
+    const specialMoves = use_special_case(values)
+    if (specialMoves) return specialMoves
     const moves = splitA({ values: indexes, cursor: 0 }, values.length)
     return optimize(moves)
 }
@@ -12,6 +13,19 @@ export function resolve(values: number[]): Move[] {
 function is120(values: number[]) {
     if (values.length !== 3) return false
     return JSON.stringify(values) === '[1,2,0]'
+}
+
+function use_special_case(values: number[]): Move[] | null {
+    if (values.length !== 3) return null
+    if (is_case([1, 2, 0])) return ['rra']
+    if (is_case([2, 1, 0])) return ['sa', 'rra']
+    if (is_case([1, 0, 2])) return ['sa']
+    return null
+    function is_case(nbs: number[]): boolean {
+        for (let index = 0; index < 3; index++)
+            if (values[index] !== nbs[index]) return false
+        return true
+    }
 }
 
 function splitA(s: Stack, len: number): Move[] {
