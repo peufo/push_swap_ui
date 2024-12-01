@@ -10,11 +10,6 @@ export function resolve(values: number[]): Move[] {
     return optimize(moves)
 }
 
-function is120(values: number[]) {
-    if (values.length !== 3) return false
-    return JSON.stringify(values) === '[1,2,0]'
-}
-
 function use_special_case(values: number[]): Move[] | null {
     if (values.length !== 3) return null
     if (is_case([1, 2, 0])) return ['rra']
