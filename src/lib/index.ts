@@ -1,2 +1,4 @@
-export { default as Icon } from './Icon.svelte'
 export * from './algo'
+export * from './analyze'
+export * from './visual'
+export * from './material'

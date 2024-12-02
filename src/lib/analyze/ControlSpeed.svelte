@@ -1,6 +1,6 @@
 <script lang="ts">
-    import Icon from '$lib/Icon.svelte'
     import { mdiRabbit, mdiTortoise } from '@mdi/js'
+    import { Icon } from '$lib/material'
 
     let {
         mps = $bindable(),

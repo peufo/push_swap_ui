@@ -7,7 +7,14 @@
 
     let { algo }: { algo: Algo } = $props()
 
-    const nbRuns = 30
+    const evals: Eval[] = [
+        { nbValues: 3, limits: [3] },
+        { nbValues: 5, limits: [12] },
+        { nbValues: 100, limits: [700, 900, 1100, 1300, 1500] },
+        { nbValues: 500, limits: [5500, 7000, 8500, 10000, 11500] },
+    ]
+    let evalsResults = $state<(EvalResult | null)[]>(evals.map(() => null))
+    let nbRuns = $state(100)
 
     type Eval = {
         nbValues: number
@@ -21,15 +28,6 @@
     }
 
     onMount(() => refresh())
-
-    const evals: Eval[] = [
-        { nbValues: 3, limits: [3] },
-        { nbValues: 5, limits: [12] },
-        { nbValues: 100, limits: [700, 900, 1100, 1300, 1500] },
-        { nbValues: 500, limits: [5500, 7000, 8500, 10000, 11500] },
-    ]
-
-    let evalsResults: (EvalResult | null)[] = evals.map(() => null)
 
     async function refresh() {
         evalsResults = evals.map(() => null)
@@ -67,12 +65,27 @@
     }
 </script>
 
-<div class="grid grid-cols-2 gap-x-6 gap-y-16 p-10">
-    {#each evalsResults as results}
-        {#if results}
-            <Evaluation {results} />
-        {:else}
-            <div class="skeleton w-full h-full"></div>
-        {/if}
-    {/each}
-</div>
+<fieldset class="p-4 border rounded">
+    <legend>Evaluation</legend>
+
+    <div class="flex gap-2 items-end">
+        <label>
+            <span class="label-text block"> Number of executions </span>
+            <input
+                class="input input-bordered"
+                type="number"
+                bind:value={nbRuns}
+            />
+        </label>
+        <button class="btn" onclick={refresh}>Run</button>
+    </div>
+    <div class="grid grid-cols-2 gap-x-6 gap-y-16 p-4">
+        {#each evalsResults as results}
+            {#if results}
+                <Evaluation {results} />
+            {:else}
+                <div class="skeleton w-full h-full"></div>
+            {/if}
+        {/each}
+    </div>
+</fieldset>

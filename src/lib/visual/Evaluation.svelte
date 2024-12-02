@@ -12,8 +12,12 @@
 
     function updateChart(res: EvalResult) {
         if (!chart) return
-        const distOK = get_distribution(res.runs.filter(r => r.isOk).map((r) => r.nbMoves))
-        const distKO = get_distribution(res.runs.filter(r => !r.isOk).map((r) => r.nbMoves))
+        const distOK = get_distribution(
+            res.runs.filter((r) => r.isOk).map((r) => r.nbMoves)
+        )
+        const distKO = get_distribution(
+            res.runs.filter((r) => !r.isOk).map((r) => r.nbMoves)
+        )
         const range = get_range(0, res.max)
         chart.data.labels = get_range(0, Math.max(res.max, ...res.limits))
         chart.data.datasets[0].data = range.map((x) => distOK[x] || 0)
@@ -72,7 +76,7 @@
                         borderColor: 'rgba(129, 193, 75)',
                         borderWidth: 1,
                         order: 9,
-                        stack: 'dist'
+                        stack: 'dist',
                     },
                     {
                         type: 'bar',
@@ -82,7 +86,7 @@
                         borderColor: 'rgba(226, 78, 27)',
                         borderWidth: 1,
                         order: 10,
-                        stack: 'dist'
+                        stack: 'dist',
                     },
                 ],
             },
@@ -90,7 +94,7 @@
                 scales: {
                     y: {
                         beginAtZero: true,
-                        stacked: true
+                        stacked: true,
                     },
                     x: {
                         display: true,
@@ -103,7 +107,7 @@
                         text: '',
                         display: true,
                         font: {
-                            size: 20,
+                            size: 14,
                         },
                     },
                     subtitle: {
@@ -113,7 +117,7 @@
                             bottom: 20,
                         },
                         font: {
-                            size: 18,
+                            size: 12,
                         },
                     },
                     legend: {
