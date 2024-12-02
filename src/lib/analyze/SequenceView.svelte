@@ -25,12 +25,14 @@
     const optimizationPotiential = $derived(getOptimizationPotential(sequence))
 
     $effect(() => {
+        if (!cursorElement) return
         if (currentMove === undefined) return
+        const elIndex = Math.min(currentMove + 1, sequence.length)
         const el = document.querySelector(
-            `.move:nth-child(${currentMove + 1})`
+            `.move:nth-child(${elIndex})`
         ) as HTMLDivElement
-        if (!el || !cursorElement) return
-
+        if (!el) return
+        cursorElement.style.display = 'inline-block'
         const left = el.offsetLeft - (el.parentElement?.offsetLeft || 0) + 8
         el.parentElement?.parentElement?.scroll({ left: left - 100 })
         cursorElement.style.translate = `${left}px`
@@ -79,7 +81,9 @@
         {:else if sequence.length < 10000}
             <div class="overflow-auto relative">
                 <div>
-                    <div class="inline-block" bind:this={cursorElement}>👇</div>
+                    <div class="inline-block" bind:this={cursorElement}>
+                        {currentMove === sequence.length ? '🏁' : '👇'}
+                    </div>
                 </div>
 
                 <div class="flex gap-1 py-2">
