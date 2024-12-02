@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { onMount } from 'svelte'
+
     import type { Algo } from '$lib/algo'
     import { createValues, isSequenceOk } from '$lib/analyze'
     import Evaluation from '$lib/visual/Evaluation.svelte'
@@ -18,12 +20,23 @@
         min: number
     }
 
+    onMount(() => refresh())
+
     const evals: Eval[] = [
         { nbValues: 3, limits: [3] },
         { nbValues: 5, limits: [12] },
         { nbValues: 100, limits: [700, 900, 1100, 1300, 1500] },
         { nbValues: 500, limits: [5500, 7000, 8500, 10000, 11500] },
     ]
+
+    let evalsResults: (EvalResult | null)[] = evals.map(() => null)
+
+    async function refresh() {
+        evalsResults = evals.map(() => null)
+        for (let index = 0; index < evals.length; index++) {
+            evalsResults[index] = await getEvalResult(evals[index])
+        }
+    }
 
     async function getEvalResult({
         nbValues,
@@ -55,11 +68,11 @@
 </script>
 
 <div class="grid grid-cols-2 gap-x-6 gap-y-16 p-10">
-    {#each evals as e}
-        {#await getEvalResult(e)}
-            <div class="skeleton w-full h-full"></div>
-        {:then results}
+    {#each evalsResults as results}
+        {#if results}
             <Evaluation {results} />
-        {/await}
+        {:else}
+            <div class="skeleton w-full h-full"></div>
+        {/if}
     {/each}
 </div>
