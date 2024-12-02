@@ -3,6 +3,7 @@
     import type { Algo } from '$lib/algo'
     import { AnalyzeAutoResults } from '$lib/visual'
     import { isSequenceOk } from './isSequenceOk'
+    import { createValues } from './createValues'
 
     let { algo }: { algo: Algo } = $props()
 
@@ -25,15 +26,6 @@
         for (let index = 0; index < len; index++) {
             results[index] = await runTest(testsParam[index])
         }
-    }
-
-    function createValues(nb: number): number[] {
-        if (nb < 1) return []
-        const numbers = Array(nb)
-            .fill(1)
-            .map(() => Math.random())
-        const sorted = numbers.toSorted()
-        return numbers.map((n, i) => sorted.indexOf(n))
     }
 
     async function runTest(nb: number): Promise<TestResult> {
