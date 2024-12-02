@@ -12,16 +12,21 @@
 
     function updateChart(res: EvalResult) {
         if (!chart) return
-        const nbMoves = res.runs.map((r) => r.nbMoves)
-        const dist = get_distribution(nbMoves)
+        const distOK = get_distribution(res.runs.filter(r => r.isOk).map((r) => r.nbMoves))
+        const distKO = get_distribution(res.runs.filter(r => !r.isOk).map((r) => r.nbMoves))
         const range = get_range(0, res.max)
         chart.data.labels = get_range(0, Math.max(res.max, ...res.limits))
-        chart.data.datasets[0].data = range.map((x) => dist[x] || 0)
+        console.log({distKO, distOK})
+        chart.data.datasets[0].data = range.map((x) => distOK[x] || 0)
+        chart.data.datasets[1].data = range.map((x) => distKO[x] || 0)
         // @ts-ignore
         chart.data.datasets[0].barPercentage =
             0.5 + Math.max(...res.limits) / 50
+        // @ts-ignore
+        chart.data.datasets[1].barPercentage =
+            0.5 + Math.max(...res.limits) / 50
         res.limits.forEach((limit, i) => {
-            chart.data.datasets[i + 1] = {
+            chart.data.datasets[i + 2] = {
                 type: 'scatter',
                 label: 'Limit ' + (i + 1),
                 showLine: true,
@@ -29,9 +34,9 @@
                     { x: limit, y: 0 },
                     { x: limit, y: 1 },
                 ],
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                borderWidth: 1,
+                backgroundColor: 'rgb(97, 132, 216)',
+                borderColor: 'rgb(97, 132, 216)',
+                borderWidth: 2,
                 pointRadius: 0,
             }
         })
@@ -64,10 +69,21 @@
                         type: 'bar',
                         label: 'results',
                         data: [],
-                        backgroundColor: 'rgba(153, 102, 255, 0.6)',
-                        borderColor: 'rgba(153, 102, 255)',
+                        backgroundColor: 'rgba(129, 193, 75, 0.4)',
+                        borderColor: 'rgba(129, 193, 75)',
                         borderWidth: 1,
-                        order: 99,
+                        order: 9,
+                        stack: 'dist'
+                    },
+                    {
+                        type: 'bar',
+                        label: 'results',
+                        data: [],
+                        backgroundColor: 'rgba(226, 78, 27, 0.4)',
+                        borderColor: 'rgba(226, 78, 27)',
+                        borderWidth: 1,
+                        order: 10,
+                        stack: 'dist'
                     },
                 ],
             },
@@ -75,6 +91,7 @@
                 scales: {
                     y: {
                         beginAtZero: true,
+                        stacked: true
                     },
                     x: {
                         display: true,

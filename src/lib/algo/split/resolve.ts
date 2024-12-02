@@ -92,7 +92,7 @@ function splitB(s: Stack, len: number): Move[] {
         add('pa', 'pa')
         return moves
     }
-
+    
     check_swap(s, moves)
     pushBeforePivot()
 
