@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from 'svelte'
+    import { onMount, tick } from 'svelte'
 
     import type { Algo } from '$lib/algo'
     import { createValues, isSequenceOk } from '$lib/analyze'
@@ -31,8 +31,10 @@
 
     async function refresh() {
         evalsResults = evals.map(() => null)
+        await tick()
         for (let index = 0; index < evals.length; index++) {
             evalsResults[index] = await getEvalResult(evals[index])
+            await tick()
         }
     }
 
@@ -66,9 +68,9 @@
 </script>
 
 <fieldset class="p-4 border rounded">
-    <legend>Evaluation</legend>
+    <legend class="px-1">Evaluation</legend>
 
-    <div class="flex gap-2 items-end">
+    <div class="flex gap-2 items-end px-10">
         <label>
             <span class="label-text block"> Number of executions </span>
             <input

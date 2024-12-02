@@ -43,7 +43,7 @@
 </script>
 
 <fieldset class="border rounded p-4 flex flex-col gap-2">
-    <legend>Parameters</legend>
+    <legend class="px-1">Parameters</legend>
 
     <div class="grid grid-cols-3 gap-2">
         <button

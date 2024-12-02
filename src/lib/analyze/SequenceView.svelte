@@ -42,7 +42,7 @@
 <fieldset
     class="border rounded p-4 flex flex-col gap-2 overflow-hidden min-w-0"
 >
-    <legend>Sequence</legend>
+    <legend class="px-1">Sequence</legend>
 
     <div>
         <div class="flex items-center gap-2 pb-2">

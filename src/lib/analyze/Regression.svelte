@@ -41,8 +41,9 @@
     }
 </script>
 
-<div>
-    <div class="flex gap-2 items-center px-10 pt-3 pb-4">
+<fieldset class="p-4 border rounded">
+    <legend class="px-1">Regression</legend>
+    <div class="flex gap-2 items-center px-10 pb-4">
         <button class="btn" onclick={() => runTests(1)}>Run (10)</button>
         <button class="btn" onclick={() => runTests(10)}>Run (100)</button>
         <button class="btn" onclick={() => runTests(100)}>Run (1000)</button>
@@ -54,4 +55,4 @@
         {/if}
     </div>
     <AnalyzeAutoResults {results} />
-</div>
+</fieldset>

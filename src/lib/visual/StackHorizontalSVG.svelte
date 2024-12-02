@@ -19,7 +19,7 @@
 </script>
 
 <fieldset class="border rounded p-4">
-    <legend>Stacks horizontal</legend>
+    <legend class="px-1">Stacks horizontal</legend>
 
     <pre class="text-sm">Stack A = [{stack.values.length - stack.cursor}]</pre>
     <pre class="text-sm">Stack B = [{stack.cursor}]</pre>

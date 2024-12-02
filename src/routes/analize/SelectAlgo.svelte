@@ -8,7 +8,7 @@
 </script>
 
 <fieldset class="p-4 border rounded">
-    <legend>Program</legend>
+    <legend class="px-1">Program</legend>
     <div class="flex gap-2 pb-2">
         <button
             class="btn grow"

@@ -103,7 +103,7 @@
 </script>
 
 <fieldset class="border rounded p-4 flex flex-col gap-2">
-    <legend>Control</legend>
+    <legend class="px-1">Control</legend>
 
     <div class="flex gap-2 justify-center">
         <button
