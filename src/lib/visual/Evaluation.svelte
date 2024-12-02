@@ -16,7 +16,6 @@
         const distKO = get_distribution(res.runs.filter(r => !r.isOk).map((r) => r.nbMoves))
         const range = get_range(0, res.max)
         chart.data.labels = get_range(0, Math.max(res.max, ...res.limits))
-        console.log({distKO, distOK})
         chart.data.datasets[0].data = range.map((x) => distOK[x] || 0)
         chart.data.datasets[1].data = range.map((x) => distKO[x] || 0)
         // @ts-ignore
