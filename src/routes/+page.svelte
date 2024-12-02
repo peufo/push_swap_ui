@@ -1,3 +1,3 @@
 TODO: liste all algos
 
-<a href="/new" class="btn"> new algo </a>
+<a href="/analize" class="btn"> Analize </a>

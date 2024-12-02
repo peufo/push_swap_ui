@@ -4,11 +4,11 @@
     let {
         values,
         onchange,
-        mode = $bindable('manual'),
+        mode = $bindable(),
     }: {
         values: number[]
         onchange: (values: number[]) => void
-        mode: 'manual' | 'auto'
+        mode: 'manual' | 'regression' | 'eval'
     } = $props()
 
     let valuesAsString = $state(values.join(' '))
@@ -45,7 +45,7 @@
 <fieldset class="border rounded p-4 flex flex-col gap-2">
     <legend>Parameters</legend>
 
-    <div class="grid grid-cols-2 gap-2">
+    <div class="grid grid-cols-3 gap-2">
         <button
             class="btn"
             class:outline={mode === 'manual'}
@@ -55,10 +55,17 @@
         </button>
         <button
             class="btn"
-            class:outline={mode === 'auto'}
-            onclick={() => (mode = 'auto')}
+            class:outline={mode === 'eval'}
+            onclick={() => (mode = 'eval')}
         >
-            Auto
+            Evaluation
+        </button>
+        <button
+            class="btn"
+            class:outline={mode === 'regression'}
+            onclick={() => (mode = 'regression')}
+        >
+            Regression
         </button>
     </div>
     {#if mode === 'manual'}

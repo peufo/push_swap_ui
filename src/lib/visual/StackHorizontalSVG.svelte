@@ -8,8 +8,8 @@
     const height = 500
     type StackName = 'A' | 'B'
     const colors: Record<StackName, { fill: string }> = {
-        A: { fill: 'rgba(54, 162, 235)' },
-        B: { fill: 'rgba(153, 102, 255)' },
+        A: { fill: 'rgb(54, 162, 235)' },
+        B: { fill: 'rgb(153, 102, 255)' },
     }
 
     let len = $derived(stack.values.length)

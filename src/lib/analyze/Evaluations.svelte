@@ -5,7 +5,7 @@
 
     let { algo }: { algo: Algo } = $props()
 
-    const nbRuns = 10
+    const nbRuns = 30
 
     type Eval = {
         nbValues: number
@@ -54,7 +54,12 @@
     }
 </script>
 
-{#each evals as e}
-    {@const res = getEvalResult(e)}
-    <Evaluation />
-{/each}
+<div class="grid grid-cols-2 gap-x-6 gap-y-16 p-10">
+    {#each evals as e}
+        {#await getEvalResult(e)}
+            <div class="skeleton w-full h-full"></div>
+        {:then results}
+            <Evaluation {results} />
+        {/await}
+    {/each}
+</div>

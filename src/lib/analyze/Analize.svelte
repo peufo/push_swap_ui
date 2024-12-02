@@ -6,20 +6,19 @@
     import Parameters from './Parameters.svelte'
     import Control from './Control.svelte'
     import type { Algo } from '$lib/algo'
-    import Auto from './Auto.svelte'
+    import Regression from './Regression.svelte'
+    import Evaluations from './Evaluations.svelte'
 
     export let algo: Algo | undefined
 
-    //let initalValues = [2, 1, 3, 6, 5, 8]
-    let initalValues = [3, 4, 0, 2, 1, 5]
-    //let initalValues = [5, 3, 9, 8, 0, 6, 2, 1, 4, 7]
+    let initalValues = [2, 1, 3, 6, 5, 8]
     let values = [...initalValues]
     let sequence: Sequence = []
     let currentMove: number
     let stack: Stack = { values: [...values], cursor: 0 }
     let algoIsRunning = false
     let algoTime = 0
-    let mode: 'manual' | 'auto' = 'manual'
+    let mode: 'manual' | 'regression' | 'eval' = 'eval'
 
     const handleChangeValues = debounce((newValues: number[]) => {
         values = newValues
@@ -56,7 +55,7 @@
 </script>
 
 <div class="flex gap-4 p-4">
-    <aside class="flex flex-col gap-4 max-w-sm min-w-80 shrink-0">
+    <aside class="flex flex-col gap-4 w-96 shrink-0">
         <slot />
         <Parameters
             bind:mode
@@ -90,8 +89,10 @@
                     <svelte:component this={Chart} {stack} />
                 {/each}
             {/if}
-        {:else}
-            <Auto {algo} />
+        {:else if mode === 'regression'}
+            <Regression {algo} />
+        {:else if mode === 'eval'}
+            <Evaluations {algo} />
         {/if}
     </main>
 </div>
