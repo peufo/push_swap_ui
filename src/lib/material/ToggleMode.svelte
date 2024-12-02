@@ -18,7 +18,7 @@
 <ModeWatcher />
 
 <slot {toggleMode} {path}>
-    <button class="btn btn-square btn-sm" on:click={toggleMode}>
+    <button class="btn btn-square" on:click={toggleMode}>
         <Icon {path} />
     </button>
 </slot>
