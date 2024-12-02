@@ -17,11 +17,13 @@ function use_special_case(values: number[]): Move[] | null {
     if (is_case([1, 0, 2])) return ['sa']
     return null
     function is_case(nbs: number[]): boolean {
-        for (let index = 0; index < 3; index++)
+        for (let index = 0;index < 3;index++)
             if (values[index] !== nbs[index]) return false
         return true
     }
 }
+
+
 
 function splitA(s: Stack, len: number): Move[] {
     const subLen = Math.floor(len / 2)
@@ -40,6 +42,7 @@ function splitA(s: Stack, len: number): Move[] {
         return moves
     }
 
+    check_swap(s, moves)
     pushBeforePivot()
 
     moves.push(...splitA(s, len - subLen))
@@ -90,6 +93,7 @@ function splitB(s: Stack, len: number): Move[] {
         return moves
     }
 
+    check_swap(s, moves)
     pushBeforePivot()
 
     moves.push(...splitA(s, subLen))
@@ -124,6 +128,27 @@ function createAdd(s: Stack, moves: Move[]) {
             moves.push(m)
             move(s, m)
         }
+    }
+}
+
+function check_swap(s: Stack, moves: Move[]) {
+    const swapA = s.cursor < s.values.length - 1 && (s.values[s.cursor] - s.values[s.cursor + 1] === 1)
+    const swapB = s.cursor > 1 && (s.values[s.cursor - 2] - s.values[s.cursor - 1] === 1)
+
+    if (swapA && swapB) {
+        moves.push('ss')
+        move(s, 'ss')
+        return
+    }
+    if (swapA) {
+        moves.push('sa')
+        move(s, 'sa')
+        return
+    }
+    if (swapB) {
+        moves.push('sb')
+        move(s, 'sb')
+        return
     }
 }
 
