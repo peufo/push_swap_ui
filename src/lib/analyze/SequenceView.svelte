@@ -1,6 +1,6 @@
 <script lang="ts">
     import { mdiArrowDown, mdiRefresh } from '@mdi/js'
-    import { Icon } from '$lib'
+    import { Icon } from 'fuma/ui'
     import { type Move, type Stack } from '$lib/move'
     import { getOptimizationPotential } from '$lib/algo/optimize'
     import SequenceTest from './SequenceTest.svelte'

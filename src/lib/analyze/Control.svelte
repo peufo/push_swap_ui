@@ -7,10 +7,10 @@
         mdiStepForward2,
         mdiStop,
     } from '@mdi/js'
-    import { Icon } from '$lib'
+    import { onMount } from 'svelte'
+    import { Icon } from 'fuma/ui'
     import { moveReverseMap, type Move } from '$lib/move'
     import ControlSpeed from './ControlSpeed.svelte'
-    import { onDestroy, onMount } from 'svelte'
 
     let {
         sequence,
@@ -61,7 +61,6 @@
         }
         if (e.key === 'ArrowDown') return reset()
     }
-
 
     function reset() {
         pause()
@@ -128,13 +127,16 @@
 
     <div class="flex gap-2 justify-center">
         <button
-            title="Play / pause backward"
             class="btn btn-square outline-2 outline-primary"
             onclick={playBackward}
             class:outline={player === 'backward'}
             disabled={isToStart}
         >
-            <Icon path={mdiPlay} class="rotate-180" />
+            <Icon
+                path={mdiPlay}
+                class="rotate-180"
+                title="Play / pause backward [Ctrl+Space] "
+            />
         </button>
         <button
             title="Reset"

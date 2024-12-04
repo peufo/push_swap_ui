@@ -1,6 +1,6 @@
 <script lang="ts">
     import { mdiRabbit, mdiTortoise } from '@mdi/js'
-    import { Icon } from '$lib/material'
+    import { Icon } from 'fuma/ui'
 
     let {
         mps = $bindable(),

@@ -1,6 +1,6 @@
 <script lang="ts">
     import '../app.css'
-    import { ToggleMode } from '$lib/material'
+    import { ToggleMode } from 'fuma/ui'
 
     let { children } = $props()
 </script>
