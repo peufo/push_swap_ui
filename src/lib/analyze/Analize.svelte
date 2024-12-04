@@ -8,17 +8,19 @@
     import type { Algo } from '$lib/algo'
     import Regression from './Regression.svelte'
     import Evaluations from './Evaluations.svelte'
+    import { createValues } from './createValues'
 
     export let algo: Algo | undefined
 
-    let initalValues = [2, 1, 3, 6, 5, 8]
+    //let initalValues = [2, 1, 3, 6, 5, 8]
+    let initalValues = createValues(60);
     let values = [...initalValues]
     let sequence: Sequence = []
     let currentMove: number
     let stack: Stack = { values: [...values], cursor: 0 }
     let algoIsRunning = false
     let algoTime = 0
-    let mode: 'manual' | 'regression' | 'eval' = 'eval'
+    let mode: 'manual' | 'regression' | 'eval' = 'manual'
 
     const handleChangeValues = debounce((newValues: number[]) => {
         values = newValues

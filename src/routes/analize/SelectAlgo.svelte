@@ -1,9 +1,11 @@
 <script lang="ts">
     import NewProgram from './NewProgram.svelte'
     import { algoSplit } from '$lib/algo/split'
+    import { algoSplit2 } from '$lib/algo/split_2'
+    import { algoScore } from '$lib/algo/score'
     import type { Algo } from '$lib'
 
-    export let algo = algoSplit
+    export let algo = algoSplit2
     let algoNewProgram: Algo | undefined
 </script>
 
@@ -15,7 +17,21 @@
             class:outline={algo.name === algoSplit.name}
             onclick={() => (algo = algoSplit)}
         >
-            Split JS
+            Split
+        </button>
+        <button
+            class="btn grow"
+            class:outline={algo.name === algoSplit2.name}
+            onclick={() => (algo = algoSplit2)}
+        >
+            Split 2
+        </button>
+        <button
+            class="btn grow"
+            class:outline={algo.name === algoScore.name}
+            onclick={() => (algo = algoScore)}
+        >
+            Score
         </button>
     </div>
     <NewProgram

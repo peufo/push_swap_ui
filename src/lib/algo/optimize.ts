@@ -5,6 +5,14 @@ const replacer: [Move[], Move[]][] = [
     [['pa', 'pb'], []],
     [['rra', 'ra'], []],
     [['rrb', 'rb'], []],
+
+    [['ra', 'rb'], ['rr']],
+    [['rb', 'ra'], ['rr']],
+    [['rra', 'rrb'], ['rrr']],
+    [['rrb', 'rra'], ['rrr']],
+
+    [['pb','rb','pb','rrb','sb','pa','pa'], []],
+
     [['pb', 'pb', 'sb', 'pa', 'pa'], ['sa']],
     [['pa', 'pa', 'sa', 'pb', 'pb'], ['sb']],
     [['sa', 'sb'], ['ss']],
@@ -40,7 +48,7 @@ export function optimize(sequence: Move[]): Move[] {
     let isClean = false
     let index = 0
     let len = 0
-    let limit = 10
+    let limit = 50
     let cleaner: Move[] = []
 
     while (!isClean && limit--) {

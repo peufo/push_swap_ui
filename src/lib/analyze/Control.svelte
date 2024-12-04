@@ -10,7 +10,7 @@
     import { Icon } from '$lib'
     import { moveReverseMap, type Move } from '$lib/move'
     import ControlSpeed from './ControlSpeed.svelte'
-    import { onDestroy } from 'svelte'
+    import { onDestroy, onMount } from 'svelte'
 
     let {
         sequence,
@@ -38,9 +38,30 @@
         mps = Math.max(1, Math.round(sequence.length / 10))
     })
 
-    onDestroy(() => {
-        pause()
+    onMount(() => {
+        window.addEventListener('keydown', handleShortcuts)
+        return () => {
+            pause()
+            window.removeEventListener('keydown', handleShortcuts)
+        }
     })
+
+    function handleShortcuts(e: KeyboardEvent) {
+        if (e.key === 'ArrowRight') {
+            if (e.ctrlKey) return getNext(5)
+            return getNext(1)
+        }
+        if (e.key === 'ArrowLeft') {
+            if (e.ctrlKey) return getPrevious(5)
+            return getPrevious(1)
+        }
+        if (e.key === ' ') {
+            if (e.ctrlKey) return playBackward()
+            return playForward()
+        }
+        if (e.key === 'ArrowDown') return reset()
+    }
+
 
     function reset() {
         pause()
