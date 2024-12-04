@@ -2,7 +2,7 @@
 <div class="p-10 max-w-5xl mx-auto flex flex-col gap-10">
 
     <div>
-        <a href="/analize" class="btn btn-primary w-full"> Go to analize page </a>
+        <a href="/analyze" class="btn btn-primary w-full"> Go to analyze page </a>
     </div>
     
     <div>
