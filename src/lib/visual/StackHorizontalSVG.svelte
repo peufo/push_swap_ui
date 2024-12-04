@@ -4,7 +4,7 @@
     let { stack }: { stack: Stack } = $props()
 
     let width = $state<number>(0)
-    let mode = $state<'h' | 'v'>('v')
+    let mode = $state<'h' | 'v'>('h')
     const height = 700
     type StackName = 'A' | 'B'
     const colors: Record<StackName, { fill: string }> = {
