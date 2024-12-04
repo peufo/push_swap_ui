@@ -139,21 +139,19 @@
             />
         </button>
         <button
-            title="Reset"
             class="btn btn-square"
             onclick={reset}
             disabled={currentMove === 0}
         >
-            <Icon path={mdiStop} />
+            <Icon path={mdiStop} title="Reset [▼] " />
         </button>
         <button
-            title="Play / pause forward"
             class="btn btn-square outline-2 outline-primary"
             onclick={playForward}
             class:outline={player === 'forward'}
             disabled={isToEnd}
         >
-            <Icon path={mdiPlay} />
+            <Icon path={mdiPlay} title="Play / pause forward [Space]" />
         </button>
     </div>
     <ControlSpeed bind:mps sequenceLen={sequence.length} />
@@ -161,7 +159,6 @@
     <div class="divider"></div>
     <div class="flex gap-2 justify-center">
         <button
-            title="5 steps backward"
             class="btn btn-square"
             onclick={() => {
                 pause()
@@ -169,10 +166,9 @@
             }}
             disabled={isToStart}
         >
-            <Icon path={mdiStepBackward2} />
+            <Icon path={mdiStepBackward2} title="5 steps backward [Ctrl+◀︎]" />
         </button>
         <button
-            title="Step backward"
             class="btn btn-square"
             onclick={() => {
                 pause()
@@ -180,10 +176,9 @@
             }}
             disabled={isToStart}
         >
-            <Icon path={mdiStepBackward} />
+            <Icon path={mdiStepBackward} title="Step backward [◀︎]" />
         </button>
         <button
-            title="Step forward"
             class="btn btn-square"
             onclick={() => {
                 pause()
@@ -191,10 +186,9 @@
             }}
             disabled={isToEnd}
         >
-            <Icon path={mdiStepForward} />
+            <Icon path={mdiStepForward} title="Step forward [▶︎]" />
         </button>
         <button
-            title="5 steps forward"
             class="btn btn-square"
             onclick={() => {
                 pause()
@@ -202,7 +196,7 @@
             }}
             disabled={isToEnd}
         >
-            <Icon path={mdiStepForward2} />
+            <Icon path={mdiStepForward2} title="5 steps forward [Ctrl+▶︎]" />
         </button>
     </div>
 </fieldset>
