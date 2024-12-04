@@ -5,7 +5,7 @@
     import { algoScore } from '$lib/algo/score'
     import type { Algo } from '$lib'
 
-    export let algo = algoSplit2
+    export let algo = algoSplit
     let algoNewProgram: Algo | undefined
 </script>
 
