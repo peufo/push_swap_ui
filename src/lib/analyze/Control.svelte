@@ -59,7 +59,10 @@
             if (e.ctrlKey) return playBackward()
             return playForward()
         }
-        if (e.key === 'ArrowDown') return reset()
+        if (e.key === 'ArrowDown') {
+            if (currentMove !== 0) e.preventDefault()
+            return reset()
+        }
     }
 
     function reset() {
