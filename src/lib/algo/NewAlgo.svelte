@@ -7,10 +7,14 @@
 
     let {
         onAlgoChange,
-        algoIsSelected,
+        onFileHandleChange = () => {},
+        algoIsSelected = true,
+        class: klass,
     }: {
         onAlgoChange: (a: Algo) => unknown
-        algoIsSelected: boolean
+        onFileHandleChange?: (f: FileSystemFileHandle | null) => unknown
+        algoIsSelected?: boolean
+        class?: string
     } = $props()
 
     const algo: Algo = {
@@ -25,15 +29,21 @@
     let fileHandle = $state<FileSystemFileHandle | null>(null)
 
     async function selectProgram() {
-        ;[fileHandle] = await window.showOpenFilePicker({
-            types: [
-                {
-                    description: 'Web Assembly',
-                    accept: { 'application/wasm': '.wasm' },
-                },
-            ],
-            multiple: false,
-        })
+        try {
+            ;[fileHandle] = await window.showOpenFilePicker({
+                types: [
+                    {
+                        description: 'Web Assembly',
+                        accept: { 'application/wasm': '.wasm' },
+                    },
+                ],
+                multiple: false,
+            })
+        } catch (e) {
+            console.error(e)
+            fileHandle = null
+        }
+        onFileHandleChange(fileHandle)
         onAlgoChange(algo)
     }
 
@@ -67,7 +77,7 @@
     }
 </script>
 
-<div class="flex gap-2">
+<div class="flex gap-2 {klass}">
     {#if fileHandle}
         <button
             class="btn grow outline-primary"

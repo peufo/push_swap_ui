@@ -6,7 +6,7 @@
     let { children, data } = $props()
 </script>
 
-<div class="flex gap-1 border-b shadow-md items-center p-1 pl-4 bordered">
+<div class="flex gap-2 border-b shadow-md items-center p-1 pl-4 bordered">
     <a href="/">
         <h2 class="text-2xl text-primary">push_swap_ui</h2>
     </a>

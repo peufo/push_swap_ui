@@ -15,16 +15,16 @@
         algo,
         isLoading = $bindable(false),
         nbRuns = 42,
-        evalsResults = $bindable(evals.map(() => null)),
         readOnly = false,
         mode = 'chart',
+        onDone = () => {},
     }: {
         algo: Algo
-        isLoading: boolean
-        nbRuns: number
-        readOnly: boolean
-        mode: 'chart' | 'table'
-        evalsResults: (EvalResult | null)[]
+        isLoading?: boolean
+        nbRuns?: number
+        readOnly?: boolean
+        mode?: 'chart' | 'table'
+        onDone?: (results: EvalResult[]) => unknown
     } = $props()
 
     type Eval = {
@@ -32,13 +32,18 @@
         limits: number[]
     }
     type EvalRun = { nbMoves: number; isOk: boolean; time: number }
+
+    let evalsResults = $state<(EvalResult | null)[]>(evals.map(() => null))
+
     export type EvalResult = Eval & {
         runs: EvalRun[]
         max: number
         min: number
     }
 
-    onMount(() => refresh())
+    onMount(() => {
+        if (!readOnly) refresh()
+    })
 
     export async function refresh() {
         isLoading = true
@@ -48,6 +53,7 @@
             evalsResults[index] = await getEvalResult(evals[index])
             await tick()
         }
+        onDone(evalsResults as EvalResult[])
         isLoading = false
     }
 
@@ -126,40 +132,48 @@
             {/each}
         </div>
     {:else}
-        <table class="table">
+        <table class="table table-sm">
             <thead>
                 <tr>
-                    <th>Nb values</th>
-                    <th>Nb moves min</th>
-                    <th>Nb moves max</th>
-                    <th>Time max [ms]</th>
+                    <th>Values</th>
+                    <th>Min</th>
+                    <th>Max</th>
+                    <th>Time [ms]</th>
                     <th>Valid</th>
                 </tr>
             </thead>
             <tbody>
-                {#each evalsResults.filter(Boolean) as results}
-                    {@const oks = results!.runs.filter((r) => r.isOk)}
-                    {@const isOk = oks.length === results!.runs.length}
-                    <tr>
-                        <td>{results!.nbValues}</td>
-                        <td>{results!.min}</td>
-                        <td>
-                            <b>{results!.max}</b>
-                        </td>
-                        <td>
-                            {Math.ceil(
-                                Math.max(...results!.runs.map((r) => r.time))
-                            )}
-                        </td>
-                        <td>
-                            <span
-                                class:text-error={!isOk}
-                                class:text-success={isOk}
-                            >
-                                {oks.length} / {results!.runs.length}
-                            </span>
-                        </td>
-                    </tr>
+                {#each evalsResults as results}
+                    {#if results}
+                        {@const oks = results.runs.filter((r) => r.isOk)}
+                        {@const isOk = oks.length === results.runs.length}
+                        <tr>
+                            <td>{results.nbValues}</td>
+                            <td>{results.min}</td>
+                            <td>
+                                <b>{results.max}</b>
+                            </td>
+                            <td>
+                                {Math.ceil(
+                                    Math.max(...results.runs.map((r) => r.time))
+                                )}
+                            </td>
+                            <td>
+                                <span
+                                    class:text-error={!isOk}
+                                    class:text-success={isOk}
+                                >
+                                    {oks.length} / {results.runs.length}
+                                </span>
+                            </td>
+                        </tr>
+                    {:else}
+                        <tr>
+                            <td colspan="5" class="opacity-70 text-center">
+                                Loading...
+                            </td>
+                        </tr>
+                    {/if}
                 {/each}
             </tbody>
         </table>
