@@ -1,6 +1,5 @@
 <script lang="ts">
     import { enhance } from '$app/forms'
-    import { Login } from 'fuma'
 
     export let data
 </script>
@@ -9,10 +8,10 @@
     {#if data.user}
         <div class="text-center">
             <div class="title rounded bg-base-200/40 px-6 py-2">
-                Hey {data.user.username} 👋
+                Hey {data.user.displayname} 👋
             </div>
             <form
-                action="/auth?/logout"
+                action="/me?/logout"
                 use:enhance
                 method="post"
                 class="contents"
@@ -21,6 +20,6 @@
             </form>
         </div>
     {:else}
-        <Login />
+        <a class="btn" href="/auth/42">Login with 42</a>
     {/if}
 </div>

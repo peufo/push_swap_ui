@@ -1,26 +1,12 @@
-import { Lucia } from 'lucia'
+import { FortyTwo } from 'arctic'
 import { dev } from '$app/environment'
-import { PrismaAdapter } from '@lucia-auth/adapter-prisma'
-import { prisma } from '$lib/server'
 
-const adapter = new PrismaAdapter(prisma.session, prisma.user)
+import { FORTYTWO_CLIENT_ID, FORTYTWO_CLIENT_SECRET } from '$env/static/private'
 
-export const lucia = new Lucia(adapter, {
-    sessionCookie: {
-        attributes: {
-            secure: !dev,
-        },
-    },
-    getUserAttributes: (attributes) => ({
-        username: attributes.username,
-    }),
-})
+const domain = dev ? 'http://localhost:5173' : 'https://push.peuf.ch'
 
-declare module 'lucia' {
-    interface Register {
-        Lucia: typeof lucia
-        DatabaseUserAttributes: {
-            username: string
-        }
-    }
-}
+export const fortyTwoAuth = new FortyTwo(
+    FORTYTWO_CLIENT_ID,
+    FORTYTWO_CLIENT_SECRET,
+    `${domain}/auth/42/callback`
+)

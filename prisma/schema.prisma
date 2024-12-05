@@ -8,16 +8,23 @@ datasource db {
 }
 
 model User {
-    id       String    @id @default(cuid())
-    sessions Session[]
-    username String    @unique
-    email    String    @unique
-    password String?
+    id          Int       @id @default(autoincrement())
+    email       String    @unique
+    url         String
+    login       String
+    displayname String
+    imageMicro  String
+    imageSmall  String
+    imageMedium String
+    imageLarge  String
+    campus      String?
+    sessions    Session[]
 }
 
 model Session {
     id        String   @id
-    userId    String
+    userId    Int
     expiresAt DateTime
-    user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+
+    user User @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
