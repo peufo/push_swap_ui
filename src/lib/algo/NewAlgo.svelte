@@ -2,6 +2,7 @@
     import { onMount } from 'svelte'
     import { init, WASI } from '@wasmer/wasi'
     import { Buffer } from 'buffer'
+    import { toast } from 'svelte-sonner'
     import type { Move } from '$lib/move'
     import { createResolver, type Algo, type Resolver } from '$lib'
 
@@ -42,6 +43,7 @@
         } catch (e) {
             console.error(e)
             fileHandle = null
+            toast.warning('Selection canceled')
         }
         onFileHandleChange(fileHandle)
         onAlgoChange(algo)
@@ -79,12 +81,15 @@
 
 <div class="flex gap-2 {klass}">
     {#if fileHandle}
+        {@const name = fileHandle.name}
         <button
             class="btn grow outline-primary"
             class:outline={algoIsSelected}
             onclick={() => onAlgoChange(algo)}
         >
-            {fileHandle.name}
+            <span>
+                {name.length > 24 ? '…' : ''}{name.slice(-24)}
+            </span>
         </button>
     {/if}
 

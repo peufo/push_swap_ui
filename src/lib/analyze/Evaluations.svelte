@@ -127,7 +127,11 @@
                 {#if results}
                     <Evaluation {results} />
                 {:else}
-                    <div class="skeleton w-full h-full"></div>
+                    <div
+                        class="w-full h-60 grid place-content-center bg-base-300 rounded-lg opacity-70"
+                    >
+                        Loading...
+                    </div>
                 {/if}
             {/each}
         </div>

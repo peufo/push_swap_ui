@@ -1,10 +1,14 @@
 <script lang="ts">
     import { mdiAccountHeartOutline, mdiPlus } from '@mdi/js'
     import { ToggleMode, Icon } from 'fuma/ui'
+    import { mode } from 'mode-watcher'
+    import { Toaster } from 'svelte-sonner'
     import '../app.css'
 
     let { children, data } = $props()
 </script>
+
+<Toaster theme={$mode} />
 
 <div class="flex gap-2 border-b shadow-md items-center p-1 pl-4 bordered">
     <a href="/">

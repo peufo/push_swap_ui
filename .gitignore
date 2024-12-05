@@ -1,4 +1,5 @@
 node_modules
+wasm
 
 # Output
 .output

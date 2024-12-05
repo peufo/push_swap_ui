@@ -42,11 +42,14 @@ importers:
         specifier: ^2.2.0
         version: 2.2.0
       fuma:
-        specifier: ^1.0.3
-        version: 1.0.3(@sveltejs/kit@2.9.0(@sveltejs/vite-plugin-svelte@5.0.1(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)))(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)))(@types/node@22.10.1)(prisma@6.0.1)(typescript@5.7.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1))
+        specifier: ^1.0.4
+        version: 1.0.4(@sveltejs/kit@2.9.0(@sveltejs/vite-plugin-svelte@5.0.1(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)))(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)))(@types/node@22.10.1)(prisma@6.0.1)(typescript@5.7.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1))
       isomorphic-dompurify:
         specifier: ^2.18.0
         version: 2.18.0
+      mode-watcher:
+        specifier: ^0.5.0
+        version: 0.5.0(svelte@5.6.2)
       oslo:
         specifier: ^1.2.1
         version: 1.2.1
@@ -56,9 +59,15 @@ importers:
       prisma:
         specifier: ^6.0.1
         version: 6.0.1
+      short-uuid:
+        specifier: ^5.2.0
+        version: 5.2.0
       simple-statistics:
         specifier: ^7.8.7
         version: 7.8.7
+      svelte-sonner:
+        specifier: ^0.3.28
+        version: 0.3.28(svelte@5.6.2)
       vite:
         specifier: ^6.0.2
         version: 6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)
@@ -1016,6 +1025,9 @@ packages:
     resolution: {integrity: sha512-bN798gFfQX+viw3R7yrGWRqnrN2oRkEkUjjl4JNn4E8GxxbjtG3FbrEIIY3l8/hrwUwIeCZvi4QuOTP4MErVug==}
     engines: {node: '>=12'}
 
+  any-base@1.1.0:
+    resolution: {integrity: sha512-uMgjozySS8adZZYePpaWs8cxB9/kdzmpX6SgJZ+wbz1K5eYk5QMYDVJaZKhxyIHUdnnJkfR7SVgStgH7LkGUyg==}
+
   any-promise@1.3.0:
     resolution: {integrity: sha512-7UvmKalWRt1wgjL1RrGxoSJW/0QZFIegpeGvZG9kjp8vrRu55XTHbwnqq2GpXm9uLbcuhxm3IqX9OB4MZR1b2A==}
 
@@ -1355,8 +1367,8 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
 
-  fuma@1.0.3:
-    resolution: {integrity: sha512-fbdAjfGP3vk/VTM2PN//IX/SvTBi91vmtrWjSJmkHbNbmpai3XxQHN3dp4CeLmC1w5FHnftu4xH5C84zDa9fFQ==}
+  fuma@1.0.4:
+    resolution: {integrity: sha512-r2n7BLUzGL5wbg3sBCe78TU3Yciz2JEaQruFDY/bRK7be0Gf570F0tvV8FPnUU/+d//LKPu9gGddSzDXXuUwpg==}
     peerDependencies:
       '@sveltejs/kit': ^2.5.6
 
@@ -2132,6 +2144,10 @@ packages:
   shiki@1.24.0:
     resolution: {integrity: sha512-qIneep7QRwxRd5oiHb8jaRzH15V/S8F3saCXOdjwRLgozZJr5x2yeBhQtqkO3FSzQDwYEFAYuifg4oHjpDghrg==}
 
+  short-uuid@5.2.0:
+    resolution: {integrity: sha512-296/Nzi4DmANh93iYBwT4NoYRJuHnKEzefrkSagQbTH/A6NTaB68hSPDjm5IlbI5dx9FXdmtqPcj6N5H+CPm6w==}
+    engines: {node: '>=14'}
+
   signal-exit@4.1.0:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
@@ -2319,6 +2335,10 @@ packages:
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+
+  uuid@9.0.1:
+    resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
+    hasBin: true
 
   v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
@@ -3246,6 +3266,8 @@ snapshots:
 
   ansi-styles@6.2.1: {}
 
+  any-base@1.1.0: {}
+
   any-promise@1.3.0: {}
 
   anymatch@3.1.3:
@@ -3567,7 +3589,7 @@ snapshots:
   fsevents@2.3.3:
     optional: true
 
-  fuma@1.0.3(@sveltejs/kit@2.9.0(@sveltejs/vite-plugin-svelte@5.0.1(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)))(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)))(@types/node@22.10.1)(prisma@6.0.1)(typescript@5.7.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)):
+  fuma@1.0.4(@sveltejs/kit@2.9.0(@sveltejs/vite-plugin-svelte@5.0.1(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)))(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)))(@types/node@22.10.1)(prisma@6.0.1)(typescript@5.7.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)):
     dependencies:
       '@lucia-auth/adapter-prisma': 4.0.1(@prisma/client@5.22.0(prisma@6.0.1))(lucia@3.2.2)
       '@mdi/js': 7.4.47
@@ -4614,6 +4636,11 @@ snapshots:
       '@shikijs/vscode-textmate': 9.3.0
       '@types/hast': 3.0.4
 
+  short-uuid@5.2.0:
+    dependencies:
+      any-base: 1.1.0
+      uuid: 9.0.1
+
   signal-exit@4.1.0: {}
 
   simple-statistics@7.8.7: {}
@@ -4849,6 +4876,8 @@ snapshots:
       picocolors: 1.1.1
 
   util-deprecate@1.0.2: {}
+
+  uuid@9.0.1: {}
 
   v8-compile-cache-lib@3.0.1: {}
 

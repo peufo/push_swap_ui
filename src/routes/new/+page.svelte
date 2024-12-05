@@ -52,7 +52,7 @@
             {} as Scores
         )
         const result500 = results.find((r) => r.nbValues === 500)!
-        execTime500 = Math.max(...result500.runs.map((r) => r.time))
+        execTime500 = Math.ceil(Math.max(...result500.runs.map((r) => r.time)))
     }
 </script>
 
@@ -73,7 +73,11 @@
         </div>
     {/if}
 
-    <Form action="/new?algo" model={modelAlgorithm}>
+    <Form
+        action="/new?/algo"
+        model={modelAlgorithm}
+        disabled={!scores || !fileList}
+    >
         {#if fileList}
             <input
                 type="file"
