@@ -35,15 +35,9 @@ importers:
       debounce:
         specifier: ^2.2.0
         version: 2.2.0
-      dotenv:
-        specifier: ^16.4.7
-        version: 16.4.7
       fuma:
-        specifier: ^1.0.1
-        version: 1.0.1(@sveltejs/kit@2.9.0(@sveltejs/vite-plugin-svelte@5.0.1(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(yaml@2.6.1)))(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(yaml@2.6.1)))(@types/node@22.10.1)(prisma@6.0.1)(typescript@5.7.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(yaml@2.6.1))
-      mode-watcher:
-        specifier: ^0.5.0
-        version: 0.5.0(svelte@5.6.2)
+        specifier: ^1.0.3
+        version: 1.0.3(@sveltejs/kit@2.9.0(@sveltejs/vite-plugin-svelte@5.0.1(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(yaml@2.6.1)))(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(yaml@2.6.1)))(@types/node@22.10.1)(prisma@6.0.1)(typescript@5.7.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(yaml@2.6.1))
       oslo:
         specifier: ^1.2.1
         version: 1.2.1
@@ -84,6 +78,9 @@ importers:
       daisyui:
         specifier: ^4.12.14
         version: 4.12.14(postcss@8.4.49)
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.4.7
       svelte:
         specifier: ^5.0.0
         version: 5.6.2
@@ -1220,8 +1217,8 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
 
-  fuma@1.0.1:
-    resolution: {integrity: sha512-4qk76lc2Cru+GLew2Nc9bKjvSkFuL2kDH7Dj7IDQkJXlzfWecJX3U6tzvV8uvfkL0fyP0ii8nbh95Iqn0qEsWg==}
+  fuma@1.0.3:
+    resolution: {integrity: sha512-fbdAjfGP3vk/VTM2PN//IX/SvTBi91vmtrWjSJmkHbNbmpai3XxQHN3dp4CeLmC1w5FHnftu4xH5C84zDa9fFQ==}
     peerDependencies:
       '@sveltejs/kit': ^2.5.6
 
@@ -2804,7 +2801,7 @@ snapshots:
   fsevents@2.3.3:
     optional: true
 
-  fuma@1.0.1(@sveltejs/kit@2.9.0(@sveltejs/vite-plugin-svelte@5.0.1(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(yaml@2.6.1)))(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(yaml@2.6.1)))(@types/node@22.10.1)(prisma@6.0.1)(typescript@5.7.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(yaml@2.6.1)):
+  fuma@1.0.3(@sveltejs/kit@2.9.0(@sveltejs/vite-plugin-svelte@5.0.1(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(yaml@2.6.1)))(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(yaml@2.6.1)))(@types/node@22.10.1)(prisma@6.0.1)(typescript@5.7.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(yaml@2.6.1)):
     dependencies:
       '@lucia-auth/adapter-prisma': 4.0.1(@prisma/client@5.22.0(prisma@6.0.1))(lucia@3.2.2)
       '@mdi/js': 7.4.47

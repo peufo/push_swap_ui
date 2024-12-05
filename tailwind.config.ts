@@ -7,6 +7,7 @@ export default {
         './src/**/*.{html,svelte,ts,js}',
         './node_modules/**/fuma/dist/**/*.svelte',
     ],
+    darkMode: 'class',
     theme: {
         extend: {},
     },

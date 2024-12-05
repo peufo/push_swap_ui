@@ -13,11 +13,15 @@
 
     <div class="grow"></div>
     {#if data.user}
-        <a
-            href="/me"
-            class="btn btn-square grid place-content-center overflow-hidden"
-        >
-            <img src={data.user.imageSmall} alt="user avatar" />
+        <a href="/me" class="btn gap-3 pr-0 overflow-hidden">
+            <div>{data.user.login}</div>
+            <div class="h-full p-0.5">
+                <img
+                    src={data.user.imageSmall}
+                    alt="User avatar"
+                    class="h-full rounded"
+                />
+            </div>
         </a>
     {:else}
         <a href="/auth/42" class="btn btn-square">
@@ -25,7 +29,7 @@
         </a>
     {/if}
 
-    <ToggleMode class="btn-md" />
+    <ToggleMode class="btn-md" defaultMode="dark" />
 </div>
 
 {@render children()}
