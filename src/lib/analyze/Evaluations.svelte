@@ -14,7 +14,7 @@
         { nbValues: 500, limits: [5500, 7000, 8500, 10000, 11500] },
     ]
     let evalsResults = $state<(EvalResult | null)[]>(evals.map(() => null))
-    let nbRuns = $state(100)
+    let nbRuns = $state(42)
 
     type Eval = {
         nbValues: number
@@ -81,7 +81,7 @@
         </label>
         <button class="btn" onclick={refresh}>Run</button>
     </div>
-    <div class="grid grid-cols-2 gap-x-6 gap-y-16 p-4">
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-16 p-4">
         {#each evalsResults as results}
             {#if results}
                 <Evaluation {results} />

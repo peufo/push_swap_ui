@@ -8,8 +8,8 @@ datasource db {
 }
 
 model User {
-    id          Int       @id @default(autoincrement())
-    email       String    @unique
+    id          Int         @id @default(autoincrement())
+    email       String      @unique
     url         String
     login       String
     displayname String
@@ -19,12 +19,29 @@ model User {
     imageLarge  String
     campus      String?
     sessions    Session[]
+    algorithms  Algorithm[]
+    createdAt   DateTime    @default(now())
 }
 
 model Session {
     id        String   @id
     userId    Int
     expiresAt DateTime
+    user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
 
-    user User @relation(references: [id], fields: [userId], onDelete: Cascade)
+model Algorithm {
+    id          Int      @id @default(autoincrement())
+    authorId    Int
+    author      User     @relation(references: [id], fields: [authorId], onDelete: Cascade)
+    name        String   @unique
+    description String   @db.Text
+    score3      Int
+    score5      Int
+    score100    Int
+    score500    Int
+    execTime500 Int
+    wasm        String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }

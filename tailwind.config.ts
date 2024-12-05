@@ -1,6 +1,7 @@
-import forms from '@tailwindcss/forms'
-import daisyui from 'daisyui'
 import type { Config } from 'tailwindcss'
+import forms from '@tailwindcss/forms'
+import typography from '@tailwindcss/typography'
+import daisyui from 'daisyui'
 
 export default {
     content: [
@@ -11,7 +12,7 @@ export default {
     theme: {
         extend: {},
     },
-    plugins: [forms, daisyui],
+    plugins: [daisyui, typography],
     daisyui: {
         logs: false,
     },
