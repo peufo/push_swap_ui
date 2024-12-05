@@ -1,12 +1,12 @@
 <script lang="ts">
-    import NewProgram from './NewProgram.svelte'
+    import { NewAlgo } from '$lib/algo'
     import { algoSplit } from '$lib/algo/split'
     import { algoSplit2 } from '$lib/algo/split_2'
     import { algoScore } from '$lib/algo/score'
     import type { Algo } from '$lib'
 
     export let algo = algoSplit
-    let algoNewProgram: Algo | undefined
+    let algoNew: Algo | undefined
 </script>
 
 <fieldset class="p-4 border rounded">
@@ -34,10 +34,10 @@
             Score
         </button>
     </div>
-    <NewProgram
-        algoIsSelected={algo.name === algoNewProgram?.name}
+    <NewAlgo
+        algoIsSelected={algo.name === algoNew?.name}
         onAlgoChange={(a) => {
-            algoNewProgram = a
+            algoNew = a
             algo = a
         }}
     />

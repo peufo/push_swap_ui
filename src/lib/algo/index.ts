@@ -40,3 +40,6 @@ export function createResolver(
         }
     }
 }
+
+export { default as NewAlgo } from './NewAlgo.svelte'
+export { default as SelectAlgo } from './SelectAlgo.svelte'

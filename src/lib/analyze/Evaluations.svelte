@@ -1,6 +1,5 @@
 <script lang="ts">
     import { onMount, tick } from 'svelte'
-
     import type { Algo } from '$lib/algo'
     import { createValues, isSequenceOk } from '$lib/analyze'
     import Evaluation from '$lib/visual/Evaluation.svelte'
@@ -134,10 +133,13 @@
                     <th>Nb moves min</th>
                     <th>Nb moves max</th>
                     <th>Time max [ms]</th>
+                    <th>Valid</th>
                 </tr>
             </thead>
             <tbody>
                 {#each evalsResults.filter(Boolean) as results}
+                    {@const oks = results!.runs.filter((r) => r.isOk)}
+                    {@const isOk = oks.length === results!.runs.length}
                     <tr>
                         <td>{results!.nbValues}</td>
                         <td>{results!.min}</td>
@@ -148,6 +150,14 @@
                             {Math.ceil(
                                 Math.max(...results!.runs.map((r) => r.time))
                             )}
+                        </td>
+                        <td>
+                            <span
+                                class:text-error={!isOk}
+                                class:text-success={isOk}
+                            >
+                                {oks.length} / {results!.runs.length}
+                            </span>
                         </td>
                     </tr>
                 {/each}
