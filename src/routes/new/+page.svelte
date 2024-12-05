@@ -11,7 +11,6 @@
 
     <Form action="/new?algo" model={modelAlgorithm}>
         <InputText key="name" label="Name" input={{ autocomplete: 'off' }} />
-
         <FormControl key="description" label="Description">
             <Markdown bind:value={description} />
             <input type="hidden" name="description" value={description} />

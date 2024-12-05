@@ -18,32 +18,32 @@
         const distKO = get_distribution(
             res.runs.filter((r) => !r.isOk).map((r) => r.nbMoves)
         )
-        const range = get_range(0, res.max)
-        chart.data.labels = get_range(0, Math.max(res.max, ...res.limits))
+        const distMax = Math.max(...Object.values(distOK))
+        const range = get_range(res.min, res.max)
+        const limit = res.limits.filter((l) => l < res.max)[0] ?? res.limits[0]
+        chart.data.labels = get_range(res.min, Math.max(res.max, limit))
         chart.data.datasets[0].data = range.map((x) => distOK[x] || 0)
         chart.data.datasets[1].data = range.map((x) => distKO[x] || 0)
+        const rangeLen = Math.max(res.max, limit) - Math.min(res.min, limit)
         // @ts-ignore
-        chart.data.datasets[0].barPercentage =
-            0.5 + Math.max(...res.limits) / 50
+        chart.data.datasets[0].barPercentage = 0.5 + rangeLen / 50
         // @ts-ignore
-        chart.data.datasets[1].barPercentage =
-            0.5 + Math.max(...res.limits) / 50
-        res.limits.forEach((limit, i) => {
-            chart.data.datasets[i + 2] = {
-                type: 'scatter',
-                label: 'Limit ' + (i + 1),
-                showLine: true,
-                data: [
-                    { x: limit, y: 0 },
-                    { x: limit, y: 1 },
-                ],
-                backgroundColor: 'rgb(97, 132, 216)',
-                borderColor: 'rgb(97, 132, 216)',
-                borderWidth: 2,
-                pointRadius: 0,
-            }
-        })
-        chart.options.plugins!.title!.text = `max ${res.max} moves for ${res.nbValues} values`
+        chart.data.datasets[1].barPercentage = 0.5 + rangeLen / 50
+        chart.data.datasets[2] = {
+            type: 'scatter',
+            label: 'Limit',
+            showLine: true,
+            data: [
+                { x: limit, y: 0 },
+                { x: limit, y: distMax },
+            ],
+            backgroundColor: 'rgb(97, 132, 216)',
+            borderColor: 'rgb(97, 132, 216)',
+            borderWidth: 2,
+            pointRadius: 0,
+        }
+
+        chart.options.plugins!.title!.text = `${res.max} moves for ${res.nbValues} values`
         chart.options.plugins!.subtitle!.text = `limits: ${res.limits.join(', ')}`
         chart.update('none')
     }
@@ -59,6 +59,7 @@
 
     function get_range(min: number, max: number): number[] {
         const range: number[] = []
+        if (min > max) [min, max] = [max, min]
         for (let v = min; v <= max; v++) range.push(v)
         return range
     }
