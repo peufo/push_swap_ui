@@ -29,7 +29,7 @@ export const actions = {
             })
         },
         {
-            redirectTo: (algo) => `/analyze?algoId=${algo.id}`,
+            redirectTo: '/me',
         }
     ),
 }

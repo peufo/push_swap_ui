@@ -43,3 +43,4 @@ export function createResolver(
 
 export { default as NewAlgo } from './NewAlgo.svelte'
 export { default as SelectAlgo } from './SelectAlgo.svelte'
+export { default as CardAlgo } from './CardAlgo.svelte'
