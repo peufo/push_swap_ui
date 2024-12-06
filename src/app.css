@@ -2,6 +2,7 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-.carta-renderer {
+.carta-renderer,
+.carta-viewer {
     @apply prose;
 }

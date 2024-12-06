@@ -2,7 +2,7 @@
     import { Form, FormControl, InputText } from 'fuma'
     import { tick } from 'svelte'
     import type { Algorithm } from '@prisma/client'
-    import { Markdown } from '$lib/markdown'
+    import { MarkdownEdit } from '$lib/markdown'
     import { NewAlgo, type Algo } from '$lib/algo'
     import Evaluations, {
         type EvalResult,
@@ -96,8 +96,13 @@
         {/if}
         <InputText key="name" label="Name" input={{ autocomplete: 'off' }} />
         <FormControl key="description" label="Description">
-            <Markdown bind:value={description} />
+            <MarkdownEdit bind:value={description} />
             <input type="hidden" name="description" value={description} />
         </FormControl>
+        <InputText
+            key="repository"
+            label="Repository"
+            input={{ placeholder: 'https://github.com/peufo/42_push_swap' }}
+        />
     </Form>
 </div>

@@ -36,6 +36,7 @@ model Algorithm {
     author      User     @relation(references: [id], fields: [authorId], onDelete: Cascade)
     name        String   @unique
     description String   @db.Text
+    repository  String?
     score3      Int
     score5      Int
     score100    Int

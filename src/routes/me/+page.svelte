@@ -7,8 +7,8 @@
     export let data
 </script>
 
-<div class="flex flex-col max-w-lg mx-auto my-10">
-    <div class="pb-6 flex gap-2 items-end">
+<div class="flex flex-col gap-6 max-w-lg mx-auto my-10">
+    <div class="flex gap-2 items-end">
         <h2 class="text-2xl">
             {data.user.displayname.split(' ')[0]}'s algorithms
         </h2>

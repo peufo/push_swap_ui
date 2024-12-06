@@ -9,6 +9,10 @@
     $accent: var(--fallback-bc, oklch(var(--bc) / 0.2));
     $content: var(--fallback-bc, oklch(var(--bc) / var(--tw-text-opacity, 1)));
 
+    pre {
+        border: solid 1px $border;
+    }
+
     &.carta-editor {
         background-color: $background-light;
         border: 1px solid $border;

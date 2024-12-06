@@ -1,9 +1,22 @@
 <script lang="ts">
-    import { mdiBookOpenPageVariantOutline, mdiPoll } from '@mdi/js'
-    import { Icon } from 'fuma'
+    import {
+        mdiBookOpenPageVariantOutline,
+        mdiPoll,
+        mdiSourceBranch,
+    } from '@mdi/js'
+    import { Icon, tip } from 'fuma'
     import type { Algorithm, User } from '@prisma/client'
+    import { Markdown } from '$lib/markdown'
 
     let { algo }: { algo: Algorithm & { author: User } } = $props()
+    let readAll = $state<boolean>(false)
+    let wrapperHeight = $state<number>(0)
+    let descriptionHeight = $state<number>(0)
+    let isLongDescription = $derived(
+        readAll || descriptionHeight > wrapperHeight
+    )
+
+    const getTip = (nb: number) => `Sequence length to sort ${nb} number`
 </script>
 
 <div class="card border shadow-lg">
@@ -11,25 +24,61 @@
         <h2 class="card-title">
             <span>{algo.name}</span>
             <span class="grow"></span>
-            <span class="badge">{algo.score100}</span>
-            <span class="badge">{algo.score500}</span>
+            <span class="badge" use:tip={{ content: getTip(100) }}>
+                {algo.score100.toLocaleString()}
+            </span>
+            <span class="badge" use:tip={{ content: getTip(500) }}>
+                {algo.score500.toLocaleString()}
+            </span>
         </h2>
-        <p class="mb-4 text-sm">
+        <p class="mb-4 text-xs">
             By
             <a
                 href="https://profile.intra.42.fr/users/{algo.author.login}"
                 class="link link-hover"
+                target="_blank"
             >
                 {algo.author.displayname}
             </a>
             from {algo.author.campus}
         </p>
 
-        <div class="card-actions justify-end">
-            <a href="/docs/{algo.id}" class="btn btn-ghost btn-sm">
-                <Icon path={mdiBookOpenPageVariantOutline} />
-                <span>read more</span>
-            </a>
+        <div
+            class="description-wrapper relative"
+            class:read-all={readAll}
+            bind:offsetHeight={wrapperHeight}
+        >
+            <div class="description" bind:offsetHeight={descriptionHeight}>
+                <Markdown value={algo.description} />
+            </div>
+        </div>
+
+        <div class="card-actions pt-2">
+            {#if isLongDescription}
+                <button
+                    onclick={() => (readAll = !readAll)}
+                    class="btn btn-outline btn-sm group"
+                >
+                    <Icon
+                        path={mdiBookOpenPageVariantOutline}
+                        class="group-hover:fill-base-100"
+                    />
+                    <span>Read {readAll ? 'less' : 'more'}</span>
+                </button>
+            {/if}
+
+            <div class="grow"></div>
+
+            {#if algo.repository}
+                <a
+                    href={algo.repository}
+                    target="_blank"
+                    class="btn btn-ghost btn-sm"
+                >
+                    <Icon path={mdiSourceBranch} />
+                    <span>Source</span>
+                </a>
+            {/if}
             <a href="/analyze?algoId={algo.id}" class="btn btn-ghost btn-sm">
                 <Icon path={mdiPoll} />
                 <span>Analize</span>
@@ -37,3 +86,13 @@
         </div>
     </div>
 </div>
+
+<style>
+    .description-wrapper {
+        max-height: 240px;
+        overflow: hidden;
+    }
+    .description-wrapper.read-all {
+        max-height: none;
+    }
+</style>

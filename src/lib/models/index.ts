@@ -4,6 +4,7 @@ import type { Prisma } from '@prisma/client'
 export const modelAlgorithm = {
     name: z.string().min(3),
     description: z.string().min(42),
+    repository: z.string().url().nullish(),
     score3: z.coerce.number(),
     score5: z.coerce.number(),
     score100: z.coerce.number(),
