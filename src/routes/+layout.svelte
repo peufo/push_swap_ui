@@ -19,12 +19,14 @@
 
     <div class="grow"></div>
 
-    <a href="/new" class="btn btn-primary btn-outline group">
-        <Icon path={mdiPlus} class="fill-primary group-hover:fill-base-100" />
-        <span>new algorithm</span>
-    </a>
-
     {#if data.user}
+        <a href="/new" class="btn btn-primary btn-outline group">
+            <Icon
+                path={mdiPlus}
+                class="fill-primary group-hover:fill-base-100"
+            />
+            <span>new algorithm</span>
+        </a>
         <a href="/me" class="btn gap-3 pr-0 overflow-hidden">
             <div>{data.user.login}</div>
             <div class="h-full p-0.5">

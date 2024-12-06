@@ -1,15 +1,21 @@
-<div class="p-10 max-w-5xl mx-auto flex flex-col gap-10">
-    <div>
-        <a href="/analyze" class="btn btn-primary w-full">
-            Go to analyze page
-        </a>
+<script lang="ts">
+    import { CardAlgo } from '$lib'
+
+    let { data } = $props()
+</script>
+
+<div class="flex flex-col gap-6 max-w-lg mx-auto my-10">
+    <div class="flex gap-2 items-end">
+        <h2 class="text-2xl">Algorithms</h2>
+        <div class="grow"></div>
+        <!-- TODO: tri par score -->
     </div>
 
-    <div>
-        <div class="py-4">
-            For generate your .wasm, add and adapt this to your Makefile :
+    {#each data.algos as algo}
+        <CardAlgo {algo} />
+    {:else}
+        <div class="h-20 bg-base-200 grid place-content-center rounded-xl">
+            <span class="opacity-70">No items</span>
         </div>
-        <pre class="border p-4 rounded overflow-auto">wasm: 
-	docker run --rm -v $(shell pwd):/src emscripten/emsdk emcc $(SOURCES) -o $(NAME).wasm</pre>
-    </div>
+    {/each}
 </div>

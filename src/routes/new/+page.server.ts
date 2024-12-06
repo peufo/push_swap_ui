@@ -5,6 +5,12 @@ import { formAction } from 'fuma/server'
 import { WASM_DIR } from '$env/static/private'
 import { modelAlgorithmCreate } from '$lib'
 import { prisma } from '$lib/server'
+import { error } from '@sveltejs/kit'
+
+export const load = async (event) => {
+    if (!event.locals.user) error(401)
+    return {}
+}
 
 export const actions = {
     algo_create: formAction(
