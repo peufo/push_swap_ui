@@ -3,12 +3,12 @@ import fs from 'node:fs/promises'
 import uuid from 'short-uuid'
 import { formAction } from 'fuma/server'
 import { WASM_DIR } from '$env/static/private'
-import { modelAlgorithm } from '$lib'
+import { modelAlgorithmCreate } from '$lib'
 import { prisma } from '$lib/server'
 
 export const actions = {
     algo_create: formAction(
-        modelAlgorithm,
+        modelAlgorithmCreate,
         async ({ event, data, formData }) => {
             if (!event.locals.user) throw Error('Not authorized')
             console.log(data)

@@ -7,7 +7,7 @@
     import Evaluations, {
         type EvalResult,
     } from '$lib/analyze/Evaluations.svelte'
-    import { modelAlgorithm } from '$lib'
+    import { modelAlgorithmCreate } from '$lib'
 
     let description = $state('')
     let algo = $state<Algo | null>(null)
@@ -75,7 +75,7 @@
 
     <Form
         action="/new?/algo"
-        model={modelAlgorithm}
+        model={modelAlgorithmCreate}
         disabled={!scores || !fileList}
     >
         {#if fileList}
