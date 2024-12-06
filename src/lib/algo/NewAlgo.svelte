@@ -1,10 +1,9 @@
 <script lang="ts">
     import { onMount } from 'svelte'
-    import { init, WASI } from '@wasmer/wasi'
     import { Buffer } from 'buffer'
     import { toast } from 'svelte-sonner'
     import type { Move } from '$lib/move'
-    import { createResolver, type Algo, type Resolver } from '$lib'
+    import { type Algo, type Resolver, compileWasm } from '$lib'
     import { Icon } from 'fuma'
     import { mdiHelp } from '@mdi/js'
 
@@ -63,21 +62,7 @@
                 )
         const file = await fileHandle.getFile()
         const buffer = await file.arrayBuffer()
-        const module = await WebAssembly.compile(buffer)
-        await init()
-        return createResolver((values) => {
-            const wasi = new WASI({
-                env: {},
-                args: ['hey', ...values.map((v) => v.toString())],
-            })
-            wasi.instantiate(module, {})
-            const exitCode = wasi.start()
-            if (exitCode == 1) throw Error('Program exit with exit code [1]')
-            let stdout = wasi.getStdoutString()
-            wasi.free()
-            // TODO: valid the output with zod
-            return stdout.split('\n').filter(Boolean) as Move[]
-        })
+        return compileWasm(buffer)
     }
 </script>
 
