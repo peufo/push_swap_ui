@@ -1,12 +1,14 @@
 <script lang="ts">
     import {
         mdiBookOpenPageVariantOutline,
+        mdiPencilOutline,
         mdiPoll,
         mdiSourceBranch,
     } from '@mdi/js'
     import { Icon, tip } from 'fuma'
     import type { Algorithm, User } from '@prisma/client'
     import { Markdown } from '$lib/markdown'
+    import { page } from '$app/stores'
 
     let { algo }: { algo: Algorithm & { author: User } } = $props()
     let readAll = $state<boolean>(false)
@@ -53,7 +55,7 @@
             </div>
         </div>
 
-        <div class="card-actions pt-2">
+        <div class="card-actions pt-2 flex-nowrap">
             {#if isLongDescription}
                 <button
                     onclick={() => (readAll = !readAll)}
@@ -83,6 +85,13 @@
                 <Icon path={mdiPoll} />
                 <span>Analize</span>
             </a>
+
+            {#if $page.data.user?.id === algo.authorId}
+                <a href="/edit/{algo.id}" class="btn btn-ghost btn-sm">
+                    <Icon path={mdiPencilOutline} />
+                    <span>Edit</span>
+                </a>
+            {/if}
         </div>
     </div>
 </div>
