@@ -21,7 +21,7 @@
     const getTip = (nb: number) => `Sequence length to sort ${nb} number`
 </script>
 
-<div class="card border shadow-lg">
+<div class="card border shadow-lg overflow-hidden">
     <div class="card-body">
         <h2 class="card-title">
             <span>{algo.name}</span>
@@ -54,52 +54,50 @@
                 <Markdown value={algo.description} />
             </div>
         </div>
+    </div>
+    <div class="card-actions pt-4 flex-nowrap backdrop-blur-sm p-8">
+        {#if isLongDescription}
+            <button
+                onclick={() => (readAll = !readAll)}
+                class="btn btn-outline btn-sm group"
+            >
+                <Icon
+                    path={mdiBookOpenPageVariantOutline}
+                    class="group-hover:fill-base-100"
+                />
+                <span>Read {readAll ? 'less' : 'more'}</span>
+            </button>
+        {/if}
 
-        <div class="card-actions pt-2 flex-nowrap">
-            {#if isLongDescription}
-                <button
-                    onclick={() => (readAll = !readAll)}
-                    class="btn btn-outline btn-sm group"
-                >
-                    <Icon
-                        path={mdiBookOpenPageVariantOutline}
-                        class="group-hover:fill-base-100"
-                    />
-                    <span>Read {readAll ? 'less' : 'more'}</span>
-                </button>
-            {/if}
+        <div class="grow"></div>
 
-            <div class="grow"></div>
-
-            {#if algo.repository}
-                <a
-                    href={algo.repository}
-                    target="_blank"
-                    class="btn btn-ghost btn-sm"
-                >
-                    <Icon path={mdiSourceBranch} />
-                    <span>Source</span>
-                </a>
-            {/if}
-            <a href="/analyze?algoId={algo.id}" class="btn btn-ghost btn-sm">
-                <Icon path={mdiPoll} />
-                <span>Analize</span>
+        {#if algo.repository}
+            <a
+                href={algo.repository}
+                target="_blank"
+                class="btn btn-ghost btn-sm"
+            >
+                <Icon path={mdiSourceBranch} />
+                <span>Source</span>
             </a>
+        {/if}
+        <a href="/analyze?algoId={algo.id}" class="btn btn-ghost btn-sm">
+            <Icon path={mdiPoll} />
+            <span>Analize</span>
+        </a>
 
-            {#if $page.data.user?.id === algo.authorId}
-                <a href="/edit/{algo.id}" class="btn btn-ghost btn-sm">
-                    <Icon path={mdiPencilOutline} />
-                    <span>Edit</span>
-                </a>
-            {/if}
-        </div>
+        {#if $page.data.user?.id === algo.authorId}
+            <a href="/edit/{algo.id}" class="btn btn-ghost btn-sm">
+                <Icon path={mdiPencilOutline} />
+                <span>Edit</span>
+            </a>
+        {/if}
     </div>
 </div>
 
 <style>
     .description-wrapper {
         max-height: 240px;
-        overflow: hidden;
     }
     .description-wrapper.read-all {
         max-height: none;
