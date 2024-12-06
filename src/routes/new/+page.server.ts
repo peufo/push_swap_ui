@@ -11,14 +11,11 @@ export const actions = {
         modelAlgorithmCreate,
         async ({ event, data, formData }) => {
             if (!event.locals.user) throw Error('Not authorized')
-            console.log(data)
             const wasm = formData.get('wasm')
             if (!(wasm instanceof File)) throw Error('wasm file is required')
-
             const wasmDir = path.resolve(WASM_DIR)
             await fs.mkdir(wasmDir, { recursive: true })
             const wasmPath = path.resolve(wasmDir, uuid.generate() + '.wasm')
-
             await fs.writeFile(wasmPath, Buffer.from(await wasm.arrayBuffer()))
             return prisma.algorithm.create({
                 data: {
