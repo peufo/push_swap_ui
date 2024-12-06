@@ -8,7 +8,7 @@
 <div class="p-10 max-w-3xl mx-auto">
     <div class="card border shadow-md">
         <div class="card-body">
-            <h2 class="card-title">How to build a .wasm file</h2>
+            <h2 class="card-title">How to make a .wasm file</h2>
 
             <p class="py-8">
                 To compile your source code in
@@ -35,7 +35,10 @@
                 <pre
                     class="border px-4 py-3 rounded overflow-auto relative">{makefileCommand}</pre>
                 <div class="absolute right-2 -top-4">
-                    <ButtonCopy value={makefileCommand} />
+                    <ButtonCopy
+                        value={makefileCommand}
+                        title="Copy this command"
+                    />
                 </div>
             </div>
 

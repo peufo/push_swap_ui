@@ -5,6 +5,8 @@
     import { toast } from 'svelte-sonner'
     import type { Move } from '$lib/move'
     import { createResolver, type Algo, type Resolver } from '$lib'
+    import { Icon } from 'fuma'
+    import { mdiHelp } from '@mdi/js'
 
     let {
         onAlgoChange,
@@ -79,7 +81,7 @@
     }
 </script>
 
-<div class="flex gap-2 {klass}">
+<div class="flex gap-2 items-center {klass}">
     {#if fileHandle}
         {@const name = fileHandle.name}
         <button
@@ -94,11 +96,16 @@
     {/if}
 
     <button
-        class="btn"
-        class:w-full={!fileHandle}
+        class="btn grow"
         class:btn-primary={!fileHandle}
         onclick={selectProgram}
     >
         {fileHandle ? 'Change' : 'Select wasm'}
     </button>
+
+    {#if !fileHandle}
+        <a href="/help" class="btn btn-sm btn-circle">
+            <Icon path={mdiHelp} title="How to make a .wasm file" />
+        </a>
+    {/if}
 </div>
