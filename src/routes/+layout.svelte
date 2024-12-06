@@ -10,7 +10,9 @@
 
 <Toaster theme={$mode} />
 
-<div class="flex gap-2 border-b shadow-md items-center p-1 pl-4 bordered">
+<div
+    class="flex gap-2 border-b shadow-md items-center p-1 pl-4 bordered sticky top-0 bg-base-100 z-10"
+>
     <a href="/">
         <h2 class="text-2xl text-primary">push_swap_ui</h2>
     </a>
