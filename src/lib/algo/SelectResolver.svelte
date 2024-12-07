@@ -5,6 +5,7 @@
     import { algoToResolver, NewResolver, type Resolver } from '$lib/algo'
     import { api } from '$lib'
     import { goto } from '$app/navigation'
+    import { onMount } from 'svelte'
 
     let {
         algo,
@@ -19,6 +20,11 @@
     let resolverProposed = $state<Resolver>()
     let resolverListed = $state<Resolver>()
     let inputRelation = $state<InputRelation<Algorithm>>()
+
+    onMount(async () => {
+        if (!algo) return
+        resolverListed = await algoToResolver(algo)
+    })
 
     function select(t: SelectType) {
         selectedType = t
