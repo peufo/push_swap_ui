@@ -2,7 +2,7 @@
     import {
         mdiBookOpenPageVariantOutline,
         mdiPencilOutline,
-        mdiPoll,
+        mdiChartBoxOutline,
         mdiSourceBranch,
     } from '@mdi/js'
     import { Icon, tip } from 'fuma'
@@ -82,8 +82,8 @@
             </a>
         {/if}
         <a href="/analyze?algoId={algo.id}" class="btn btn-ghost btn-sm">
-            <Icon path={mdiPoll} />
-            <span>Analize</span>
+            <Icon path={mdiChartBoxOutline} />
+            <span>Analyze</span>
         </a>
 
         {#if $page.data.user?.id === algo.authorId}

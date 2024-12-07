@@ -1,5 +1,9 @@
 <script lang="ts">
-    import { mdiAccountHeartOutline, mdiPlus } from '@mdi/js'
+    import {
+        mdiAccountHeartOutline,
+        mdiPlus,
+        mdiChartBoxOutline,
+    } from '@mdi/js'
     import { ToggleMode, Icon } from 'fuma/ui'
     import { mode } from 'mode-watcher'
     import { Toaster } from 'svelte-sonner'
@@ -19,6 +23,10 @@
 
     <div class="grow"></div>
 
+    <a href="/analyze" class="btn">
+        <Icon path={mdiChartBoxOutline} />
+        <span>Analyze</span>
+    </a>
     {#if data.user}
         <a href="/new" class="btn btn-primary btn-outline group">
             <Icon
