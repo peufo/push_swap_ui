@@ -11,7 +11,8 @@ const replacer: [Move[], Move[]][] = [
     [['rra', 'rrb'], ['rrr']],
     [['rrb', 'rra'], ['rrr']],
 
-    [['pb','rb','pb','rrb','sb','pa','pa'], []],
+    // Not implemented in mine
+    [['pb', 'rb', 'pb', 'rrb', 'sb', 'pa', 'pa'], []],
 
     [['pb', 'pb', 'sb', 'pa', 'pa'], ['sa']],
     [['pa', 'pa', 'sa', 'pb', 'pb'], ['sb']],

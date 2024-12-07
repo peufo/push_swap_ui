@@ -42,8 +42,8 @@ importers:
         specifier: ^2.2.0
         version: 2.2.0
       fuma:
-        specifier: ^1.0.4
-        version: 1.0.4(@sveltejs/kit@2.9.0(@sveltejs/vite-plugin-svelte@5.0.1(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)))(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)))(@types/node@22.10.1)(prisma@6.0.1)(typescript@5.7.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1))
+        specifier: ^1.0.7
+        version: 1.0.7(@sveltejs/kit@2.9.0(@sveltejs/vite-plugin-svelte@5.0.1(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)))(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)))(@types/node@22.10.1)(prisma@6.0.1)(typescript@5.7.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1))
       isomorphic-dompurify:
         specifier: ^2.18.0
         version: 2.18.0
@@ -1367,8 +1367,8 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
 
-  fuma@1.0.4:
-    resolution: {integrity: sha512-r2n7BLUzGL5wbg3sBCe78TU3Yciz2JEaQruFDY/bRK7be0Gf570F0tvV8FPnUU/+d//LKPu9gGddSzDXXuUwpg==}
+  fuma@1.0.7:
+    resolution: {integrity: sha512-UbRMPdbXiFHRnB4YYAxYhCqA729D3YS4JRFp4WBKASrcer9uKxRTcQewqSb+tUp6Of6eBwf8Lv3su+mPp8Jk+A==}
     peerDependencies:
       '@sveltejs/kit': ^2.5.6
 
@@ -3589,7 +3589,7 @@ snapshots:
   fsevents@2.3.3:
     optional: true
 
-  fuma@1.0.4(@sveltejs/kit@2.9.0(@sveltejs/vite-plugin-svelte@5.0.1(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)))(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)))(@types/node@22.10.1)(prisma@6.0.1)(typescript@5.7.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)):
+  fuma@1.0.7(@sveltejs/kit@2.9.0(@sveltejs/vite-plugin-svelte@5.0.1(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)))(svelte@5.6.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)))(@types/node@22.10.1)(prisma@6.0.1)(typescript@5.7.2)(vite@6.0.2(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.82.0)(yaml@2.6.1)):
     dependencies:
       '@lucia-auth/adapter-prisma': 4.0.1(@prisma/client@5.22.0(prisma@6.0.1))(lucia@3.2.2)
       '@mdi/js': 7.4.47

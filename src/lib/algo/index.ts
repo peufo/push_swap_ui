@@ -1,5 +1,4 @@
-import type { Move, Stack } from '$lib/move'
-import type { Component } from 'svelte'
+import type { Move } from '$lib/move'
 
 export type AlgoResult = {
     sequence: Move[]
@@ -8,12 +7,6 @@ export type AlgoResult = {
 }
 
 export type Resolver = (values: number[]) => Promise<AlgoResult>
-
-export type Algo = {
-    name: string
-    resolve: Resolver
-    charts?: Component<{ stack: Stack }>[]
-}
 
 export function createResolver(
     resolve: (values: number[]) => Move[] | Promise<Move[]>
@@ -42,6 +35,7 @@ export function createResolver(
 }
 
 export * from './compileWasm'
-export { default as NewAlgo } from './NewAlgo.svelte'
-export { default as SelectAlgo } from './SelectAlgo.svelte'
+export * from './algoToResolver'
+export { default as NewResolver } from './NewResolver.svelte'
+export { default as SelectResolver } from './SelectResolver.svelte'
 export { default as CardAlgo } from './CardAlgo.svelte'

@@ -1,8 +1,1 @@
-# dev
-
-```sh
-docker build -t push_swap_ui .
-docker run -dp 5173:5173 -v .:/app push_swap_ui
-```
-wasm: 
-	docker run --rm -v $(shell pwd):/src emscripten/emsdk emcc $(SOURCES) -o $(NAME).wasm
+# An other side project

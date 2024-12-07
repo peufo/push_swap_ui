@@ -1,11 +1,11 @@
 <script lang="ts">
     import { linearRegression } from 'simple-statistics'
-    import type { Algo } from '$lib/algo'
+    import type { Resolver } from '$lib/algo'
     import { AnalyzeAutoResults } from '$lib/visual'
     import { isSequenceOk } from './isSequenceOk'
     import { createValues } from './createValues'
 
-    let { algo }: { algo: Algo } = $props()
+    let { resolver }: { resolver: Resolver } = $props()
 
     let results = $state<TestResult[]>([])
     let regression = $derived(
@@ -30,7 +30,7 @@
 
     async function runTest(nb: number): Promise<TestResult> {
         const values = createValues(nb)
-        const res = await algo.resolve(values)
+        const res = await resolver(values)
         const isOk = isSequenceOk({ values, cursor: 0 }, res.sequence)
         return {
             nbValues: values.length,

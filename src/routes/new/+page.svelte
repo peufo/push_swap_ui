@@ -3,14 +3,14 @@
     import { tick } from 'svelte'
     import type { Algorithm } from '@prisma/client'
     import { MarkdownEdit } from '$lib/markdown'
-    import { NewAlgo, type Algo } from '$lib/algo'
+    import { NewResolver, type Resolver } from '$lib/algo'
     import Evaluations, {
         type EvalResult,
     } from '$lib/analyze/Evaluations.svelte'
     import { modelAlgorithmCreate } from '$lib'
 
     let description = $state('')
-    let algo = $state<Algo | null>(null)
+    let resolver = $state<Resolver | null>(null)
     let fileHandle = $state<FileSystemFileHandle | null>(null)
     let fileList = $state<FileList | null>(null)
     let evaluations = $state<Evaluations | undefined>()
@@ -19,10 +19,10 @@
     let scores = $state<Scores | null>(null)
     let execTime500 = $state<number | null>(null)
 
-    async function onAlgoChange(a: Algo) {
+    async function onResolverChange(r: Resolver) {
         scores = null
         execTime500 = null
-        algo = a
+        resolver = r
         await tick()
         if (evaluations) evaluations.refresh()
     }
@@ -59,12 +59,12 @@
 <div class="max-w-lg mx-auto my-10">
     <h1 class="text-2xl pb-6">New algorithm</h1>
 
-    <NewAlgo {onAlgoChange} {onFileHandleChange} class="my-4" />
-    {#if algo && fileHandle}
+    <NewResolver {onResolverChange} {onFileHandleChange} class="my-4" />
+    {#if resolver && fileHandle}
         <div class="py-2">
             <Evaluations
                 bind:this={evaluations}
-                {algo}
+                {resolver}
                 readOnly
                 mode="table"
                 nbRuns={420}

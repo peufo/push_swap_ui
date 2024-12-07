@@ -2,27 +2,25 @@
     import { onMount } from 'svelte'
     import { Buffer } from 'buffer'
     import { toast } from 'svelte-sonner'
-    import type { Move } from '$lib/move'
-    import { type Algo, type Resolver, compileWasm } from '$lib'
     import { Icon } from 'fuma'
-    import { mdiHelp } from '@mdi/js'
+    import { mdiHelp, mdiFileDocumentMultipleOutline } from '@mdi/js'
+
+    import type { Move } from '$lib/move'
+    import { type Resolver, compileWasm } from '$lib'
 
     let {
-        onAlgoChange,
+        onResolverChange,
         onFileHandleChange = () => {},
-        algoIsSelected = true,
+        isSelected = true,
         class: klass,
+        onclick,
     }: {
-        onAlgoChange: (a: Algo) => unknown
+        onResolverChange: (r: Resolver) => unknown
         onFileHandleChange?: (f: FileSystemFileHandle | null) => unknown
-        algoIsSelected?: boolean
+        isSelected?: boolean
         class?: string
+        onclick?: () => unknown
     } = $props()
-
-    const algo: Algo = {
-        name: 'New programe',
-        resolve: (values) => compileProgram().then((progam) => progam(values)),
-    }
 
     onMount(() => {
         window.Buffer = window.Buffer || Buffer
@@ -43,11 +41,12 @@
             })
         } catch (e) {
             console.error(e)
-            fileHandle = null
             toast.warning('Selection canceled')
+            return
         }
         onFileHandleChange(fileHandle)
-        onAlgoChange(algo)
+        //const resolver = await compileProgram()
+        onResolverChange((values) => compileProgram().then((p) => p(values)))
     }
 
     async function compileProgram(): Promise<Resolver> {
@@ -71,8 +70,8 @@
         {@const name = fileHandle.name}
         <button
             class="btn grow outline-primary"
-            class:outline={algoIsSelected}
-            onclick={() => onAlgoChange(algo)}
+            class:outline={isSelected}
+            {onclick}
         >
             <span>
                 {name.length > 24 ? '…' : ''}{name.slice(-24)}
@@ -80,17 +79,16 @@
         </button>
     {/if}
 
-    <button
-        class="btn grow"
-        class:btn-primary={!fileHandle}
-        onclick={selectProgram}
-    >
-        {fileHandle ? 'Change' : 'Select wasm'}
-    </button>
-
     {#if !fileHandle}
-        <a href="/help" class="btn btn-sm btn-circle">
+        <button class="btn grow btn-primary" onclick={selectProgram}>
+            Select wasm
+        </button>
+        <a href="/help" class="btn btn-circle">
             <Icon path={mdiHelp} title="How to make a .wasm file" />
         </a>
+    {:else}
+        <button class="btn btn-square" onclick={selectProgram}>
+            <Icon path={mdiFileDocumentMultipleOutline} title="Change file" />
+        </button>
     {/if}
 </div>

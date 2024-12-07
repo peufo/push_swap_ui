@@ -1,11 +1,11 @@
 <script lang="ts">
     import { Analyze } from '$lib/analyze'
-    import { SelectAlgo } from '$lib/algo'
-    import type { Algo } from '$lib'
+    import { SelectResolver } from '$lib/algo'
+    import type { Resolver } from '$lib'
 
-    let algo: Algo
+    let resolver = $state<Resolver | undefined>()
 </script>
 
-<Analyze {algo}>
-    <SelectAlgo bind:algo />
+<Analyze {resolver}>
+    <SelectResolver onSelect={(r) => (resolver = r)} />
 </Analyze>

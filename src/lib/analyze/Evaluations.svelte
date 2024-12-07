@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount, tick } from 'svelte'
-    import type { Algo } from '$lib/algo'
+    import type { Resolver } from '$lib/algo'
     import { createValues, isSequenceOk } from '$lib/analyze'
     import Evaluation from '$lib/visual/Evaluation.svelte'
 
@@ -12,14 +12,14 @@
     ]
 
     let {
-        algo,
+        resolver,
         isLoading = $bindable(false),
         nbRuns = 42,
         readOnly = false,
         mode = 'chart',
         onDone = () => {},
     }: {
-        algo: Algo
+        resolver: Resolver
         isLoading?: boolean
         nbRuns?: number
         readOnly?: boolean
@@ -64,7 +64,7 @@
         const runs: EvalRun[] = []
         for (let index = 0; index < nbRuns; index++) {
             const values = createValues(nbValues)
-            const res = await algo.resolve(values)
+            const res = await resolver(values)
             if (res.error) {
                 console.log(res.error)
                 continue
