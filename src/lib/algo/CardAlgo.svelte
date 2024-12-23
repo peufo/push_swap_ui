@@ -55,7 +55,9 @@
             </div>
         </div>
     </div>
-    <div class="card-actions pt-4 flex-nowrap backdrop-blur-sm p-8">
+    <div
+        class="card-actions pt-4 flex-nowrap backdrop-blur-sm bg-base-100/60 p-8"
+    >
         {#if isLongDescription}
             <button
                 onclick={() => (readAll = !readAll)}
