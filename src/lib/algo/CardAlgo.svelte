@@ -91,7 +91,7 @@
         {#if $page.data.user?.id === algo.authorId}
             <a href="/edit/{algo.id}" class="btn btn-ghost btn-sm">
                 <Icon path={mdiPencilOutline} />
-                <span>Edit</span>
+                <span class="max-sm:hidden">Edit</span>
             </a>
         {/if}
     </div>
