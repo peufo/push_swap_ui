@@ -80,7 +80,7 @@
                 class="btn btn-ghost btn-sm"
             >
                 <Icon path={mdiSourceBranch} />
-                <span>Source</span>
+                <span class="max-sm:hidden">Source</span>
             </a>
         {/if}
         <a href="/analyze?algoId={algo.id}" class="btn btn-ghost btn-sm">
