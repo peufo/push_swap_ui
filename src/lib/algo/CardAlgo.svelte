@@ -28,7 +28,7 @@
             <span>{algo.name}</span>
             <span class="grow"></span>
             <span
-                class="badge badge-lg gap-2"
+                class="badge badge-lg flex-nowrap gap-2"
                 use:tip={{ content: 'Execution time for 500 values' }}
             >
                 {#if algo.execTime500 < 40}
@@ -38,7 +38,10 @@
                 {/if}
                 {algo.execTime500.toLocaleString()} ms
             </span>
-            <span class="badge badge-lg" use:tip={{ content: getTip(500) }}>
+            <span
+                class="badge badge-lg flex-nowrap"
+                use:tip={{ content: getTip(500) }}
+            >
                 {algo.score500.toLocaleString()}
             </span>
         </h2>
