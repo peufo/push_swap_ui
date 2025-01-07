@@ -67,7 +67,7 @@
                 {resolver}
                 readOnly
                 mode="table"
-                nbRuns={420}
+                nbRuns={100}
                 onDone={onEvalDone}
             />
         </div>
