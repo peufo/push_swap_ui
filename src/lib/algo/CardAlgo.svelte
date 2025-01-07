@@ -4,6 +4,8 @@
         mdiPencilOutline,
         mdiChartBoxOutline,
         mdiSourceBranch,
+        mdiRocketLaunchOutline,
+        mdiSnail,
     } from '@mdi/js'
     import { Icon, tip } from 'fuma'
     import type { Algorithm, User } from '@prisma/client'
@@ -17,7 +19,6 @@
     let isLongDescription = $derived(
         readAll || descriptionHeight > wrapperHeight
     )
-
     const getTip = (nb: number) => `Sequence length to sort ${nb} number`
 </script>
 
@@ -26,10 +27,18 @@
         <h2 class="card-title">
             <span>{algo.name}</span>
             <span class="grow"></span>
-            <span class="badge" use:tip={{ content: getTip(100) }}>
-                {algo.score100.toLocaleString()}
+            <span
+                class="badge badge-lg gap-2"
+                use:tip={{ content: 'Execution time for 500 values' }}
+            >
+                {#if algo.execTime500 < 40}
+                    <Icon path={mdiRocketLaunchOutline} class="fill-success" />
+                {:else if algo.execTime500 > 400}
+                    <Icon path={mdiSnail} class="fill-warning" />
+                {/if}
+                {algo.execTime500.toLocaleString()} ms
             </span>
-            <span class="badge" use:tip={{ content: getTip(500) }}>
+            <span class="badge badge-lg" use:tip={{ content: getTip(500) }}>
                 {algo.score500.toLocaleString()}
             </span>
         </h2>
