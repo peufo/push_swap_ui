@@ -1,1 +1,6 @@
 # An other side project
+
+```sh
+docker build -t push_swap_ui .
+docker run -dp 5173:5173 -v .:/app push_swap_ui
+```

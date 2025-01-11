@@ -1,0 +1,21 @@
+services:
+  db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: prout
+      MYSQL_DATABASE: push_swap_ui
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      MYSQL_DATABASE: push_swap_ui
+      MYSQL_USER: root
+      MYSQL_PASSWORD: prout
+      MYSQL_HOST: db
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
