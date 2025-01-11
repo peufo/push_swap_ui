@@ -93,7 +93,7 @@
                     />
                 {/each}
 
-                {#each stack.values.slice(0, stack.cursor) as value, index (value)}
+                {#each stack.values.slice(0, stack.cursor).toReversed() as value, index (value)}
                     {@const w = Math.max(
                         (width / 2) * (value / max) - paddingH,
                         1
