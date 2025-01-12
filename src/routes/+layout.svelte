@@ -3,6 +3,7 @@
         mdiAccountHeartOutline,
         mdiPlus,
         mdiChartBoxOutline,
+        mdiGithub,
     } from '@mdi/js'
     import { ToggleMode, Icon } from 'fuma/ui'
     import { mode } from 'mode-watcher'
@@ -20,12 +21,20 @@
     <a href="/">
         <h2 class="text-2xl text-primary">push_swap_ui</h2>
     </a>
+    <a
+        href="https://github.com/peufo/push_swap_ui"
+        target="_blank"
+        class="btn btn-square"
+    >
+        <Icon path={mdiGithub} />
+    </a>
 
     <div class="flex gap-2 justify-end grow">
         <a href="/analyze" class="btn">
             <Icon path={mdiChartBoxOutline} />
             <span class="max-sm:hidden">Analyze</span>
         </a>
+
         {#if data.user}
             <a href="/new" class="btn btn-primary btn-outline group">
                 <Icon
