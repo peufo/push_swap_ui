@@ -1,7 +1,7 @@
 <script lang="ts">
     import debounce from 'debounce'
     import { move, type Move, type Sequence, type Stack } from '$lib/move'
-    import { StackHorizontal } from '$lib/visual'
+    import { StackVisual } from '$lib/visual'
     import SequenceView from './SequenceView.svelte'
     import Parameters from './Parameters.svelte'
     import Control from './Control.svelte'
@@ -83,7 +83,7 @@
                 onRefreshAlgo={() => runResolver()}
                 bind:currentMove
             />
-            <StackHorizontal {stack} />
+            <StackVisual {stack} />
         {:else if mode === 'regression'}
             <Regression {resolver} />
         {:else if mode === 'eval'}

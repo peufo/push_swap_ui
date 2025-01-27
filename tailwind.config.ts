@@ -1,5 +1,4 @@
 import type { Config } from 'tailwindcss'
-import forms from '@tailwindcss/forms'
 import typography from '@tailwindcss/typography'
 import daisyui from 'daisyui'
 
