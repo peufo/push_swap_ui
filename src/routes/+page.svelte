@@ -4,7 +4,7 @@
     let { data } = $props()
 </script>
 
-<div class="flex flex-col gap-6 max-w-lg mx-auto my-10 px-2">
+<div class="flex flex-col gap-6 max-w-xl mx-auto my-10 px-2">
     <div class="flex gap-2 items-end">
         <h2 class="text-2xl">Algorithms</h2>
         <div class="grow"></div>

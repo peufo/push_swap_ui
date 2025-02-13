@@ -31,9 +31,9 @@
                 class="badge badge-lg flex-nowrap gap-2"
                 use:tip={{ content: 'Execution time for 500 values' }}
             >
-                {#if algo.execTime500 < 40}
+                {#if algo.execTime500 < 100}
                     <Icon path={mdiRocketLaunchOutline} class="fill-success" />
-                {:else if algo.execTime500 > 400}
+                {:else if algo.execTime500 > 500}
                     <Icon path={mdiSnail} class="fill-warning" />
                 {/if}
                 {algo.execTime500.toLocaleString()} ms
