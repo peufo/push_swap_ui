@@ -14,8 +14,8 @@ export async function compileWasm(buffer: ArrayBuffer): Promise<Resolver> {
         const exitCode = wasi.start()
         if (exitCode == 1) throw Error('Program exit with exit code [1]')
         let stdout = wasi.getStdoutString()
-        console.log('STDOUT')
-        console.log(stdout)
+        console.log(`STDOUT len=${stdout.length}`)
+        console.log(stdout.slice(0, 1000))
         wasi.free()
         // TODO: valid the output with zod
         return stdout.split('\n').filter(Boolean) as Move[]
