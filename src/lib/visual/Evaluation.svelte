@@ -42,9 +42,11 @@
             borderWidth: 2,
             pointRadius: 0,
         }
-
-        chart.options.plugins!.title!.text = `${res.max} moves for ${res.nbValues} values`
-        chart.options.plugins!.subtitle!.text = `limits: ${res.limits.join(', ')}`
+        chart.options.plugins!.title!.text = [
+            `Move Distribution for ${res.nbValues}-Values Inputs`,
+            `Worst case = ${res.max}`,
+        ]
+        chart.options.plugins!.subtitle!.text = `Limits: ${res.limits.join(', ')}`
         chart.update('none')
     }
 
@@ -71,7 +73,7 @@
                 datasets: [
                     {
                         type: 'bar',
-                        label: 'results',
+                        label: 'Test Case Count',
                         data: [],
                         backgroundColor: 'rgba(129, 193, 75, 0.4)',
                         borderColor: 'rgba(129, 193, 75)',
@@ -81,7 +83,7 @@
                     },
                     {
                         type: 'bar',
-                        label: 'results',
+                        label: 'Test Case Count',
                         data: [],
                         backgroundColor: 'rgba(226, 78, 27, 0.4)',
                         borderColor: 'rgba(226, 78, 27)',
@@ -96,10 +98,17 @@
                     y: {
                         beginAtZero: true,
                         stacked: true,
+                        title: {
+                            text: 'Test Case Count',
+                            display: true,
+                        },
                     },
                     x: {
                         display: true,
-                        title: { text: 'Sequence lenght', display: true },
+                        title: {
+                            text: 'Number of Moves Required',
+                            display: true,
+                        },
                     },
                 },
                 locale: 'fr-ch',

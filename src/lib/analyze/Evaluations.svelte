@@ -92,7 +92,9 @@
     {#if !readOnly}
         <div class="flex gap-2 items-end pb-4">
             <label>
-                <span class="label-text block"> Number of executions </span>
+                <span class="label-text block">
+                    Number of Input Sequences Tested
+                </span>
                 <input
                     class="input input-bordered"
                     type="number"
