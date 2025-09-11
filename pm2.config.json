@@ -1,9 +1,0 @@
-{
-	"apps": [
-		{
-			"name": "push_swap_ui",
-			"script": "./build/index.js",
-			"args": "-r dotenv/config"
-		}
-	]
-}
