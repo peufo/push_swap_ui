@@ -4,7 +4,6 @@
     import DOMPurify from 'isomorphic-dompurify'
     import 'carta-md/default.css'
     import './github.scss'
-    import { onMount } from 'svelte'
 
     let { value }: { value: string } = $props()
 
@@ -14,4 +13,4 @@
     })
 </script>
 
-<Markdown {carta} {value} theme="github" a />
+<Markdown {carta} {value} theme="github" />
