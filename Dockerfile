@@ -1,7 +1,9 @@
-FROM node
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+FROM oven/bun:latest
+RUN apt-get update -y
+RUN apt-get install -y openssl
+COPY . /app
 WORKDIR /app
-EXPOSE 5173
-CMD ["sleep", "infinity"]
+RUN bun install
+RUN bun run build
+EXPOSE 3000/tcp
+CMD [ "bun", "start" ]
