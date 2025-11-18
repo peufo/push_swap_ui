@@ -2,7 +2,7 @@ import path from 'node:path'
 import fs from 'node:fs/promises'
 import uuid from 'short-uuid'
 import { formAction } from 'fuma/server'
-import { WASM_DIR } from '$env/static/private'
+import { env } from '$env/dynamic/private'
 import { modelAlgorithmCreate } from '$lib'
 import { prisma } from '$lib/server'
 import { error } from '@sveltejs/kit'
@@ -20,7 +20,7 @@ export const actions = {
             const wasmFile = formData.get('wasm')
             if (!(wasmFile instanceof File))
                 throw Error('wasm file is required')
-            const wasmDir = path.resolve(WASM_DIR)
+            const wasmDir = path.resolve(env.WASM_DIR)
             await fs.mkdir(wasmDir, { recursive: true })
             const wasmName = uuid.generate() + '.wasm'
             const wasmPath = path.resolve(wasmDir, wasmName)
